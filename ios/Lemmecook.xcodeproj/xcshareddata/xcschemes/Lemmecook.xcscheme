@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "CookingGuideApp.app"
-               BlueprintName = "CookingGuideApp"
-               ReferencedContainer = "container:CookingGuideApp.xcodeproj">
+               BuildableName = "Lemmecook.app"
+               BlueprintName = "Lemmecook"
+               ReferencedContainer = "container:Lemmecook.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "CookingGuideAppTests.xctest"
-               BlueprintName = "CookingGuideAppTests"
-               ReferencedContainer = "container:CookingGuideApp.xcodeproj">
+               BuildableName = "LemmecookTests.xctest"
+               BlueprintName = "LemmecookTests"
+               ReferencedContainer = "container:Lemmecook.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "CookingGuideApp.app"
-            BlueprintName = "CookingGuideApp"
-            ReferencedContainer = "container:CookingGuideApp.xcodeproj">
+            BuildableName = "Lemmecook.app"
+            BlueprintName = "Lemmecook"
+            ReferencedContainer = "container:Lemmecook.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "CookingGuideApp.app"
-            BlueprintName = "CookingGuideApp"
-            ReferencedContainer = "container:CookingGuideApp.xcodeproj">
+            BuildableName = "Lemmecook.app"
+            BlueprintName = "Lemmecook"
+            ReferencedContainer = "container:Lemmecook.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

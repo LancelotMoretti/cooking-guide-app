@@ -1,4 +1,4 @@
-package com.cookingguideapp
+package com.lemmecook
 
 import android.app.Application
 import com.facebook.react.PackageList
