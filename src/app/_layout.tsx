@@ -13,6 +13,16 @@ export default function RootLayout() {
         options={{ title: 'Login', header: () => null}}
         getID={() => 'login'}
       />
+      <Stack.Screen
+        name="signup"
+        options={{ title: 'Sign Up', header: () => null}}
+        getID={() => 'signup'}
+      />
+      <Stack.Screen
+        name="home"
+        options={{ title: 'Home', header: () => null}}
+        getID={() => 'home'}
+      />
     </Stack>
   );
 }
