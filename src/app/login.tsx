@@ -1,9 +1,9 @@
 import { View, Text} from 'react-native';
 import LoginHeader from '@/styles/Header';
 import { useState } from 'react';
-import SignBox from '@/components/SignTextBox';
-import SignButton from '@/components/SignButton';
-import { useNavigation } from '@react-navigation/native';
+import SignBox from '@/components/signAccount/SignTextBox';
+import SignButton from '@/components/signAccount/SignButton';
+import { navigateToScreen } from '@/components/navigation/StackNavigationButton';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -12,12 +12,6 @@ export default function Login() {
 
     const toggleSecureEntry = () => {
         setSecureTextEntry(!secureTextEntry);
-    }
-
-    const navigation = useNavigation();
-
-    const navigateToScreen = (screen: string) => () => {
-        navigation.navigate(screen as never);
     }
 
     return (
