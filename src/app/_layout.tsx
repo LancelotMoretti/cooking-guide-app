@@ -5,7 +5,13 @@ export default function RootLayout() {
     <Stack>
       <Stack.Screen
         name="index"
-        options={{ title: 'LemmeCook' }} 
+        options={{ title: 'LemmeCook', header: () => null}} 
+        getID={() => 'index'}
+      />
+      <Stack.Screen
+        name="login"
+        options={{ title: 'Login', header: () => null}}
+        getID={() => 'login'}
       />
     </Stack>
   );
