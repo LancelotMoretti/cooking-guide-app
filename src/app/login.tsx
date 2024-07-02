@@ -47,7 +47,7 @@ export default function Login() {
                 marginLeft: 120,
                 marginRight: 120
             }}>
-                <SignButton buttonText="Log In" onPress={navigateToScreen("home")} />
+                <SignButton buttonText="Log In" onPress={navigateToScreen("(tabs)")} />
                 <SignButton buttonText="Sign Up" onPress={navigateToScreen("signup")} />
             </View>
         </View>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "176721447738",
+    "project_id": "lemmecook-91255",
+    "storage_bucket": "lemmecook-91255.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176721447738:android:6b4f73aa03b1204bdf1e03",
+        "android_client_info": {
+          "package_name": "com.lancelotmoretti.lemmecook"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGLq7Lk9hTMS3AwjALJQ3cyA0NPIDO_Hk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
