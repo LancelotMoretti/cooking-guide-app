@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const SignBoxStyles = StyleSheet.create({
+export const SignBoxStyles = StyleSheet.create({
     container: {
         marginBottom: 20,
     },
@@ -28,7 +28,7 @@ const SignBoxStyles = StyleSheet.create({
     },
 });
 
-const SignButtonStyles = StyleSheet.create({
+export const SignButtonStyles = StyleSheet.create({
     container: {
         backgroundColor: '#9FEADD',
         borderRadius: 20,
@@ -43,5 +43,3 @@ const SignButtonStyles = StyleSheet.create({
         fontWeight: 'bold',
     },
 });
-
-export { SignBoxStyles, SignButtonStyles };

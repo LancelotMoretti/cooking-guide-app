@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
-import { SignButtonStyles } from '@/styles/Sign';
+import { SignButtonStyles } from '@/constants/Sign';
 
 interface SignButtonProps {
     buttonText: string;

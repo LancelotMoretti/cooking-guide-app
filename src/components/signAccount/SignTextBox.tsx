@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SignBoxStyles } from '@/styles/Sign';
+import { SignBoxStyles } from '@/constants/Sign';
 
 interface SignBoxProps {
     label: string;

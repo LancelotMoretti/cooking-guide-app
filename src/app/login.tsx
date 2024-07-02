@@ -1,5 +1,5 @@
 import { View, Text} from 'react-native';
-import LoginHeader from '@/styles/Header';
+import { LoginHeader } from '@/constants/Header';
 import { useState } from 'react';
 import SignBox from '@/components/signAccount/SignTextBox';
 import SignButton from '@/components/signAccount/SignButton';
