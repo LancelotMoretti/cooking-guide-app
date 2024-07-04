@@ -7,7 +7,7 @@ export default function LemmeCook() {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            navigation.navigate('login' as never);
+            navigation.navigate('log-in' as never);
         }, 3000);
 
         return () => clearTimeout(timeout);

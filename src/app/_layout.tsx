@@ -9,14 +9,14 @@ export default function RootLayout() {
         getID={() => 'index'}
       />
       <Stack.Screen
-        name="login"
+        name="log-in"
         options={{ title: 'Login', header: () => null }}
-        getID={() => 'login'}
+        getID={() => 'log-in'}
       />
       <Stack.Screen
-        name="signup"
+        name="sign-up"
         options={{ title: 'Sign Up', header: () => null }}
-        getID={() => 'signup'}
+        getID={() => 'sign-up'}
       />
       <Stack.Screen
         name="(tabs)"

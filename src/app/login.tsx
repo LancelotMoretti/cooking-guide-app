@@ -3,7 +3,7 @@ import { LoginHeader } from '@/constants/Header';
 import { useState } from 'react';
 import SignBox from '@/components/signAccount/SignTextBox';
 import SignButton from '@/components/signAccount/SignButton';
-import { navigateToScreen } from '@/components/navigation/StackNavigationButton';
+import { navigateToStack } from '@/hooks/navigateScreen';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -47,8 +47,16 @@ export default function Login() {
                 marginLeft: 120,
                 marginRight: 120
             }}>
-                <SignButton buttonText="Log In" onPress={navigateToScreen("(tabs)")} />
-                <SignButton buttonText="Sign Up" onPress={navigateToScreen("signup")} />
+                <SignButton buttonText="Log In" onPress={navigateToStack("(tabs)")} />
+                <SignButton buttonText="Sign Up" onPress={navigateToStack("sign-up")} />
+            </View>
+
+            <View style={{
+                marginTop: 20,
+                marginLeft: 120,
+                marginRight: 120
+            }}>
+                <SignButton buttonText="Forgot Password?" onPress={navigateToStack("forgot-password")} />
             </View>
         </View>
     );
