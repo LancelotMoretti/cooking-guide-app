@@ -2,30 +2,30 @@ import { StyleSheet } from 'react-native';
 
 export const SignBoxStyles = StyleSheet.create({
     container: {
-        marginBottom: 20,
+        marginBottom: 20
     },
     label: {
         marginBottom: 5,
         fontSize: 14,
         // fontWeight: 'bold',
-        color: '#000',
+        color: '#000'
     },
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#9FEADD',
         borderRadius: 20,
-        paddingHorizontal: 10,
+        paddingHorizontal: 10
     },
     input: {
         flex: 1,
         height: 40,
         fontSize: 16,
-        color: '#000',
+        color: '#000'
     },
     icon: {
-        marginLeft: 10,
-    },
+        marginLeft: 10
+    }
 });
 
 export const SignButtonStyles = StyleSheet.create({
@@ -35,11 +35,11 @@ export const SignButtonStyles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         marginTop: 10,
-        alignItems: 'center',
+        alignItems: 'center'
     },
     text: {
         fontSize: 18,
-        color: '#EC888D',
-        fontWeight: 'bold',
-    },
+        color: '#676767',
+        fontWeight: 'bold'
+    }
 });

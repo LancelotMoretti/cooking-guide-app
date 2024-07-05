@@ -13,7 +13,7 @@ interface SignBoxProps {
     needSecure?: boolean;
 }
 
-const SignBox = ({ label, placeholder, secureTextEntry, value, onChangeText, onIconPress, needSecure = false }: SignBoxProps) => {
+const SignBox: React.FC<SignBoxProps> = ({ label, placeholder, secureTextEntry, value, onChangeText, onIconPress, needSecure = false }) => {
     return (
         <View style={SignBoxStyles.container}>
             <Text style={SignBoxStyles.label}>{label}</Text>
@@ -38,6 +38,6 @@ const SignBox = ({ label, placeholder, secureTextEntry, value, onChangeText, onI
             </View>
         </View>
     );
-};
+}
 
 export default SignBox;

@@ -6,17 +6,27 @@ export default function RootLayout() {
       <Stack.Screen
         name="index"
         options={{ title: 'LemmeCook', header: () => null }} 
-        getID={() => 'index'}
+        getId={() => 'index'}
       />
       <Stack.Screen
         name="log-in"
         options={{ title: 'Login', header: () => null }}
-        getID={() => 'log-in'}
+        getId={() => 'log-in'}
       />
       <Stack.Screen
         name="sign-up"
         options={{ title: 'Sign Up', header: () => null }}
-        getID={() => 'sign-up'}
+        getId={() => 'sign-up'}
+      />
+      <Stack.Screen
+        name="forgot-password"
+        options={{ title: 'Forgot Password', header: () => null }}
+        getId={() => 'forgot-password'}
+      />
+      <Stack.Screen
+        name="doc"
+        options={{ title: 'Documentation', header: () => null }}
+        getId={() => 'doc'}
       />
       <Stack.Screen
         name="(tabs)"

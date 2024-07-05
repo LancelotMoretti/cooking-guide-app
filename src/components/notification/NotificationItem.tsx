@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable,  } from 'react-native';
 import UseElapsedTime from '@/hooks/useElapsedTime';
-import { navigateToStack } from '@/hooks/navigateScreen';
+import { navigateToStack } from '@/hooks/useNavigateScreen';
 
 export interface NotificationItem{
   id: string; // "0" for new notification

@@ -7,7 +7,7 @@ interface SignButtonProps {
     onPress: any;
 }
 
-const SignButton = ({ buttonText, onPress }: SignButtonProps) => {
+const SignButton: React.FC<SignButtonProps> = ({ buttonText, onPress }) => {
     return (
         <TouchableOpacity style={SignButtonStyles.container} onPress={onPress}>
             <Text style={SignButtonStyles.text}>{buttonText}</Text>
