@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {Text, View, StyleSheet, FlatList, ListRenderItem, TouchableOpacity } from 'react-native';
-import NotificationItem, {NotificationItemProps } from '@/components/notification/NotificationItem';
-import useReadNotifications from '@/hooks/readNotification';
-import useWriteNotification from '@/hooks/writeNotification';
+import {Text, View, FlatList, ListRenderItem, TouchableOpacity } from 'react-native';
+import NotificationItem, { NotificationItemProps } from '@/components/notification/NotificationItem';
+import { useReadNotification } from '@/hooks/useReadNotification';
+import { useWriteNotification } from '@/hooks/useWriteNotification';
+import { NotificationScreenStyles } from '@/constants/Notification';
 
   // // Test data
   // const listTest = [
@@ -44,14 +45,14 @@ import useWriteNotification from '@/hooks/writeNotification';
 
 const Notification = (userId: number) => {
   userId = 1; // Đang test nên để mặc định userId = 1
-  const list = useReadNotifications(userId);
+  const list = useReadNotification({userId});
   const [filter, setFilter] = useState<'all' | 'read' | 'unread'>('all'); 
 
   const handleReadChange = (id: string) => {
     for (let i = 0; i < list.length; i++) {
       if (list[i].notification.id === id) {
         list[i].notification.read = true;
-        useWriteNotification(userId, list[i].notification);
+        useWriteNotification({userId, props: list[i].notification});
         break;
       }
     }
@@ -61,7 +62,7 @@ const Notification = (userId: number) => {
     for (let i = 0; i < list.length; i++) {
       if (list[i].notification.id === id) {
         list[i].notification.checkDelete = true;
-        useWriteNotification(userId, list[i].notification);
+        useWriteNotification({userId, props: list[i].notification});
         break;
       }
     }
@@ -86,25 +87,25 @@ const Notification = (userId: number) => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.filterContainer}>
+    <View style={NotificationScreenStyles.container}>
+      <View style={NotificationScreenStyles.filterContainer}>
         <TouchableOpacity
-          style={[styles.filterButton, filter === 'all' && styles.activeFilter]}
+          style={[NotificationScreenStyles.filterButton, filter === 'all' && NotificationScreenStyles.activeFilter]}
           onPress={() => handleFilterPress('all')}
         >
-          <Text style={[styles.buttonText, filter === 'all' && styles.buttonTextActive]}>All</Text>
+          <Text style={[NotificationScreenStyles.buttonText, filter === 'all' && NotificationScreenStyles.buttonTextActive]}>All</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.filterButton, filter === 'read' && styles.activeFilter]}
+          style={[NotificationScreenStyles.filterButton, filter === 'read' && NotificationScreenStyles.activeFilter]}
           onPress={() => handleFilterPress('read')}
         >
-          <Text style={[styles.buttonText, filter === 'read' && styles.buttonTextActive]}>Read</Text>
+          <Text style={[NotificationScreenStyles.buttonText, filter === 'read' && NotificationScreenStyles.buttonTextActive]}>Read</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.filterButton, filter === 'unread' && styles.activeFilter]}
+          style={[NotificationScreenStyles.filterButton, filter === 'unread' && NotificationScreenStyles.activeFilter]}
           onPress={() => handleFilterPress('unread')}
         >
-          <Text style={[styles.buttonText, filter === 'unread' && styles.buttonTextActive]}>Unread</Text>
+          <Text style={[NotificationScreenStyles.buttonText, filter === 'unread' && NotificationScreenStyles.buttonTextActive]}>Unread</Text>
         </TouchableOpacity>
       </View>
       <FlatList
@@ -115,41 +116,5 @@ const Notification = (userId: number) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingHorizontal: 16,
-    paddingTop: 20,
-  },
-  filterContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between', 
-    marginBottom: 20,
-  },
-  filterButton: {
-    flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    marginRight: 10,
-  },
-  activeFilter: {
-    backgroundColor: '#129575',
-    color: '#129575',
-  },
-  buttonText: {
-    textAlign: 'center',
-    fontWeight: 700,
-    fontSize: 18,
-    color: '#129575',
-  },
-  buttonTextActive: {
-    color: '#fff',
-  },
-});
 
 export default Notification;
