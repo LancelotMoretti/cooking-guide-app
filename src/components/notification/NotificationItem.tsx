@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable,  } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Pressable,  } from 'react-native';
 import { useElapsedTime } from '@/hooks/useElapsedTime';
 import { navigateToStack } from '@/hooks/useNavigateScreen';
 import { NotificationBoxStyles } from '@/constants/Notification';
