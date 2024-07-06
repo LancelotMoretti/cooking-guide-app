@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Text, View, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 
@@ -8,7 +8,7 @@ export default function LemmeCook() {
     useEffect(() => {
         const timeout = setTimeout(() => {
             navigation.navigate('log-in' as never);
-        }, 3000);
+        }, 5000);
 
         return () => clearTimeout(timeout);
     }, [navigation]);
@@ -16,14 +16,12 @@ export default function LemmeCook() {
     return (
         <View style={{
             flex: 1,
+            backgroundColor: '#129575', 
             justifyContent: "center",
             alignItems: "center",
         }}>
-            <Text style={{
-                fontSize: 50, // Adjust this value to increase/decrease the text size
-            }}>
-                LemmeCook
-            </Text>
+            <View><Image source={require('../assets/images/logo.png')}/></View>
         </View>
+        
     );
 }
