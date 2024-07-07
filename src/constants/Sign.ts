@@ -7,7 +7,7 @@ export const SignBoxStyles = StyleSheet.create({
     label: {
         marginBottom: 5,
         fontSize: 14,
-        // fontWeight: 'bold',
+        fontWeight: 'bold',
         color: '#000'
     },
     inputContainer: {

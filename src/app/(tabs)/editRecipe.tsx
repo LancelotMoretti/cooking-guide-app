@@ -15,10 +15,10 @@ export default function AddRecipe() {
     return (
         
         <ScrollView >
-            <Text style={AddRecipeHeader}>Create Recipe</Text>
+            <Text style={AddRecipeHeader}>Edit Recipe</Text>
 
             <View style={styles.button}>
-                <SignButton buttonText="Publish" onPress={navigateToStack("(tabs)")}/>
+                <SignButton buttonText="Update" onPress={navigateToStack("(tabs)")}/>
                 <SignButton buttonText="Delete" onPress={navigateToStack("(tabs)")}/>
                     
             </View>

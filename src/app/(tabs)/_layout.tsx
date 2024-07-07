@@ -28,6 +28,16 @@ export default function TabLayout() {
             />
 
             <Tabs.Screen
+                name="editRecipe"
+                options={{
+                    title: 'Edit Recipe',
+                    tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
+                        <TabBarIcon name={focused ? 'pencil' : 'pencil-outline'} color={color} />
+                    ),
+                }}
+            />
+
+            <Tabs.Screen
                 name="notification"
                 options={{
                     title: 'Notification',
