@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, CommonActions } from '@react-navigation/native';
 
 export function navigateToStack(stackScreen: string) {
     const navigation = useNavigation();
@@ -12,10 +12,14 @@ export function navigateToDocScreen(stackScreen: string, docHeader: string, docC
     const navigation = useNavigation();
 
     return () => {
-        navigation.navigate({
-            stackScreen,
-            docHeader,
-            docContent
-        } as never);
+        navigation.dispatch(
+            CommonActions.navigate({
+                name: stackScreen as never,
+                params: {
+                    header: docHeader,
+                    content: docContent
+                }
+            })
+        );
     };
 }
