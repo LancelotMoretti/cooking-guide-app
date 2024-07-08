@@ -32,6 +32,12 @@ export default function RootLayout() {
         name="(tabs)"
         options={{ header: () => null }}
       />
+
+      <Stack.Screen
+        name="notification"
+        options={{ title: 'Notification'}}
+        getId={() => 'notification'}
+      />
     </Stack>
   );
 }
