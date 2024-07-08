@@ -4,12 +4,16 @@ import { ClickableText } from '@/components/signAccount/ClickableObject';
 import SignButton from '@/components/signAccount/SignButton';
 import SignBox from '@/components/signAccount/SignTextBox';
 import { SignUpHeader } from '@/constants/Header';
-import { navigateToDocScreen, navigateToStack } from '@/hooks/useNavigateScreen';
+import { useToggle } from '@/hooks/useToggle';
+import { navigateToStack } from '@/services/navigateServices';
+import { signUpAndGoToLogin } from '@/services/registerServices';
+import { useNavigation } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, View, Text, Dimensions } from 'react-native';
 
 export default function SignUp() {
     const window = Dimensions.get("window");
+    const navigation = useNavigation();
 
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
@@ -17,6 +21,13 @@ export default function SignUp() {
     const [dateOfBirth, setDateOfBirth] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [secureTextEntry1, toggleSecureEntry1] = useToggle(true);
+    const [secureTextEntry2, toggleSecureEntry2] = useToggle(true);
+
+    const handleSignUp = () => {
+        signUpAndGoToLogin(navigation, email, password, fullName, phoneNumber, dateOfBirth);
+    };
 
     return (
         <ScrollView style={{
@@ -48,7 +59,7 @@ export default function SignUp() {
                     onIconPress={() => {}}
                 />
                 <SignBox
-                    label="Phone Number"
+                    label="Phone Number (optional)"
                     placeholder="123-456-7890"
                     secureTextEntry={false}
                     value={phoneNumber}
@@ -56,7 +67,7 @@ export default function SignUp() {
                     onIconPress={() => {}}
                 />
                 <SignBox
-                    label="Date of Birth"
+                    label="Date of Birth (optional)"
                     placeholder="MM/DD/YYYY"
                     secureTextEntry={false}
                     value={dateOfBirth}
@@ -66,18 +77,20 @@ export default function SignUp() {
                 <SignBox
                     label="Password"
                     placeholder="Enter your password"
-                    secureTextEntry={true}
+                    secureTextEntry={secureTextEntry1}
                     value={password}
                     onChangeText={setPassword}
-                    onIconPress={() => {}}
+                    onIconPress={toggleSecureEntry1}
+                    needSecure={true}
                 />
                 <SignBox
                     label="Confirm Password"
                     placeholder="Enter your password"
-                    secureTextEntry={true}
+                    secureTextEntry={secureTextEntry2}
                     value={confirmPassword}
                     onChangeText={setConfirmPassword}
-                    onIconPress={() => {}}
+                    onIconPress={toggleSecureEntry2}
+                    needSecure={true}
                 />
             </View>
 
@@ -92,16 +105,16 @@ export default function SignUp() {
                 flexDirection: "row",
                 justifyContent: "center"
             }}>
-                <ClickableText docHeader="Terms of Use" onPress={navigateToDocScreen("doc", "Terms of use", TermsOfUse)} />
+                <ClickableText docHeader="Terms of Use" onPress={navigateToStack(navigation, "doc", "Terms of use", TermsOfUse)} />
                 <Text> and </Text>
-                <ClickableText docHeader="Privacy Policy" onPress={navigateToDocScreen("doc", "Privacy Policy", PrivacyPolicy)} />
+                <ClickableText docHeader="Privacy Policy" onPress={navigateToStack(navigation, "doc", "Privacy Policy", PrivacyPolicy)} />
             </View>
 
             <View style={{
                 marginLeft: window.width / 2 - 100,
                 marginRight: window.width / 2 - 100
             }}>
-                <SignButton buttonText="Sign Up" onPress={navigateToStack("log-in")} />
+                <SignButton buttonText="Sign Up" onPress={handleSignUp} />
             </View>
 
             <View style={{
@@ -109,7 +122,7 @@ export default function SignUp() {
                 justifyContent: "center",
             }}>
                 <Text>Already have an account? </Text>
-                <ClickableText docHeader="Log In" onPress={navigateToStack("log-in")} />
+                <ClickableText docHeader="Log In" onPress={navigateToStack(navigation, "log-in")} />
             </View>
         </ScrollView>
     );

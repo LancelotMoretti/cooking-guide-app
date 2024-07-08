@@ -3,20 +3,25 @@ import { LoginHeader } from '@/constants/Header';
 import { useState } from 'react';
 import SignBox from '@/components/signAccount/SignTextBox';
 import SignButton from '@/components/signAccount/SignButton';
-import { navigateToStack } from '@/hooks/useNavigateScreen';
+import { navigateToStack } from '@/services/navigateServices';
 import { ClickableText, ClickableLogo } from '@/components/signAccount/ClickableObject';
 import Checkbox from '@/components/signAccount/Checkbox';
+import { loginAndGoToHome } from '@/services/loginServices';
+import { useNavigation } from 'expo-router';
+import { useToggle } from '@/hooks/useToggle';
 
 export default function Login() {
     const window = Dimensions.get("window");
+    const navigation = useNavigation();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [secureTextEntry, setSecureTextEntry] = useState(true);
+    
+    const [secureTextEntry, toggleSecureEntry] = useToggle(true);
 
-    const toggleSecureEntry = () => {
-        setSecureTextEntry(!secureTextEntry);
-    };
+    const handleLogin = () => {
+        loginAndGoToHome(navigation, email, password);
+    }
 
     return (
         <ScrollView style = {{
@@ -56,8 +61,8 @@ export default function Login() {
                 marginLeft: window.width / 2 - 100,
                 marginRight: window.width / 2 - 100
             }}>
-                <SignButton buttonText="Log In" onPress={navigateToStack("(tabs)")} />
-                <SignButton buttonText="Sign Up" onPress={navigateToStack("sign-up")} />
+                <SignButton buttonText="Log In" onPress={handleLogin} />
+                <SignButton buttonText="Sign Up" onPress={navigateToStack(navigation, "sign-up")} />
             </View>
 
             <View style={{
@@ -65,7 +70,7 @@ export default function Login() {
                 justifyContent: "center",
                 alignItems: "center"
             }}>
-                <ClickableText docHeader="Forgot Password?" onPress={navigateToStack("forgot-password")} />
+                <ClickableText docHeader="Forgot Password?" onPress={navigateToStack(navigation, "forgot-password")} />
             </View>
 
             <View style={{
@@ -86,9 +91,9 @@ export default function Login() {
                 marginLeft: window.width / 2 - 100,
                 marginRight: window.width / 2 - 100
             }}>
-                <ClickableLogo fileName='google-logo' onPress={navigateToStack("(tabs)")} />
-                <ClickableLogo fileName='facebook-logo' onPress={navigateToStack("(tabs)")} />
-                <ClickableLogo fileName='apple-logo' onPress={navigateToStack("(tabs)")} />
+                <ClickableLogo fileName='google-logo' onPress={navigateToStack(navigation, "(tabs)")} />
+                <ClickableLogo fileName='facebook-logo' onPress={navigateToStack(navigation, "(tabs)")} />
+                <ClickableLogo fileName='apple-logo' onPress={navigateToStack(navigation, "(tabs)")} />
             </View>
 
             <View style={{
@@ -101,7 +106,7 @@ export default function Login() {
                     fontSize: 16,
                     textAlign: "center"
                 }}>Don't have an account?</Text>
-                <ClickableText docHeader="Sign Up" onPress={navigateToStack("sign-up")}/>
+                <ClickableText docHeader="Sign Up" onPress={navigateToStack(navigation, "sign-up")}/>
             </View>
         </ScrollView>
     );

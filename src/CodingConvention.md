@@ -103,6 +103,24 @@ const Name2: React.FC<InterfaceName> = ({ prop1, prop2 }) => {
 export { Name1, Name2 };
 ```
 
+### Services (Backend API Calls)
+
+```typescript
+export const name = async (param1: string, param2: number) => {
+    // Code
+    return (
+        // Code
+    );
+};
+
+export const name = (param1: string, param2: number) => {
+    // Code
+    return (
+        // Code
+    );
+};
+```
+
 ### Styles
 
 - Styles should be defined in a file within a `constants` folder with a descriptive name.

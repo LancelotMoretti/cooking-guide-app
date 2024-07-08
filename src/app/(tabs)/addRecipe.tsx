@@ -5,21 +5,25 @@ import SignButton from '@/components/addRecipe/SignButton';
 import SignButtonAdd from '@/components/addRecipe/SignButtonAdd';
 import SignBoxAmt from '@/components/addRecipe/SignTextBoxIngredient';
 import SignBox from '@/components/addRecipe/SignTextBox';
-import { navigateToStack } from '@/hooks/useNavigateScreen';
 import { useState } from 'react';
 import { ClickableText, ClickableLogo } from '@/components/signAccount/ClickableObject';
+import { useNavigation } from 'expo-router';
+import { navigateToStack } from '@/services/navigateServices';
 
 export default function AddRecipe() {
+    const navigation = useNavigation();
+    
     const [description, setDescription] = useState('');
     const [timeRecipe, setTimeRecipe] = useState('');
+
     return (
         
         <ScrollView >
             <Text style={AddRecipeHeader}>Create Recipe</Text>
 
             <View style={styles.button}>
-                <SignButton buttonText="Publish" onPress={navigateToStack("(tabs)")}/>
-                <SignButton buttonText="Delete" onPress={navigateToStack("(tabs)")}/>
+                <SignButton buttonText="Publish" onPress={navigateToStack(navigation, "(tabs)")}/>
+                <SignButton buttonText="Delete" onPress={navigateToStack(navigation, "(tabs)")}/>
                     
             </View>
             <View style={styles.image}>
@@ -67,7 +71,7 @@ export default function AddRecipe() {
                     onIconPress={() => {}}
                 />
                 <View style = {{marginTop: 20}}>
-                    <ClickableLogo fileName='trash' onPress={navigateToStack("(tabs)")} />
+                    <ClickableLogo fileName='trash' onPress={navigateToStack(navigation, "(tabs)")}/>
                 </View>
                 
                 
@@ -79,7 +83,7 @@ export default function AddRecipe() {
                 alignItems: "center"
             }}>
 
-                <SignButtonAdd buttonText="+ Add Ingredient" onPress={navigateToStack("(tabs)")}/>
+                <SignButtonAdd buttonText="+ Add Ingredient" onPress={navigateToStack(navigation, "(tabs)")}/>
             </View>
 
             <View style={styles.ingredient}>
@@ -94,7 +98,7 @@ export default function AddRecipe() {
                 />
 
                 <View style = {{marginTop: 20}}>
-                    <ClickableLogo fileName='trash' onPress={navigateToStack("(tabs)")} />
+                    <ClickableLogo fileName='trash' onPress={navigateToStack(navigation, "(tabs)")}/>
                 </View>
             </View>
 
@@ -105,7 +109,7 @@ export default function AddRecipe() {
                 alignItems: "center"
             }}>
 
-                <SignButtonAdd buttonText="+ Add Instruction" onPress={navigateToStack("(tabs)")}/>
+                <SignButtonAdd buttonText="+ Add Instruction" onPress={navigateToStack(navigation, "(tabs)")}/>
             </View>
         </ScrollView>
         

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, Pressable, Image } from 'react-native';
-import { navigateToDocScreen, navigateToStack } from '@/hooks/useNavigateScreen';
 import { ClickableStyles } from '@/constants/ClickableObject';
 import { imageMap } from '@/constants/ImageMap';
 

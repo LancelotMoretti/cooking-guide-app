@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, Pressable,  } from 'react-native';
 import { useElapsedTime } from '@/hooks/useElapsedTime';
-import { navigateToStack } from '@/hooks/useNavigateScreen';
+import { navigateToStack } from '@/services/navigateServices';
 import { NotificationBoxStyles } from '@/constants/Notification';
+import { useNavigation } from 'expo-router';
 
 export interface NotificationData {
   id: string; // "0" for new notification
@@ -22,6 +23,8 @@ export interface NotificationItemProps {
 }
 
 const NotificationItem = ({notification, onReadChange, onDeleted}: NotificationItemProps) => {
+  const navigation = useNavigation();
+
   const [readState, setReadState] = useState<boolean>(notification.read);
   const [deleteState, setDeleteState] = useState<boolean>(notification.checkDelete);
   
@@ -46,7 +49,7 @@ const NotificationItem = ({notification, onReadChange, onDeleted}: NotificationI
   return (
     <TouchableOpacity
       style={[NotificationBoxStyles.container, readState ? NotificationBoxStyles.read : NotificationBoxStyles.unread, deleteState ? {display: 'none'} : {display: 'flex'}]}
-      onPress={navigateToStack(notification.link)}
+      onPress={navigateToStack(navigation, notification.link)}
       onPressOut={handlePress}
     >
       <Pressable style={NotificationBoxStyles.deleteButtton} onPress={handleDelete}>
