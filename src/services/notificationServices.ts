@@ -1,7 +1,13 @@
+import { db } from "@/firebaseConfig";
+import { ref, update, remove, push, onValue, off } from "firebase/database";
+import { NotificationData } from "@/components/notification/NotificationItem";
 import { useEffect, useState } from 'react';
-import { db } from '@/firebaseConfig';
-import { ref, onValue, off } from 'firebase/database';
-import { NotificationItemProps } from '@/components/notification/NotificationItem';
+import { NotificationItemProps } from '@/components/notification/NotificationItem'
+
+interface UseWriteNotificationProps {
+    userId: number;
+    props: NotificationData;
+}
 
 interface UseReadNotificationProps {
     userId: number;
@@ -44,4 +50,17 @@ export function useReadNotification({ userId }: UseReadNotificationProps): Notif
     }, [userId]);
 
     return notifications;
+}
+
+export function useWriteNotification({ userId, props }: UseWriteNotificationProps) {
+    if (props.checkDelete) {
+        remove(ref(db, `${userId}/notifications/${props.id}`));
+        return;
+    }
+
+    if (props.id === '') {
+        const newNotificationRef = push(ref(db, `${userId}/notifications`));
+        props.id = newNotificationRef.key as string;
+    }
+    update(ref(db, `${userId}/notifications/${props.id}`), props);
 }

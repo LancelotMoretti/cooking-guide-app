@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { useReadNotification } from '@/hooks/useReadNotification';
+import { useReadNotification } from '@/services/notificationServices';
 import { NotificationScreenStyles } from '@/constants/Notification';
 import NotificationFilter from '@/components/notification/NotificationFilter';
 import NotificationList from '@/components/notification/NotificationList';
