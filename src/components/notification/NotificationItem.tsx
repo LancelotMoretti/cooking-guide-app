@@ -22,7 +22,7 @@ export interface NotificationItemProps {
   onDeleted: () => void;
 }
 
-const NotificationItem = ({notification, onReadChange, onDeleted}: NotificationItemProps) => {
+const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onReadChange, onDeleted }) => {
   const navigation = useNavigation();
 
   const [readState, setReadState] = useState<boolean>(notification.read);

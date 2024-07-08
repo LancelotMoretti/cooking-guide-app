@@ -7,7 +7,7 @@ interface NotificationFilterProps {
   setFilter: (filter: 'all' | 'read' | 'unread') => void;
 }
 
-const NotificationFilter = ({ filter, setFilter }: NotificationFilterProps) => {
+const NotificationFilter: React.FC<NotificationFilterProps> = ({ filter, setFilter }) => {
   return (
     <View style={NotificationScreenStyles.filterContainer}>
       <TouchableOpacity
