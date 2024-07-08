@@ -7,6 +7,23 @@ export const LoginHeader: TextStyle = {
     fontSize: 20,
     fontWeight: 'bold'
 };
+
+export const SignUpHeader: TextStyle = {
+    marginTop: 55,
+    textAlign: 'center',
+    color: '#FD5D69',
+    fontSize: 20,
+    fontWeight: 'bold'
+};
+
+export const DocHeader: TextStyle = {
+    marginTop: 20,
+    textAlign: 'center',
+    color: '#4C7D74',
+    fontSize: 24,
+    fontWeight: 'bold'
+};
+
 export const AddRecipeHeader: TextStyle = {
     marginTop: 40,
     textAlign: 'center',

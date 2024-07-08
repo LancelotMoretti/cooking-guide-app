@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Dimensions, ScrollView } from 'react-native';
 import { LoginHeader } from '@/constants/Header';
 import { useState } from 'react';
 import SignBox from '@/components/signAccount/SignTextBox';
@@ -8,23 +8,28 @@ import { ClickableText, ClickableLogo } from '@/components/signAccount/Clickable
 import Checkbox from '@/components/signAccount/Checkbox';
 
 export default function Login() {
+    const window = Dimensions.get("window");
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [secureTextEntry, setSecureTextEntry] = useState(true);
 
     const toggleSecureEntry = () => {
         setSecureTextEntry(!secureTextEntry);
-    }
+    };
 
     return (
-        <View>
+        <ScrollView style = {{
+            flex: 1,
+            backgroundColor: '#FFFFFF'
+        }}>
             <Text style={LoginHeader}>Login</Text>
 
             <View style={{
                 marginBottom: 20,
                 marginTop: 120,
-                marginLeft: 30,
-                marginRight: 30
+                marginLeft: window.width / 2 - 180,
+                marginRight: window.width / 2 - 180
             }}>
                 <SignBox 
                     label="Email"
@@ -48,8 +53,8 @@ export default function Login() {
             
             <View style={{
                 marginTop: 15,
-                marginLeft: 120,
-                marginRight: 120
+                marginLeft: window.width / 2 - 100,
+                marginRight: window.width / 2 - 100
             }}>
                 <SignButton buttonText="Log In" onPress={navigateToStack("(tabs)")} />
                 <SignButton buttonText="Sign Up" onPress={navigateToStack("sign-up")} />
@@ -65,8 +70,8 @@ export default function Login() {
 
             <View style={{
                 marginTop: 50,
-                marginLeft: 120,
-                marginRight: 120
+                marginLeft: window.width / 2 - 100,
+                marginRight: window.width / 2 - 100
             }}>
                 <Text style={{
                     fontSize: 16,
@@ -78,8 +83,8 @@ export default function Login() {
                 flexDirection: "row",
                 justifyContent: "space-around",
                 marginTop: 20,
-                marginLeft: 120,
-                marginRight: 120
+                marginLeft: window.width / 2 - 100,
+                marginRight: window.width / 2 - 100
             }}>
                 <ClickableLogo fileName='google-logo' onPress={navigateToStack("(tabs)")} />
                 <ClickableLogo fileName='facebook-logo' onPress={navigateToStack("(tabs)")} />
@@ -98,6 +103,6 @@ export default function Login() {
                 }}>Don't have an account?</Text>
                 <ClickableText docHeader="Sign Up" onPress={navigateToStack("sign-up")}/>
             </View>
-        </View>
+        </ScrollView>
     );
 }
