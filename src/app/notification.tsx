@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { useReadNotification } from '@/services/notificationServices';
+import { readNotification, writeNotification } from '@/services/notificationServices';
 import { NotificationScreenStyles } from '@/constants/Notification';
 import NotificationFilter from '@/components/notification/NotificationFilter';
 import NotificationList from '@/components/notification/NotificationList';
@@ -41,12 +41,12 @@ import NotificationList from '@/components/notification/NotificationList';
 // ];
 
 // for (let i = 0; i < testList.length; i++) {
-//   useWriteNotification({ userId: 1, props: testList[i] });
+//   writeNotification({ userId: 1, props: testList[i] });
 // }
 
 export default function Notification (userId: number) {
   userId = 1; // Đang test nên để mặc định userId = 1
-  const list = useReadNotification({ userId });
+  const list = readNotification({ userId });
   const [filter, setFilter] = useState<'all' | 'read' | 'unread'>('all'); 
 
   return (
