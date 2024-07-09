@@ -173,3 +173,15 @@ export const searchCategories = async (query: string): Promise<CategoryInforInte
 
     return categories;
 }
+
+export const getRecipesInCategory = async (categoryId: string): Promise<Recipe[]> => {
+    const category = await getCategory(categoryId);
+    const recipes: Recipe[] = [];
+
+    for (let recipeId = 0; recipeId < category.recipes.length; recipeId++) {
+        // const recipe = await getRecipe(category.recipes[recipeId]); // Cần hàm getRecipe
+        // recipes.push(recipe);
+    }
+
+    return recipes;
+}
