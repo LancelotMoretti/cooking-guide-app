@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput} from 'react-native';
-import { TextBoxIngreStyles } from '@/constants/AddRecipe';
+import { TextBoxAmtStyles } from '@/constants/AddRecipe';
 
 interface BoxProps {
     placeholder: string;
@@ -8,11 +8,11 @@ interface BoxProps {
     onChangeText: (text: string) => void;
 }
 
-const BoxIngredient: React.FC<BoxProps> = ({placeholder, value, onChangeText}) => {
+const BoxAmt: React.FC<BoxProps> = ({placeholder, value, onChangeText}) => {
     return (
-        <View style={TextBoxIngreStyles.container}>
+        <View style={TextBoxAmtStyles.container}>
             <TextInput
-                style={TextBoxIngreStyles.input}
+                style={TextBoxAmtStyles.input}
                 placeholder={placeholder}
                 placeholderTextColor="#9EA0A4"
                 value={value}
@@ -22,4 +22,4 @@ const BoxIngredient: React.FC<BoxProps> = ({placeholder, value, onChangeText}) =
     );
 }
 
-export default BoxIngredient;
+export default BoxAmt;

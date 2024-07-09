@@ -25,7 +25,8 @@ export const DocHeader: TextStyle = {
 };
 
 export const AddRecipeHeader: TextStyle = {
-    marginTop: 40,
+    marginTop: 20,
+    marginBottom: 20,
     textAlign: 'center',
     color: '#129575',
     fontSize: 20,
