@@ -3,7 +3,7 @@ import { AddRecipeHeader } from '@/constants/Header';
 import Checkbox from '@/components/addRecipe/Checkbox'
 import SignButton from '@/components/addRecipe/SignButton';
 import SignButtonAdd from '@/components/addRecipe/SignButtonAdd';
-import SignBoxAmt from '@/components/addRecipe/SignTextBoxIngredient';
+import SignBoxAmt from '@/components/addRecipe/TextBoxIngredient';
 import SignBox from '@/components/addRecipe/SignTextBox';
 import { useState } from 'react';
 import { ClickableText, ClickableLogo } from '@/components/signAccount/ClickableObject';
@@ -35,7 +35,6 @@ export default function AddRecipe() {
                 <SignBox 
                     label="Description"
                     placeholder="Recipe description"
-                    secureTextEntry={false}
                     value={description}
                     onChangeText={setDescription}
                     onIconPress={() => {}}
@@ -45,7 +44,6 @@ export default function AddRecipe() {
                 <SignBox 
                     label="Time Recipe"
                     placeholder="1hour, 30min,..."
-                    secureTextEntry={false}
                     value={timeRecipe}
                     onChangeText={setTimeRecipe}
                     onIconPress={() => {}}
@@ -57,7 +55,6 @@ export default function AddRecipe() {
                 <SignBoxAmt 
                     label="Ingredients"
                     placeholder="Amt"
-                    secureTextEntry={false}
                     value={description}
                     onChangeText={setDescription}
                     onIconPress={() => {}}
@@ -65,7 +62,6 @@ export default function AddRecipe() {
                 <SignBoxAmt 
                     label="             "
                     placeholder="Ingredient...                       "
-                    secureTextEntry={false}
                     value={description}
                     onChangeText={setDescription}
                     onIconPress={() => {}}
@@ -91,7 +87,6 @@ export default function AddRecipe() {
                 <SignBoxAmt 
                     label="Instructions"
                     placeholder="Instruction 1                                               "
-                    secureTextEntry={false}
                     value={description}
                     onChangeText={setDescription}
                     onIconPress={() => {}}
