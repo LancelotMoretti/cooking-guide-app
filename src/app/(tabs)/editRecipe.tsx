@@ -91,7 +91,7 @@ export default function AddRecipe() {
         keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
         >    
         <ScrollView style={styles.container}>
-            <Text style={AddRecipeHeader}>Create Recipe</Text>
+            <Text style={AddRecipeHeader}>Edit Recipe</Text>
             <View style={styles.button}>
                 <Button buttonText="Update" onPress={() => setModalVisible(true)} />
                 <Button buttonText="Delete" onPress={handleDelete} />
@@ -108,8 +108,8 @@ export default function AddRecipe() {
                         <Text style={styles.modalTitle}>Update Recipe</Text>
                         <Text>Are you sure you want to update the recipe?</Text>
                         <View style={styles.modalButtonContainer}>
-                            <ButtonPublish buttonText="Cancel" onPress={() => handleCloseModal} />
-                            <ButtonPublish buttonText="Update" onPress={() => handlePublish} />
+                            <ButtonPublish buttonText="Cancel" onPress={handleCloseModal} />
+                            <ButtonPublish buttonText="Update" onPress={handlePublish} />
                         </View>
                     </View>
                 </View>
@@ -126,8 +126,8 @@ export default function AddRecipe() {
                         <Text style={styles.modalTitle}>Delete Recipe</Text>
                         <Text>Are you sure you want to delete the recipe?</Text>
                         <View style={styles.modalButtonContainer}>
-                            <ButtonPublish buttonText="Cancel" onPress={() => handleCancelDelete} />
-                            <ButtonPublish buttonText="Delete" onPress={() => handleConfirmDelete} />
+                            <ButtonPublish buttonText="Cancel" onPress={handleCancelDelete} />
+                            <ButtonPublish buttonText="Delete" onPress={handleConfirmDelete} />
                         </View>
                     </View>
                 </View>

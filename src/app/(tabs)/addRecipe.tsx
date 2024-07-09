@@ -108,8 +108,8 @@ export default function AddRecipe() {
                         <Text style={styles.modalTitle}>Publish Recipe</Text>
                         <Text>Are you sure you want to publish the recipe?</Text>
                         <View style={styles.modalButtonContainer}>
-                            <ButtonPublish buttonText="Cancel" onPress={() => handleCloseModal} />
-                            <ButtonPublish buttonText="Publish" onPress={() => handlePublish} />
+                            <ButtonPublish buttonText="Cancel" onPress={handleCloseModal} />
+                            <ButtonPublish buttonText="Publish" onPress={handlePublish} />
                         </View>
                     </View>
                 </View>
@@ -126,8 +126,8 @@ export default function AddRecipe() {
                         <Text style={styles.modalTitle}>Delete Recipe</Text>
                         <Text>Are you sure you want to delete the recipe?</Text>
                         <View style={styles.modalButtonContainer}>
-                            <ButtonPublish buttonText="Cancel" onPress={() => handleCancelDelete} />
-                            <ButtonPublish buttonText="Delete" onPress={() => handleConfirmDelete} />
+                            <ButtonPublish buttonText="Cancel" onPress={handleCancelDelete} />
+                            <ButtonPublish buttonText="Delete" onPress={handleConfirmDelete} />
                         </View>
                     </View>
                 </View>
@@ -138,13 +138,11 @@ export default function AddRecipe() {
             </View>
 
             <Text style={styles.title}>Desription</Text>
-    
             <Box 
                 placeholder="Recipe description"
                 value={description}
                 onChangeText={setDescription}
             />
-            
 
             <Text style={styles.title}>Time Recipe</Text>
             <Box 
@@ -155,7 +153,6 @@ export default function AddRecipe() {
         
             <Text style={styles.title}>Ingredients</Text>
 
-            
             <View style={styles.ingredientsList}>
                 {ingredients.map((ingredient, index) => (
                     <View key={index} style={styles.ingredientRow}>
@@ -176,12 +173,11 @@ export default function AddRecipe() {
                     </View>
                 ))}
             </View>
-            
 
             <ButtonAdd buttonText="+ Add Ingredient" onPress={handleAddIngredient} />
             
             <Text style={styles.title}>Instructions</Text>
-
+            <View>
             <View style={styles.ingredientsList}>
               {instructions.map((instruction, index) => (
                     <View key={index} style={styles.instruction}>
@@ -196,6 +192,7 @@ export default function AddRecipe() {
 
                     </View>
                 ))}
+            </View>
             </View>
         
             <ButtonAdd buttonText="+ Add Instruction" onPress={handleAddInstruction} />
