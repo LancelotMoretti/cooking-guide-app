@@ -2,7 +2,7 @@ import { DocHeader } from "@/constants/Header";
 import { useRoute } from "@react-navigation/native";
 import { ScrollView, View, Text } from "react-native";
 
-export default function Doc() {
+export default function DocScreen() {
     const route = useRoute();
     const { header: docHeader, content: docContent } = route.params as { header: string, content: string };
 

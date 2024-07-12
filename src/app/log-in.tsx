@@ -10,7 +10,7 @@ import { loginAndGoToHome } from '@/services/loginServices';
 import { useNavigation } from 'expo-router';
 import { useToggle } from '@/hooks/useToggle';
 
-export default function Login() {
+export default function LoginScreen() {
     const window = Dimensions.get("window");
     const navigation = useNavigation();
 

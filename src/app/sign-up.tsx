@@ -11,7 +11,7 @@ import { useNavigation } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, View, Text, Dimensions } from 'react-native';
 
-export default function SignUp() {
+export default function SignUpScreen() {
     const window = Dimensions.get("window");
     const navigation = useNavigation();
 

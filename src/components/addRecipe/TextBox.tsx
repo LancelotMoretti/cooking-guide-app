@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, TextInput} from 'react-native';
-import { TextBoxIngreStyles } from '@/constants/AddRecipe';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { TextBoxStyles } from '@/constants/AddRecipe';
 
 interface BoxProps {
     placeholder: string;
@@ -8,18 +9,19 @@ interface BoxProps {
     onChangeText: (text: string) => void;
 }
 
-const BoxIngredient: React.FC<BoxProps> = ({placeholder, value, onChangeText}) => {
+const Box: React.FC<BoxProps> = ({placeholder, value, onChangeText}) => {
     return (
-        <View style={TextBoxIngreStyles.container}>
+        <View style={TextBoxStyles.container}>
             <TextInput
-                style={TextBoxIngreStyles.input}
+                style={TextBoxStyles.input}
                 placeholder={placeholder}
                 placeholderTextColor="#9EA0A4"
                 value={value}
                 onChangeText={onChangeText}
             />
+                
         </View>
     );
 }
 
-export default BoxIngredient;
+export default Box;

@@ -20,8 +20,7 @@ export default function RootLayout() {
       />
       <Stack.Screen
         name="forgot-password"
-        options={{ title: 'Forgot Password', header: () => null }}
-        getId={() => 'forgot-password'}
+        options={{ header: () => null }}
       />
       <Stack.Screen
         name="doc"
@@ -32,7 +31,6 @@ export default function RootLayout() {
         name="(tabs)"
         options={{ header: () => null }}
       />
-
       <Stack.Screen
         name="notification"
         options={{ title: 'Notification'}}
