@@ -1,19 +1,18 @@
 import { db } from "@/firebaseConfig";
 import { ref, update, remove, push, onValue, off } from "firebase/database";
-import { NotificationData } from "@/components/notification/NotificationItem";
-import { useEffect, useState } from 'react';
-import { NotificationItemProps } from '@/components/notification/NotificationItem'
+import { useEffect, useState } from "react";
+import { NotificationItemProps, NotificationData } from "@/components/notification/NotificationItem";
 
-interface UseWriteNotificationProps {
+interface writeNotificationProps {
     userId: number;
     props: NotificationData;
 }
 
-interface UseReadNotificationProps {
+interface readNotificationProps {
     userId: number;
 }
 
-export function useReadNotification({ userId }: UseReadNotificationProps): NotificationItemProps[] {
+export const readNotification = ({ userId }: readNotificationProps): NotificationItemProps[] => {
     const [notifications, setNotifications] = useState<NotificationItemProps[]>([]);
 
     useEffect(() => {
@@ -31,10 +30,10 @@ export function useReadNotification({ userId }: UseReadNotificationProps): Notif
                         time: new Date(data[key].time),
                         read: data[key].read,
                         checkDelete: data[key].checkDelete,
-                        link: data[key].link
+                        link: data[key].link,
                     },
                     onReadChange: () => {},
-                    onDeleted: () => {}
+                    onDeleted: () => {},
                 }));
                 setNotifications(notificationsArray);
             } else {
@@ -50,9 +49,9 @@ export function useReadNotification({ userId }: UseReadNotificationProps): Notif
     }, [userId]);
 
     return notifications;
-}
+};
 
-export function useWriteNotification({ userId, props }: UseWriteNotificationProps) {
+export const writeNotification = ({ userId, props }: writeNotificationProps): void => {
     if (props.checkDelete) {
         remove(ref(db, `${userId}/notifications/${props.id}`));
         return;
@@ -62,5 +61,6 @@ export function useWriteNotification({ userId, props }: UseWriteNotificationProp
         const newNotificationRef = push(ref(db, `${userId}/notifications`));
         props.id = newNotificationRef.key as string;
     }
+
     update(ref(db, `${userId}/notifications/${props.id}`), props);
-}
+};

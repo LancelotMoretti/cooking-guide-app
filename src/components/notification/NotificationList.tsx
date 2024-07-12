@@ -1,6 +1,6 @@
 import React from "react";
 import { FlatList, ListRenderItem } from "react-native";
-import { useWriteNotification } from "@/hooks/useWriteNotification";
+import { writeNotification } from "@/services/notificationServices";
 import NotificationItem, { NotificationItemProps } from "./NotificationItem";
 
 export interface NotificationListProps {
@@ -17,7 +17,7 @@ const NotificationList: React.FC<NotificationListProps> = ({ list, filter, userI
             if (list[i].notification.id === id) {
                 if (list[i].notification.read) return;
                 list[i].notification.read = true;
-                useWriteNotification({ userId, props: list[i].notification });
+                writeNotification({ userId, props: list[i].notification });
                 break;
             }
         }
@@ -27,7 +27,7 @@ const NotificationList: React.FC<NotificationListProps> = ({ list, filter, userI
         for (let i = 0; i < list.length; i++) {
             if (list[i].notification.id === id) {
                 list[i].notification.checkDelete = true;
-                useWriteNotification({ userId, props: list[i].notification });
+                writeNotification({ userId, props: list[i].notification });
                 break;
             }
         }
