@@ -3,7 +3,7 @@ import { db } from "@/firebaseConfig";
 import { ref, update, remove, push, onValue, off } from "firebase/database";
 
 
-interface Recipe {
+export interface Recipe {
     description: string;
     timeRecipe: string;
     ingredients: { amount: string, description: string }[];

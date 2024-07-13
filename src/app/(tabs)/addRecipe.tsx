@@ -51,23 +51,24 @@ export default function AddRecipe() {
     const handleAddIngredient = () => {
         setIngredients([...ingredients, { amount: '', description: '' }]);
     };
+    
     const handleAmountChange = (index: any, value: any) => {
         const newIngredients = [...ingredients];
         newIngredients[index].amount = value;
         setIngredients(newIngredients);
-      };
+    };
     
-      const handleDescriptionChange = (index: any, value: any) => {
+    const handleDescriptionChange = (index: any, value: any) => {
         const newIngredients = [...ingredients];
         newIngredients[index].description = value;
         setIngredients(newIngredients);
-      };
+    };
 
-      const handleremoveIngredient = (index: any) => {
+    const handleremoveIngredient = (index: any) => {
         const newIngredients = ingredients.slice();
         newIngredients.splice(index, 1);
         setIngredients(newIngredients);
-      };
+    };
     
     const handleAddInstruction = () => {
         setInstructions([...instructions, '']);
