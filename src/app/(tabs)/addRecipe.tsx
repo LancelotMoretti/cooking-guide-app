@@ -117,7 +117,20 @@ export default function AddRecipe() {
                             <ButtonPublish buttonText="Cancel" onPress={handleCloseModal} />
                             <ButtonPublish buttonText="Publish" onPress={() => {
                                 handlePublish();
-                                saveNewRecipe(description, timeRecipe, ingredients, instructions, 0);
+                                saveNewRecipe(
+                                    {
+                                        recipeID: '0',
+                                        userID: '0'.toString(),
+                                        title: "New Recipe",
+                                        description: description,
+                                        timeDuration: timeRecipe,
+                                        ingredients: ingredients,
+                                        instructions: instructions,
+                                        video: "",
+                                        time: new Date(),
+                                        status: "Pending"
+                                    }
+                                );
                             }} />
                         </View>
                     </View>

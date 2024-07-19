@@ -99,40 +99,10 @@ export function writeRecipeToDatabase(recipe: Recipe): void {
 
 
 export function saveNewRecipe(
-    //title: string,
-    description: string,
-    timeDuration: string,
-    ingredients: { amount: string, description: string }[],
-    instructions: string[],
+    recipe: Recipe,
     userID: number = 0 // default value for testing purposes
 ): void {
-    const [recipe, setRecipe] = useState<Recipe>({
-        recipeID: "",
-        userID: "",
-        title: "",
-        description: "",
-        timeDuration: "",
-        ingredients: [],
-        instructions: [],
-        video: "",
-        time: new Date(),
-        status: "",
-        
-    });
-
-    const newRecipeRef = push(ref(db, `${userID}/recipes`));
-    setRecipe({
-        recipeID: newRecipeRef.key as string,
-        userID: userID.toString(),
-        title: "New Recipe",
-        description: description,
-        timeDuration: timeDuration,
-        ingredients: ingredients,
-        instructions: instructions,
-        video: "",
-        time: new Date(),
-        status: "Pending"
-    });
-    push(newRecipeRef, recipe);
+    const newRecipeRef = push(ref(db, 'recipes'));
+    update(newRecipeRef, recipe);
 }
 
