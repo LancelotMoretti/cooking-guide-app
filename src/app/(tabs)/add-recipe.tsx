@@ -21,6 +21,7 @@ import { writeNotification } from '@/services/notificationServices';
 export default function AddRecipe() {
     const navigation = useNavigation();
     
+    const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [timeRecipe, setTimeRecipe] = useState('');
     const [ingredients, setIngredients] = useState([{ amount: '', description: '' }]);
@@ -35,6 +36,20 @@ export default function AddRecipe() {
     };
 
     const handlePublish = () => {
+        saveNewRecipe(
+            {
+                recipeID: '0',
+                userID: '0'.toString(),
+                title: title,
+                description: description,
+                timeDuration: timeRecipe,
+                ingredients: ingredients,
+                instructions: instructions,
+                video: "",
+                time: new Date(),
+                status: "Pending"
+            }
+        );
         setModalVisible(false);
         console.log('Recipe published');
     };
@@ -117,20 +132,7 @@ export default function AddRecipe() {
                             <ButtonPublish buttonText="Cancel" onPress={handleCloseModal} />
                             <ButtonPublish buttonText="Publish" onPress={() => {
                                 handlePublish();
-                                saveNewRecipe(
-                                    {
-                                        recipeID: '0',
-                                        userID: '0'.toString(),
-                                        title: "New Recipe",
-                                        description: description,
-                                        timeDuration: timeRecipe,
-                                        ingredients: ingredients,
-                                        instructions: instructions,
-                                        video: "",
-                                        time: new Date(),
-                                        status: "Pending"
-                                    }
-                                );
+                                
                             }} />
                         </View>
                     </View>
@@ -159,7 +161,14 @@ export default function AddRecipe() {
                 <Image source={require('../../assets/images/addRecipe/Food.png')} style={{ width: '100%' }} />
             </View>
 
-            <Text style={styles.title}>Desription</Text>
+            <Text style={styles.title}>Title</Text>
+            <Box 
+                placeholder="Recipe title"
+                value={title}
+                onChangeText={setTitle}
+            />
+
+            <Text style={styles.title}>Description</Text>
             <Box 
                 placeholder="Recipe description"
                 value={description}

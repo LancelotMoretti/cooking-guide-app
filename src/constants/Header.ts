@@ -32,3 +32,11 @@ export const AddRecipeHeader: TextStyle = {
     fontSize: 20,
     fontWeight: 'bold',
 };
+
+export const RecipeDetailHeader: TextStyle = {
+    marginTop: 20,
+    marginBottom: 20,
+    color: '#129575',
+    fontSize: 20,
+    fontWeight: 'bold',
+};
