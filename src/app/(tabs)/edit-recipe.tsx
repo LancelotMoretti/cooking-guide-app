@@ -109,7 +109,7 @@ export default function AddRecipe() {
                         <Text>Are you sure you want to update the recipe?</Text>
                         <View style={styles.modalButtonContainer}>
                             <ButtonPublish buttonText="Cancel" onPress={handleCloseModal} />
-                            <ButtonPublish buttonText="Update" onPress={handlePublish} />
+                            <ButtonPublish buttonText="Update" onPress={() => {handlePublish()}} />
                         </View>
                     </View>
                 </View>
