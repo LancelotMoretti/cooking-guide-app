@@ -1,7 +1,6 @@
 import { auth, db } from "@/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { ref, update } from "firebase/database";
-import { directToStack } from "./navigateServices";
+import { ref, update } from "@firebase/database";
 
 const createUser = async (
     response: any,
@@ -22,8 +21,7 @@ const createUser = async (
     }
 };
 
-export const signUpAndGoToLogin = async (
-    navigation: any,
+export const signUpAccount = async (
     email: string,
     password: string,
     fullName?: string,
@@ -39,7 +37,6 @@ export const signUpAndGoToLogin = async (
 
         if (response.user) {
             await createUser(response, fullName, phoneNumber, dateOfBirth);
-            directToStack(navigation, "log-in");
         }
     }
     catch (error) {

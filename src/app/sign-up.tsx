@@ -6,10 +6,10 @@ import SignBox from '@/components/signAccount/SignTextBox';
 import { SignUpHeader } from '@/constants/Header';
 import { useToggle } from '@/hooks/useToggle';
 import { navigateToStack } from '@/services/navigateServices';
-import { signUpAndGoToLogin } from '@/services/registerServices';
+import { signUpAccount } from '@/services/registerServices';
 import { useNavigation } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, View, Text, Dimensions } from 'react-native';
+import { ScrollView, View, Text, Dimensions, Modal } from 'react-native';
 
 export default function SignUpScreen() {
     const window = Dimensions.get("window");
@@ -21,13 +21,70 @@ export default function SignUpScreen() {
     const [dateOfBirth, setDateOfBirth] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
     const [secureTextEntry1, toggleSecureEntry1] = useToggle(true);
     const [secureTextEntry2, toggleSecureEntry2] = useToggle(true);
 
     const handleSignUp = () => {
-        signUpAndGoToLogin(navigation, email, password, fullName, phoneNumber, dateOfBirth);
+        if (password === confirmPassword) {
+            signUpAccount(email, password, fullName, phoneNumber, dateOfBirth);
+        }
+
+        setShowModal(true);
     };
+
+    function showSignUpModal() {
+        if (password === confirmPassword) {
+            return (
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={showModal}
+                >
+                    <View style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "rgba(0, 0, 0, 0.5)"
+                    }}>
+                        <View style={{
+                            backgroundColor: "#FFFFFF",
+                            padding: 20,
+                            borderRadius: 10
+                        }}>
+                            <Text>Passwords match</Text>
+                            <SignButton buttonText="OK" onPress={navigateToStack(navigation, "log-in")} />
+                        </View>
+                    </View>
+                </Modal>
+            );
+        }
+
+        return (
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={showModal}
+            >
+                <View style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "rgba(0, 0, 0, 0.5)"
+                }}>
+                    <View style={{
+                        backgroundColor: "#FFFFFF",
+                        padding: 20,
+                        borderRadius: 10
+                    }}>
+                        <Text>Passwords do not match</Text>
+                        <SignButton buttonText="OK" onPress={() => setShowModal(false)} />
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
 
     return (
         <ScrollView style={{
@@ -124,6 +181,7 @@ export default function SignUpScreen() {
                 <Text>Already have an account? </Text>
                 <ClickableText docHeader="Log In" onPress={navigateToStack(navigation, "log-in")} />
             </View>
+            {showSignUpModal()}
         </ScrollView>
     );
 }
