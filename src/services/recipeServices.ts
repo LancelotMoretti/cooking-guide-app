@@ -90,12 +90,14 @@ export function readRecipeFromDatabase(recipeId: string) {
     return recipe;
 }
 
-export function writeRecipeToDatabase(recipe: Recipe): void {
-    const newRecipeRef = push(ref(db, 'recipes'));
-    recipe.recipeID = newRecipeRef.key as string
-    update(newRecipeRef, recipe);
+export function saveUpdatedRecipe(recipe: Recipe): void {
+    const user = auth.currentUser;
+    if (!user) {
+        throw new Error('User not logged in');
+    }
+    const recipeRef = ref(db, `recipes/${recipe.recipeID}`);
+    update(recipeRef, recipe);
 }
-
 
 export function saveNewRecipe(recipe: Recipe): void {
     const user = auth.currentUser;
