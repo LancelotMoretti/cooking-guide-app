@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, Pressable,  } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, TouchableOpacity, Pressable } from 'react-native';
 import { useElapsedTime } from '@/hooks/useElapsedTime';
 import { navigateToStack } from '@/services/navigateServices';
 import { NotificationBoxStyles } from '@/constants/Notification';
 import { useNavigation } from 'expo-router';
 import { Recipe, readRecipeFromDatabase } from '@/services/recipeServices';
+
 export interface NotificationData {
   id: string; // "0" for new notification
   recipeID: string;
@@ -21,24 +22,37 @@ export interface NotificationItemProps {
 
 const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onReadChange, onDeleted }) => {
   const navigation = useNavigation();
-  const [recipe] = useState<Recipe | null>(readRecipeFromDatabase(notification.recipeID));
-  if (!recipe) return null;
   const [readState, setReadState] = useState<boolean>(notification.read);
   const [deleteState, setDeleteState] = useState<boolean>(notification.checkDelete);
-  
+  let recipe = readRecipeFromDatabase(notification.recipeID);
+  if (recipe === null) {
+    recipe = {
+      recipeID: '',
+      userID: '',
+      title: '',
+      description: '',
+      timeDuration: '',
+      ingredients: [],
+      instructions: [],
+      video: '',
+      time: new Date(),
+      status: ''
+    }
+  }
+
   const handlePress = () => {
-    if (readState === false) {
+    if (!readState) {
       setReadState(true);
       onReadChange();
     }
   };
 
   const handleDelete = () => {
-    if (deleteState === false) {
+    if (!deleteState) {
       setDeleteState(true);
       onDeleted();
     }
-  }
+  };
 
   const getShortenedString = (str: string, maxLength: number = 40) => {
     return str.length > maxLength ? str.substring(0, maxLength) + '...' : str;
@@ -46,8 +60,12 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onRea
 
   return (
     <TouchableOpacity
-      style={[NotificationBoxStyles.container, readState ? NotificationBoxStyles.read : NotificationBoxStyles.unread, deleteState ? {display: 'none'} : {display: 'flex'}]}
-      onPress={navigateToStack(navigation, notification.link)}
+      style={[
+        NotificationBoxStyles.container,
+        readState ? NotificationBoxStyles.read : NotificationBoxStyles.unread,
+        deleteState ? { display: 'none' } : { display: 'flex' }
+      ]}
+      onPress={() => navigateToStack(navigation, notification.link)}
       onPressOut={handlePress}
     >
       <Pressable style={NotificationBoxStyles.deleteButtton} onPress={handleDelete}>
@@ -57,7 +75,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onRea
         <Text style={NotificationBoxStyles.newRecipe}>{'New Recipe Alert'}</Text>
         <Text style={NotificationBoxStyles.title}>{getShortenedString(recipe.title)}</Text>
         <Text style={NotificationBoxStyles.author}>{"Author: " + recipe.userID}</Text>
-        <Text style={NotificationBoxStyles.time}>{useElapsedTime({time: recipe.time})}</Text>
+        <Text style={NotificationBoxStyles.time}>{useElapsedTime({ time: recipe.time })}</Text>
       </View>
       {!readState && (
         <View style={NotificationBoxStyles.iconContainer}>
