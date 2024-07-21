@@ -12,7 +12,7 @@ import BoxInstruction from '@/components/addRecipe/TextBoxInstruction';
 import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/services/navigateServices';
 import { remove } from 'firebase/database';
-import { saveNewRecipe, writeRecipeToDatabase } from '@/services/recipeServices';
+import { saveNewRecipe, saveUpdatedRecipe } from '@/services/recipeServices';
 import { writeNotification } from '@/services/notificationServices';
 
 
@@ -132,7 +132,17 @@ export default function AddRecipe() {
                             <ButtonPublish buttonText="Cancel" onPress={handleCloseModal} />
                             <ButtonPublish buttonText="Publish" onPress={() => {
                                 handlePublish();
-                                
+                                saveNewRecipe({
+                                    recipeID: '0', 
+                                    userID: '0',
+                                    title: title,
+                                    description: description,
+                                    timeDuration: timeRecipe,
+                                    ingredients: ingredients,
+                                    instructions: instructions,
+                                    video: "",
+                                    time: new Date(),
+                                    status: "Pending"})
                             }} />
                         </View>
                     </View>

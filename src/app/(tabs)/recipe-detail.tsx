@@ -4,7 +4,7 @@ import { RecipeDetailHeader } from '@/constants/Header';
 import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/services/navigateServices';
 import { remove } from 'firebase/database';
-import { saveNewRecipe, writeRecipeToDatabase } from '@/services/recipeServices';
+import { saveNewRecipe, saveUpdatedRecipe } from '@/services/recipeServices';
 import { writeNotification } from '@/services/notificationServices';
 import { Recipe, readRecipeFromDatabase } from '@/services/recipeServices';
 import BoxIngredient from '@/components/recipeDetail/TextBox';

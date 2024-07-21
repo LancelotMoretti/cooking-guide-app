@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { db } from "@/firebaseConfig";
+import { auth, db } from "@/firebaseConfig";
 import { get, ref, update, remove, push, onValue, off } from "firebase/database";
-
 
 export interface Recipe {
     recipeID: string;
@@ -91,18 +90,23 @@ export function readRecipeFromDatabase(recipeId: string) {
     return recipe;
 }
 
-export function writeRecipeToDatabase(recipe: Recipe): void {
-    const newRecipeRef = push(ref(db, 'recipes'));
-    recipe.recipeID = newRecipeRef.key as string
-    update(newRecipeRef, recipe);
+export function saveUpdatedRecipe(recipe: Recipe): void {
+    const user = auth.currentUser;
+    if (!user) {
+        throw new Error('User not logged in');
+    }
+    const recipeRef = ref(db, `recipes/${recipe.recipeID}`);
+    update(recipeRef, recipe);
 }
 
-
-export function saveNewRecipe(
-    recipe: Recipe,
-    userID: number = 0 // default value for testing purposes
-): void {
+export function saveNewRecipe(recipe: Recipe): void {
+    const user = auth.currentUser;
+    if (!user) {
+        throw new Error('User not logged in');
+    }
     const newRecipeRef = push(ref(db, 'recipes'));
+    recipe.recipeID = newRecipeRef.key as string
+    recipe.userID = user.uid;
     update(newRecipeRef, recipe);
 }
 
