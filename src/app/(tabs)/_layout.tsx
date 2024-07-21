@@ -17,20 +17,42 @@ export default function TabLayout() {
                 }}
             />
 
+            
+
             <Tabs.Screen
-                name="addRecipe"
+                name="recipe-detail"
                 options={{
-                    title: 'Create Recipe',
+                    title: 'Recipe Detail',
                     tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
-                        <TabBarIcon name={focused ? 'pencil' : 'pencil-sharp'} color={color} />
+                        <TabBarIcon name={focused ? 'chatbox' : 'chatbox-outline'} color={color} />
                     ),
                 }}
             />
 
             <Tabs.Screen
-                name="editRecipe"
+                name="search"
                 options={{
-                    title: 'Edit Recipe',
+                    title: 'Search',
+                    tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
+                        <TabBarIcon name={focused ? 'search' : 'search-outline'} color={color} />
+                    ),
+                }}
+            />
+
+            <Tabs.Screen
+                name="add-recipe"
+                options={{
+                    title: 'Create Recipe',
+                    tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
+                        <TabBarIcon name={focused ? 'add' : 'add-sharp'} color={color} />
+                    ),
+                }}
+            />
+
+            <Tabs.Screen
+                name="edit-recipe"
+                options={{
+                    title: 'Edit',
                     tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
                         <TabBarIcon name={focused ? 'pencil' : 'pencil-outline'} color={color} />
                     ),
