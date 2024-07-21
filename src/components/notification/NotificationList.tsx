@@ -6,10 +6,10 @@ import NotificationItem, { NotificationItemProps } from "./NotificationItem";
 export interface NotificationListProps {
     list: NotificationItemProps[];
     filter: 'all' | 'read' | 'unread';
-    userId: number;
+    userID: string;
 }
 
-const NotificationList: React.FC<NotificationListProps> = ({ list, filter, userId }) => {
+const NotificationList: React.FC<NotificationListProps> = ({ list, filter, userID }) => {
     const reversedList = [...list].reverse();
 
     const handleReadChange = (id: string) => {
@@ -17,7 +17,7 @@ const NotificationList: React.FC<NotificationListProps> = ({ list, filter, userI
             if (list[i].notification.id === id) {
                 if (list[i].notification.read) return;
                 list[i].notification.read = true;
-                writeNotification({ userId, props: list[i].notification });
+                writeNotification(userID, list[i].notification);
                 break;
             }
         }
@@ -27,7 +27,7 @@ const NotificationList: React.FC<NotificationListProps> = ({ list, filter, userI
         for (let i = 0; i < list.length; i++) {
             if (list[i].notification.id === id) {
                 list[i].notification.checkDelete = true;
-                writeNotification({ userId, props: list[i].notification });
+                writeNotification(userID, list[i].notification);
                 break;
             }
         }

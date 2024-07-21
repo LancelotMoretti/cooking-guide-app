@@ -1,15 +1,7 @@
 import { db } from "@/firebaseConfig";
 import { ref, set, push, update, onValue, off, remove } from "firebase/database";
-
-// Interface tạo để test
-interface Recipe {
-    id: string;
-    title: string;
-    description: string;
-    image: string;
-    ingredients: string[];
-    steps: string[];
-}
+import { Recipe } from "./recipeServices";
+import { readRecipeFromDatabase } from "./recipeServices";
 
 export interface CategoryInforInterface {
     id: string;
@@ -120,10 +112,10 @@ export const removeCategory = (id: string): void => {
     remove(categoryRef);
 }
 
-export const addRecipeToCategory = (categoryId: string, recipeId: string): void => {
+export const addRecipeToCategory = (categoryId: string, recipeID: string): void => {
     const categoryRef = ref(db, `categories/${categoryId}/recipes`);
     update(categoryRef, {
-        [recipeId]: true
+        [recipeID]: true
     });
 }
 
@@ -131,13 +123,13 @@ export const autoAddRecipeToCategory = async (recipe: Recipe): Promise<void> => 
     const categories = await getCategories();
     for (const category of categories) {
         if (category.name.toLowerCase().includes(recipe.title.toLowerCase())) {
-            addRecipeToCategory(category.id, recipe.id);
+            addRecipeToCategory(category.id, recipe.recipeID);
         }
     }
 }
 
-export const removeRecipeFromCategory = (categoryId: string, recipeId: string): void => {
-    const categoryRef = ref(db, `categories/${categoryId}/recipes/${recipeId}`);
+export const removeRecipeFromCategory = (categoryId: string, recipeID: string): void => {
+    const categoryRef = ref(db, `categories/${categoryId}/recipes/${recipeID}`);
     remove(categoryRef);
 }
 
@@ -178,9 +170,11 @@ export const getRecipesInCategory = async (categoryId: string): Promise<Recipe[]
     const category = await getCategory(categoryId);
     const recipes: Recipe[] = [];
 
-    for (let recipeId = 0; recipeId < category.recipes.length; recipeId++) {
-        // const recipe = await getRecipe(category.recipes[recipeId]); // Cần hàm getRecipe
-        // recipes.push(recipe);
+    for (let recipeID = 0; recipeID < category.recipes.length; recipeID++) {
+        const recipe = readRecipeFromDatabase(category.recipes[recipeID]);
+        if (recipe) {
+            recipes.push(recipe);
+        }
     }
 
     return recipes;

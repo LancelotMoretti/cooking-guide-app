@@ -9,8 +9,8 @@ export interface SearchSuggestion {
 
 const RECENT_SEARCHES_LIMIT = 10;
 
-export const getRecentSearches = async (userId: string): Promise<SearchSuggestion[]> => {
-    const searchesRef = ref(db, `users/${userId}/recentSearches`);
+export const getRecentSearches = async (userID: string): Promise<SearchSuggestion[]> => {
+    const searchesRef = ref(db, `users/${userID}/recentSearches`);
     const recentSearches: SearchSuggestion[] = [];
 
     await new Promise<void>((resolve) => {
@@ -33,24 +33,24 @@ export const getRecentSearches = async (userId: string): Promise<SearchSuggestio
     return recentSearches;
 }
 
-export const saveSearchQuery = async (userId: string, query: string): Promise<void> => {
-    const newSearchRef = push(ref(db, `users/${userId}/recentSearches`));
+export const saveSearchQuery = async (userID: string, query: string): Promise<void> => {
+    const newSearchRef = push(ref(db, `users/${userID}/recentSearches`));
 
     await set(newSearchRef, {
         query,
     });
 
-    const recentSearches = await getRecentSearches(userId);
+    const recentSearches = await getRecentSearches(userID);
     if (recentSearches.length > RECENT_SEARCHES_LIMIT) {
         const oldestSearch = recentSearches[0];
-        const oldestSearchRef = ref(db, `users/${userId}/recentSearches/${oldestSearch.id}`);
+        const oldestSearchRef = ref(db, `users/${userID}/recentSearches/${oldestSearch.id}`);
         await remove(oldestSearchRef);
     }
 }
 
-export const searchRecipes = async (query: string): Promise<Recipe[]> => {
+export const searchRecipes = async (query: string): Promise<string[]> => {
     const recipesRef = ref(db, 'recipes');
-    const recipes: Recipe[] = [];
+    const recipes: string[] = [];
 
     await new Promise<void>((resolve) => {
         onValue(recipesRef, (snapshot) => {
@@ -61,14 +61,7 @@ export const searchRecipes = async (query: string): Promise<Recipe[]> => {
                     if (recipeData.description.toLowerCase().includes(query.toLowerCase()) || 
                         recipeData.instructions.join(' ').toLowerCase().includes(query.toLowerCase()) ||
                         recipeData.ingredients.some(ingredient => ingredient.description.toLowerCase().includes(query.toLowerCase()))){
-                        const recipe: Recipe = {
-                            // id: recipeId,
-                            description: recipeData.description,
-                            timeRecipe: recipeData.timeRecipe,
-                            ingredients: recipeData.ingredients,
-                            instructions: recipeData.instructions,
-                        };
-                        recipes.push(recipe);
+                        recipes.push(recipeId);
                     }
                 });
             }

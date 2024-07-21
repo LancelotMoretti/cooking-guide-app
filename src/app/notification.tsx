@@ -41,18 +41,18 @@ import NotificationList from '@/components/notification/NotificationList';
 // ];
 
 // for (let i = 0; i < testList.length; i++) {
-//   writeNotification({ userId: 1, props: testList[i] });
+//   writeNotification({ userID: 1, props: testList[i] });
 // }
 
-export default function Notification (userId: number) {
-  userId = 1; // Đang test nên để mặc định userId = 1
-  const list = readNotification({ userId });
+export default function Notification (userID: string) {
+  userID = "1"; // Đang test nên để mặc định userID = 1
+  const list = readNotification(userID);
   const [filter, setFilter] = useState<'all' | 'read' | 'unread'>('all'); 
 
   return (
     <View style={NotificationScreenStyles.container}>
       <NotificationFilter filter={filter} setFilter={setFilter} />
-      <NotificationList list={list} filter={filter} userId={userId} />
+      <NotificationList list={list} filter={filter} userID={userID} />
     </View>
   );
 };
