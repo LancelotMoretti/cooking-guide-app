@@ -10,7 +10,7 @@ export interface SearchSuggestion {
 const RECENT_SEARCHES_LIMIT = 10;
 
 export const getRecentSearches = async (userID: string): Promise<SearchSuggestion[]> => {
-    const searchesRef = ref(db, `users/${userID}/recentSearches`);
+    const searchesRef = ref(db, `${userID}/recentSearches`);
     const recentSearches: SearchSuggestion[] = [];
 
     await new Promise<void>((resolve) => {
@@ -30,20 +30,21 @@ export const getRecentSearches = async (userID: string): Promise<SearchSuggestio
     });
 
     off(searchesRef, 'value');
-    return recentSearches;
+    return recentSearches.reverse();
 }
 
 export const saveSearchQuery = async (userID: string, query: string): Promise<void> => {
-    const newSearchRef = push(ref(db, `users/${userID}/recentSearches`));
-
+    const recentSearches = await getRecentSearches(userID);
+    if (recentSearches.some(search => search.query === query)) {
+        return;
+    }
+    const newSearchRef = push(ref(db, `${userID}/recentSearches`));
     await set(newSearchRef, {
         query,
     });
-
-    const recentSearches = await getRecentSearches(userID);
-    if (recentSearches.length > RECENT_SEARCHES_LIMIT) {
+    if (recentSearches.length >= RECENT_SEARCHES_LIMIT) {
         const oldestSearch = recentSearches[0];
-        const oldestSearchRef = ref(db, `users/${userID}/recentSearches/${oldestSearch.id}`);
+        const oldestSearchRef = ref(db, `${userID}/recentSearches/${oldestSearch.id}`);
         await remove(oldestSearchRef);
     }
 }
