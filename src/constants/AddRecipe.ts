@@ -97,6 +97,23 @@ export const ButtonPublishStyles = StyleSheet.create({
     }
 });
 
+export const ButtonAddVideoStyles = StyleSheet.create({
+    container: {
+        backgroundColor: '#129575',
+        padding: 10,
+        borderRadius: 20,
+        alignItems: 'center',
+        alignSelf: 'center', // Center horizontally
+        width: '60%',
+        marginBottom: 20,
+    },
+    text: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+        fontSize: 16,
+    }
+});
+
 export const ButtonAddStyles = StyleSheet.create({
     container: {
         backgroundColor: '#129575',

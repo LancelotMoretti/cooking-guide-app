@@ -1,9 +1,26 @@
-import { View, Text, Button, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import ButtonMeal from '@/components/home/ButtonMeal';
 
+const recipes: { [key: string]: { id: string; title: string; image: string; time: string; rating: number; }[] } = {
+  Breakfast: [
+    { id: '1', title: 'Salami and cheese pizza', image: 'image1.png', time: '30min', rating: 5 },
+    { id: '2', title: 'Chicken Burger', image: 'image2.png', time: '15min', rating: 5 },
+  ],
+  Lunch: [
+    { id: '3', title: 'Tiramisu', image: 'image3.png', time: '15min', rating: 5 },
+    // Thêm các món ăn khác
+  ],
+  // Thêm các danh mục khác
+};
+
 export default function Home() {
 
+  const [selectedCategory, setSelectedCategory] = useState('Breakfast');
+
+  const handleCategoryPress = (category: string) => {
+    setSelectedCategory(category);
+  };
 
     return (
         <ScrollView style={styles.container}>
@@ -12,18 +29,37 @@ export default function Home() {
                 <Text style={styles.subGreeting}>What are you cooking today</Text>
             </View>
 
-            <View style={styles.tabContainer}>
-                <TouchableOpacity style={styles.tab}>
-                    <Text style={styles.tabText}>Breakfast</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.tab}>
-                    <Text style={styles.tabText}>Lunch</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.tab}>
-                    <Text style={styles.tabText}>Dinner</Text>
-                </TouchableOpacity>
-            </View>
-
+            <View style={styles.categoryContainer}>
+                {['Breakfast', 'Lunch', 'Dinner', 'Vegan'].map((category) => (
+                <TouchableOpacity
+            key={category}
+            onPress={() => handleCategoryPress(category)}
+            style={[
+              styles.categoryButton,
+              selectedCategory === category && styles.categoryButtonSelected,
+            ]}
+          >
+            <Text
+              style={[
+                styles.categoryButtonText,
+                selectedCategory === category && styles.categoryButtonTextSelected,
+              ]}
+            >
+              {category}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      <FlatList data={recipes[selectedCategory]}
+                renderItem={({ item }) => (
+                <View style={styles.recipeCard}>
+                  <Text style={styles.recipeTitle}>{item.title}</Text>
+                  <Text>{item.time}</Text>
+                  <Text>{item.rating} ⭐</Text>
+              </View>
+              )}
+                  keyExtractor={(item) => item.id}
+              />
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Trending Recipe</Text>
                 <View style={styles.trendingRecipe}>
@@ -38,6 +74,7 @@ export default function Home() {
                     </View>
                 </View>
             </View>
+
 
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Saved</Text>
@@ -80,10 +117,24 @@ const styles = StyleSheet.create({
         fontSize: 18,
       },
 
-      tabContainer: {
+      categoryContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginVertical: 16,
+      },
+      categoryButton: {
+        padding: 8,
+        borderRadius: 10,
+        backgroundColor: '#E3F6F5',
+      },
+      categoryButtonSelected: {
+        backgroundColor: '#129575',
+      },
+      categoryButtonText: {
+        color: '#666',
+      },
+      categoryButtonTextSelected: {
+        color: '#FFF',
       },
       tab: {
         paddingVertical: 8,
@@ -140,6 +191,12 @@ const styles = StyleSheet.create({
       recipeRating: {
         color: '#FFD700',
       },
+      recipeCard: {
+        padding: 16,
+        backgroundColor: '#FFF',
+        borderRadius: 10,
+        marginVertical: 8,
+      },
       yourRecipes: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -165,15 +222,7 @@ const styles = StyleSheet.create({
       yourRecipeTime: {
         color: 'gray',
       },
-      topChefs: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-      },
-      chefImage: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-      },
+    
 
       navBar: {
         flexDirection: 'row',

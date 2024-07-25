@@ -1,8 +1,9 @@
-import { ScrollView, View, Text, TextInput, StyleSheet, Image, Modal, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { ScrollView, View, Text, TextInput, StyleSheet, Image, ImageBackground, Modal, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState } from 'react';
 import { AddRecipeHeader } from '@/constants/Header';
 import Button from '@/components/addRecipe/Button';
 import ButtonPublish from '@/components/addRecipe/ButtonPublish';
+import ButtonAddVideo from '@/components/addRecipe/ButtonAddVideo';
 import ButtonAdd from '@/components/addRecipe/ButtonAdd';
 import ButtonTrash from '@/components/addRecipe/ButtonTrash';
 import Box from '@/components/addRecipe/TextBox';
@@ -21,6 +22,7 @@ import { writeNotification } from '@/services/notificationServices';
 export default function AddRecipe() {
     const navigation = useNavigation();
     
+    const [video, setVideo] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [timeRecipe, setTimeRecipe] = useState('');
@@ -67,6 +69,10 @@ export default function AddRecipe() {
         setDeleteModalVisible(false);
     };
 
+    const handleAddVideo = () => {
+        // Xử lý thêm video ở đây
+        
+      };
     const handleAddIngredient = () => {
         setIngredients([...ingredients, { amount: '', description: '' }]);
     };
@@ -167,9 +173,14 @@ export default function AddRecipe() {
                 </View>
             </Modal>
 
-            <View style={styles.image}>
-                <Image source={require('../../assets/images/addRecipe/Food.png')} style={{ width: '100%' }} />
-            </View>
+            <ImageBackground
+                source={video ? { uri: video } : require('../../assets/images/addRecipe/Food.png')}
+                style={styles.videoContainer}
+                imageStyle={{ borderRadius: 10 }}
+            >
+                <ButtonAddVideo buttonText="Add video recipe" onPress={handleAddVideo} />
+                
+            </ImageBackground>
 
             <Text style={styles.title}>Title</Text>
             <Box 
@@ -290,9 +301,20 @@ const styles = StyleSheet.create({
         color: '#129575',
         fontSize: 16,
     },
-    image: {
+    videoContainer: {
         marginBottom: 20,
     },
+
+    addVideoButton: {
+        padding: 10,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        borderRadius: 5,
+      },
+      addVideoText: {
+        color: 'white',
+        fontSize: 16,
+      },
+
     title: {
         fontSize: 14,
         fontWeight: 'bold',
