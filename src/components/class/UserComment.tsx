@@ -1,21 +1,33 @@
+import { UserProfileLink } from "./UserProfileLink";
+
 interface UserCommentProps {
-    userID: string;
+    user: UserProfileLink;
     date: string;
     content: string;
     reply?: UserComment;
-
-    getUserID(): string;
 }
 
 export class UserComment implements UserCommentProps {
     constructor(
-        public userID: string,
+        public user: UserProfileLink,
         public date: string,
         public content: string,
         public reply?: UserComment
     ) {}
 
-    getUserID(): string {
-        return this.userID;
+    replyToComment() {
+        // reply to comment
+    }
+
+    editComment(newContent: string) {
+        this.content = newContent;
+    }
+
+    deleteComment() {
+        this.content = '';
+    }
+
+    clickUserProfile() {
+        this.user.navigateToUserProfile();
     }
 }

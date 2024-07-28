@@ -1,10 +1,11 @@
 import { Account } from "./Account";
+import { Notification } from "./Notification";
 
 interface UserProps extends Account {
     userType: 'Free' | 'Premium';
     recipesID: string[];
     savedRecipesID: string[];
-    notifications: string[];
+    notifications: Notification[];
     followers: string[];
     following: string[];
 
@@ -23,8 +24,8 @@ interface UserProps extends Account {
     addSavedRecipe(recipeID: string): void;
     removeSavedRecipe(recipeID: string): void;
 
-    addNotification(notification: string): void;
-    removeNotification(notification: string): void;
+    addNotification(notification: Notification): void;
+    removeNotification(notification: Notification): void;
     
     addFollower(followerID: string): void;
     removeFollower(followerID: string): void;
@@ -43,7 +44,7 @@ export class User extends Account implements UserProps {
         public userType: 'Free' | 'Premium',
         public recipesID: string[],
         public savedRecipesID: string[],
-        public notifications: string[],
+        public notifications: Notification[],
         public followers: string[],
         public following: string[]
     ) {
@@ -63,7 +64,7 @@ export class User extends Account implements UserProps {
     }
 
     getNotifications(): string[] {
-        return this.notifications;
+        return this.notifications.map(notif => notif.getNotificationID());
     }
 
     getFollowers(): string[] {
@@ -94,11 +95,11 @@ export class User extends Account implements UserProps {
         this.savedRecipesID = this.savedRecipesID.filter(id => id !== recipeID);
     }
 
-    addNotification(notification: string): void {
+    addNotification(notification: Notification): void {
         this.notifications.push(notification);
     }
 
-    removeNotification(notification: string): void {
+    removeNotification(notification: Notification): void {
         this.notifications = this.notifications.filter(notif => notif !== notification);
     }
 
