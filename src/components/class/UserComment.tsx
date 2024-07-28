@@ -3,6 +3,8 @@ interface UserCommentProps {
     date: string;
     content: string;
     reply?: UserComment;
+
+    getUserID(): string;
 }
 
 export class UserComment implements UserCommentProps {
