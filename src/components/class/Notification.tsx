@@ -23,20 +23,20 @@ export class Notification implements NotificationProps {
         public read: boolean
     ) {}
 
-    getNotificationID(): string {
-        return this.notificationID;
-    }
-
-    getRecipeID(): string {
-        return this.recipeID;
+    getContent(): string {
+        return this.content;
     }
 
     getDate(): string {
         return this.date;
     }
 
-    getContent(): string {
-        return this.content;
+    getNotificationID(): string {
+        return this.notificationID;
+    }
+
+    getRecipeID(): string {
+        return this.recipeID;
     }
 
     isRead(): boolean {

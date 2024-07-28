@@ -29,12 +29,36 @@ export class Account implements AccountProps {
         public type: 'User' | 'Admin' | 'Moderator'
     ) {}
 
-    getAccountID(): string {
-        return this.accountID;
+    changeEmail(newEmail: string): void {
+        this.email = newEmail;
     }
 
-    getUsername(): string {
-        return this.username;
+    changePassword(newPassword: string): void {
+        this.password = newPassword;
+    }
+
+    changeType(newType: 'User' | 'Admin' | 'Moderator'): void {
+        this.type = newType;
+    }
+
+    changeUsername(newUsername: string): void {
+        this.username = newUsername;
+    }
+
+    createAccount(): void {
+        // Create account
+    }
+
+    deleteAccount(): void {
+        this.accountID = '';
+        this.username = '';
+        this.email = '';
+        this.password = '';
+        this.type = 'User';
+    }
+
+    getAccountID(): string {
+        return this.accountID;
     }
 
     getEmail(): string {
@@ -49,31 +73,7 @@ export class Account implements AccountProps {
         return this.type;
     }
 
-    changePassword(newPassword: string): void {
-        this.password = newPassword;
-    }
-
-    changeEmail(newEmail: string): void {
-        this.email = newEmail;
-    }
-
-    changeUsername(newUsername: string): void {
-        this.username = newUsername;
-    }
-
-    changeType(newType: 'User' | 'Admin' | 'Moderator'): void {
-        this.type = newType;
-    }
-
-    deleteAccount(): void {
-        this.accountID = '';
-        this.username = '';
-        this.email = '';
-        this.password = '';
-        this.type = 'User';
-    }
-
-    createAccount(): void {
-        // Create account
+    getUsername(): string {
+        return this.username;
     }
 }

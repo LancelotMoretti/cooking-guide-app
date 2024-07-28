@@ -51,20 +51,28 @@ export class User extends Account implements UserProps {
         super(accountID, username, email, password, type);
     }
 
-    getUserType(): 'Free' | 'Premium' {
-        return this.userType;
+    addFollower(followerID: string): void {
+        this.followers.push(followerID);
     }
 
-    getRecipesID(): string[] {
-        return this.recipesID;
+    addFollowing(followingID: string): void {
+        this.following.push(followingID);
     }
 
-    getSavedRecipesID(): string[] {
-        return this.savedRecipesID;
+    addNotification(notification: Notification): void {
+        this.notifications.push(notification);
     }
 
-    getNotifications(): string[] {
-        return this.notifications.map(notif => notif.getNotificationID());
+    addRecipe(recipeID: string): void {
+        this.recipesID.push(recipeID);
+    }
+
+    addSavedRecipe(recipeID: string): void {
+        this.savedRecipesID.push(recipeID);
+    }
+
+    changeUserType(newUserType: 'Free' | 'Premium'): void {
+        this.userType = newUserType;
     }
 
     getFollowers(): string[] {
@@ -75,47 +83,39 @@ export class User extends Account implements UserProps {
         return this.following;
     }
 
-    changeUserType(newUserType: 'Free' | 'Premium'): void {
-        this.userType = newUserType;
+    getNotifications(): string[] {
+        return this.notifications.map(notif => notif.getNotificationID());
     }
 
-    addRecipe(recipeID: string): void {
-        this.recipesID.push(recipeID);
+    getRecipesID(): string[] {
+        return this.recipesID;
     }
 
-    removeRecipe(recipeID: string): void {
-        this.recipesID = this.recipesID.filter(id => id !== recipeID);
+    getSavedRecipesID(): string[] {
+        return this.savedRecipesID;
     }
 
-    addSavedRecipe(recipeID: string): void {
-        this.savedRecipesID.push(recipeID);
-    }
-
-    removeSavedRecipe(recipeID: string): void {
-        this.savedRecipesID = this.savedRecipesID.filter(id => id !== recipeID);
-    }
-
-    addNotification(notification: Notification): void {
-        this.notifications.push(notification);
-    }
-
-    removeNotification(notification: Notification): void {
-        this.notifications = this.notifications.filter(notif => notif !== notification);
-    }
-
-    addFollower(followerID: string): void {
-        this.followers.push(followerID);
+    getUserType(): 'Free' | 'Premium' {
+        return this.userType;
     }
 
     removeFollower(followerID: string): void {
         this.followers = this.followers.filter(id => id !== followerID);
     }
 
-    addFollowing(followingID: string): void {
-        this.following.push(followingID);
-    }
-
     removeFollowing(followingID: string): void {
         this.following = this.following.filter(id => id !== followingID);
+    }
+
+    removeNotification(notification: Notification): void {
+        this.notifications = this.notifications.filter(notif => notif !== notification);
+    }
+
+    removeRecipe(recipeID: string): void {
+        this.recipesID = this.recipesID.filter(id => id !== recipeID);
+    }
+
+    removeSavedRecipe(recipeID: string): void {
+        this.savedRecipesID = this.savedRecipesID.filter(id => id !== recipeID);
     }
 }

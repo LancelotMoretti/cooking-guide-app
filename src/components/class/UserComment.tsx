@@ -15,19 +15,19 @@ export class UserComment implements UserCommentProps {
         public reply?: UserComment
     ) {}
 
-    replyToComment() {
-        // reply to comment
+    private clickUserProfile() {
+        this.user.navigateToUserProfile();
     }
 
-    editComment(newContent: string) {
-        this.content = newContent;
-    }
-
-    deleteComment() {
+    private deleteComment() {
         this.content = '';
     }
 
-    clickUserProfile() {
-        this.user.navigateToUserProfile();
+    private editComment(newContent: string) {
+        this.content = newContent;
+    }
+
+    private replyToComment() {
+        // reply to comment
     }
 }
