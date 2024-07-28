@@ -4,22 +4,24 @@ interface NotificationProps {
     date: string;
     content: string;
     read: boolean;
+
+    getNotificationID(): string;
+    getRecipeID(): string;
+    getDate(): string;
+    getContent(): string;
+    
+    isRead(): boolean;
+    markAsRead(): void;
 }
 
-export class Notification {
-    notificationID: string;
-    recipeID: string;
-    date: string;
-    content: string;
-    read: boolean;
-
-    constructor(props: NotificationProps) {
-        this.notificationID = props.notificationID;
-        this.recipeID = props.recipeID;
-        this.date = props.date;
-        this.content = props.content;
-        this.read = props.read;
-    }
+export class Notification implements NotificationProps {
+    constructor(
+        public notificationID: string,
+        public recipeID: string,
+        public date: string,
+        public content: string,
+        public read: boolean
+    ) {}
 
     getNotificationID(): string {
         return this.notificationID;

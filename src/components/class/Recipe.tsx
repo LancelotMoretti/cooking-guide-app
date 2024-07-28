@@ -15,38 +15,27 @@ interface RecipeProps {
     status: 'Pending' | 'Approved' | 'Declined';
     comments: UserComment[];
     video?: any;
+
+    getRecipeID(): string;
+    getUserID(): string;
 }
 
-export class Recipe {
-    recipeID: string;
-    userID: string;
-    title: string;
-    description: string;
-    date: Date;
-    duration: number;
-    ingredients: {name: string, amount: string}[];
-    steps: string[];
-    tags: string[];
-    rating: Float;
-    status: 'Pending' | 'Approved' | 'Declined';
-    comments: UserComment[];
-    video?: any;
-
-    constructor(props: RecipeProps) {
-        this.recipeID = props.recipeID;
-        this.userID = props.userID;
-        this.title = props.title;
-        this.description = props.description;
-        this.date = props.date;
-        this.duration = props.duration;
-        this.ingredients = props.ingredients;
-        this.steps = props.steps;
-        this.tags = props.tags;
-        this.rating = props.rating;
-        this.status = props.status;
-        this.comments = props.comments;
-        this.video = props.video;
-    }
+export class Recipe implements RecipeProps {
+    constructor(
+        public recipeID: string,
+        public userID: string,
+        public title: string,
+        public description: string,
+        public date: Date,
+        public duration: number,
+        public ingredients: {name: string, amount: string}[],
+        public steps: string[],
+        public tags: string[],
+        public rating: Float,
+        public status: 'Pending' | 'Approved' | 'Declined',
+        public comments: UserComment[],
+        public video?: any
+    ) {}
 
     getRecipeID(): string {
         return this.recipeID;

@@ -1,30 +1,53 @@
-import { Account, AccountProps } from "./Account";
+import { Account } from "./Account";
 
-interface UserProps extends AccountProps {
+interface UserProps extends Account {
     userType: 'Free' | 'Premium';
     recipesID: string[];
     savedRecipesID: string[];
     notifications: string[];
     followers: string[];
     following: string[];
+
+    getUserType(): 'Free' | 'Premium';
+    getRecipesID(): string[];
+    getSavedRecipesID(): string[];
+    getNotifications(): string[];
+    getFollowers(): string[];
+    getFollowing(): string[];
+
+    changeUserType(newUserType: 'Free' | 'Premium'): void;
+
+    addRecipe(recipeID: string): void;
+    removeRecipe(recipeID: string): void;
+
+    addSavedRecipe(recipeID: string): void;
+    removeSavedRecipe(recipeID: string): void;
+
+    addNotification(notification: string): void;
+    removeNotification(notification: string): void;
+    
+    addFollower(followerID: string): void;
+    removeFollower(followerID: string): void;
+    
+    addFollowing(followingID: string): void;
+    removeFollowing(followingID: string): void;
 }
 
-export class User extends Account {
-    userType: 'Free' | 'Premium';
-    recipesID: string[];
-    savedRecipesID: string[];
-    notifications: string[];
-    followers: string[];
-    following: string[];
-
-    constructor(props: UserProps) {
-        super(props);
-        this.userType = props.userType;
-        this.recipesID = props.recipesID;
-        this.savedRecipesID = props.savedRecipesID;
-        this.notifications = props.notifications;
-        this.followers = props.followers;
-        this.following = props.following;
+export class User extends Account implements UserProps {
+    constructor(
+        accountID: string,
+        username: string,
+        email: string,
+        password: string,
+        type: 'User' | 'Admin' | 'Moderator',
+        public userType: 'Free' | 'Premium',
+        public recipesID: string[],
+        public savedRecipesID: string[],
+        public notifications: string[],
+        public followers: string[],
+        public following: string[]
+    ) {
+        super(accountID, username, email, password, type);
     }
 
     getUserType(): 'Free' | 'Premium' {

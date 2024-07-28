@@ -1,25 +1,33 @@
-export interface AccountProps {
+interface AccountProps {
     accountID: string;
     username: string;
     email: string;
     password: string;
     type: 'User' | 'Admin' | 'Moderator';
+
+    getAccountID(): string;
+    getUsername(): string;
+    getEmail(): string;
+    getPassword(): string;
+    getType(): 'User' | 'Admin' | 'Moderator';
+
+    changePassword(newPassword: string): void;
+    changeEmail(newEmail: string): void;
+    changeUsername(newUsername: string): void;
+    changeType(newType: 'User' | 'Admin' | 'Moderator'): void;
+    
+    deleteAccount(): void;
+    createAccount(): void;
 }
 
-export class Account {
-    accountID: string;
-    username: string;
-    email: string;
-    password: string;
-    type: 'User' | 'Admin' | 'Moderator';
-
-    constructor(props: AccountProps) {
-        this.accountID = props.accountID;
-        this.username = props.username;
-        this.email = props.email;
-        this.password = props.password;
-        this.type = props.type;
-    }
+export class Account implements AccountProps {
+    constructor(
+        public accountID: string,
+        public username: string,
+        public email: string,
+        public password: string,
+        public type: 'User' | 'Admin' | 'Moderator'
+    ) {}
 
     getAccountID(): string {
         return this.accountID;
