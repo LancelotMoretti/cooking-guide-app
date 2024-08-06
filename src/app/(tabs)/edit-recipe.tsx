@@ -1,17 +1,13 @@
 import { ScrollView, View, Text, TextInput, StyleSheet, Image, Modal, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState } from 'react';
-import { AddRecipeHeader } from '@/constants/Header';
-import Button from '@/components/addRecipe/Button';
-import ButtonPublish from '@/components/addRecipe/ButtonPublish';
-import ButtonAdd from '@/components/addRecipe/ButtonAdd';
-import ButtonTrash from '@/components/addRecipe/ButtonTrash';
-import Box from '@/components/addRecipe/TextBox';
-import BoxAmt from '@/components/addRecipe/TextBoxAmt';
-import BoxIngredient from '@/components/addRecipe/TextBoxIngredient';
-import BoxInstruction from '@/components/addRecipe/TextBoxInstruction';
+import { AddRecipeHeader } from '@/styles/Header';
+import { ButtonPublish, ButtonAdd, ButtonAddVideo } from '@/components/button/Button';
+import { ButtonImage } from '@/components/button/ButtonImage';
+import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction } from '@/components/textBox/TextBox';
 import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/services/navigateServices';
 import { remove } from 'firebase/database';
+import { ButtonTrashStyles } from '@/styles/AddRecipe';
 
 export default function AddRecipe() {
     const navigation = useNavigation();
@@ -93,8 +89,8 @@ export default function AddRecipe() {
         <ScrollView style={styles.container}>
             <Text style={AddRecipeHeader}>Edit Recipe</Text>
             <View style={styles.button}>
-                <Button buttonText="Update" onPress={() => setModalVisible(true)} />
-                <Button buttonText="Delete" onPress={handleDelete} />
+                <ButtonAdd title="Update" onPress={() => setModalVisible(true)} />
+                <ButtonImage style={ButtonTrashStyles.button} source={require('../../assets/images/Trash.png')} onPress={handleDelete} />
             </View>
 
             <Modal
@@ -108,8 +104,8 @@ export default function AddRecipe() {
                         <Text style={styles.modalTitle}>Update Recipe</Text>
                         <Text>Are you sure you want to update the recipe?</Text>
                         <View style={styles.modalButtonContainer}>
-                            <ButtonPublish buttonText="Cancel" onPress={handleCloseModal} />
-                            <ButtonPublish buttonText="Update" onPress={() => {handlePublish()}} />
+                            <ButtonPublish title="Cancel" onPress={handleCloseModal} />
+                            <ButtonPublish title="Update" onPress={() => {handlePublish()}} />
                         </View>
                     </View>
                 </View>
@@ -126,8 +122,8 @@ export default function AddRecipe() {
                         <Text style={styles.modalTitle}>Delete Recipe</Text>
                         <Text>Are you sure you want to delete the recipe?</Text>
                         <View style={styles.modalButtonContainer}>
-                            <ButtonPublish buttonText="Cancel" onPress={handleCancelDelete} />
-                            <ButtonPublish buttonText="Delete" onPress={handleConfirmDelete} />
+                            <ButtonPublish title="Cancel" onPress={handleCancelDelete} />
+                            <ButtonPublish title="Delete" onPress={handleConfirmDelete} />
                         </View>
                     </View>
                 </View>
@@ -138,14 +134,14 @@ export default function AddRecipe() {
             </View>
 
             <Text style={styles.title}>Desription</Text>
-            <Box 
+            <TextBox 
                 placeholder="Recipe description"
                 value={description}
                 onChangeText={setDescription}
             />
 
             <Text style={styles.title}>Time Recipe</Text>
-            <Box 
+            <TextBox 
                 placeholder="1hour, 30min,..."
                 value={timeRecipe}
                 onChangeText={setTimeRecipe}
@@ -156,44 +152,41 @@ export default function AddRecipe() {
             <View style={styles.ingredientsList}>
                 {ingredients.map((ingredient, index) => (
                     <View key={index} style={styles.ingredientRow}>
-                        <BoxAmt 
+                        <TextBoxAmt 
                             placeholder={`Amt `}
                             value={ingredient.amount}
                             onChangeText={(value) => handleAmountChange(index, value)}
                             //onIconPress={() => {}}
                         />
-                        <BoxIngredient
+                        <TextBoxIngredient
                             placeholder={`Ingredient ${index + 1}`}
                             value={ingredient.description}
                             onChangeText={(value) => handleDescriptionChange(index, value)}
                         />
-                        <ButtonTrash onPress={handleremoveIngredient} />
-                          
+                        <ButtonImage style={ButtonTrashStyles.button} source={require('../../assets/images/Trash.png')} onPress={() => handleremoveIngredient(index)} />
                         
                     </View>
                 ))}
             </View>
 
-            <ButtonAdd buttonText="+ Add Ingredient" onPress={handleAddIngredient} />
+            <ButtonAdd title="+ Add Ingredient" onPress={handleAddIngredient} />
             
             <Text style={styles.title}>Instructions</Text>
             <View style={styles.ingredientsList}>
               {instructions.map((instruction, index) => (
                     <View key={index} style={styles.instruction}>
-                        <BoxInstruction
+                        <TextBoxInstruction
                             placeholder={`Instruction ${index + 1}                                  `}
                             value={instruction}
                             onChangeText={(text) => handleInstructionChange(text, index)}
                             
                         />
-
-                        <ButtonTrash onPress={handleDeleteInstruction} />
-
+                        <ButtonImage style={ButtonTrashStyles.button} source={require('../../assets/images/Trash.png')} onPress={() => handleDeleteInstruction(index)} />
                     </View>
                 ))}
             </View>
 
-            <ButtonAdd buttonText="+ Add Instruction" onPress={handleAddInstruction} />
+            <ButtonAdd title="+ Add Instruction" onPress={handleAddInstruction} />
 
         </ScrollView>
         </KeyboardAvoidingView>
@@ -204,7 +197,7 @@ const styles = StyleSheet.create({
     container: {
         
         marginHorizontal: 30,
-      },
+    },
     button: {
         flexDirection: 'row',
         justifyContent:'space-between',

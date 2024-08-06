@@ -1,23 +1,15 @@
 import { ScrollView, View, Text, TextInput, StyleSheet, Image, ImageBackground, Modal, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState } from 'react';
-import { AddRecipeHeader } from '@/constants/Header';
-import Button from '@/components/addRecipe/Button';
-import ButtonPublish from '@/components/addRecipe/ButtonPublish';
-import ButtonAddVideo from '@/components/addRecipe/ButtonAddVideo';
-import ButtonAdd from '@/components/addRecipe/ButtonAdd';
-import ButtonTrash from '@/components/addRecipe/ButtonTrash';
-import Box from '@/components/addRecipe/TextBox';
-import BoxAmt from '@/components/addRecipe/TextBoxAmt';
-import BoxIngredient from '@/components/addRecipe/TextBoxIngredient';
-import BoxInstruction from '@/components/addRecipe/TextBoxInstruction';
+import { AddRecipeHeader } from '@/styles/Header';
+import { ButtonPublish, ButtonAdd, ButtonAddVideo } from '@/components/button/Button';
+import { ButtonImage } from '@/components/button/ButtonImage';
+import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction } from '@/components/textBox/TextBox';
 import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/services/navigateServices';
 import { remove } from 'firebase/database';
 import { saveNewRecipe, saveUpdatedRecipe } from '@/services/recipeServices';
 import { writeNotification } from '@/services/notificationServices';
-
-
-
+import { ButtonTrashStyles } from '@/styles/AddRecipe';
 
 export default function AddRecipe() {
     const navigation = useNavigation();
@@ -72,7 +64,8 @@ export default function AddRecipe() {
     const handleAddVideo = () => {
         // Xử lý thêm video ở đây
         
-      };
+    };
+    
     const handleAddIngredient = () => {
         setIngredients([...ingredients, { amount: '', description: '' }]);
     };
@@ -120,8 +113,8 @@ export default function AddRecipe() {
         <ScrollView style={styles.container}>
             <Text style={AddRecipeHeader}>Create Recipe</Text>
             <View style={styles.button}>
-                <Button buttonText="Publish" onPress={() => setModalVisible(true)} />
-                <Button buttonText="Delete" onPress={handleDelete} />
+                <ButtonPublish title="Publish" onPress={() => setModalVisible(true)} />
+                <ButtonImage style={ButtonTrashStyles.button} source={require('../../assets/images/Trash.png')} onPress={handleDelete} />
             </View>
 
             <Modal
@@ -135,8 +128,8 @@ export default function AddRecipe() {
                         <Text style={styles.modalTitle}>Publish Recipe</Text>
                         <Text>Are you sure you want to publish the recipe?</Text>
                         <View style={styles.modalButtonContainer}>
-                            <ButtonPublish buttonText="Cancel" onPress={handleCloseModal} />
-                            <ButtonPublish buttonText="Publish" onPress={() => {
+                            <ButtonPublish title="Cancel" onPress={handleCloseModal} />
+                            <ButtonPublish title="Publish" onPress={() => {
                                 handlePublish();
                                 saveNewRecipe({
                                     recipeID: '0', 
@@ -166,8 +159,8 @@ export default function AddRecipe() {
                         <Text style={styles.modalTitle}>Delete Recipe</Text>
                         <Text>Are you sure you want to delete the recipe?</Text>
                         <View style={styles.modalButtonContainer}>
-                            <ButtonPublish buttonText="Cancel" onPress={handleCancelDelete} />
-                            <ButtonPublish buttonText="Delete" onPress={handleConfirmDelete} />
+                            <ButtonPublish title="Cancel" onPress={handleCancelDelete} />
+                            <ButtonPublish title="Delete" onPress={handleConfirmDelete} />
                         </View>
                     </View>
                 </View>
@@ -178,26 +171,26 @@ export default function AddRecipe() {
                 style={styles.videoContainer}
                 imageStyle={{ borderRadius: 10 }}
             >
-                <ButtonAddVideo buttonText="Add video recipe" onPress={handleAddVideo} />
+                <ButtonAddVideo title="Add video recipe" onPress={handleAddVideo} />
                 
             </ImageBackground>
 
             <Text style={styles.title}>Title</Text>
-            <Box 
+            <TextBox 
                 placeholder="Recipe title"
                 value={title}
                 onChangeText={setTitle}
             />
 
             <Text style={styles.title}>Description</Text>
-            <Box 
+            <TextBox 
                 placeholder="Recipe description"
                 value={description}
                 onChangeText={setDescription}
             />
 
             <Text style={styles.title}>Time Recipe</Text>
-            <Box 
+            <TextBox 
                 placeholder="1hour, 30min,..."
                 value={timeRecipe}
                 onChangeText={setTimeRecipe}
@@ -208,46 +201,46 @@ export default function AddRecipe() {
             <View style={styles.ingredientsList}>
                 {ingredients.map((ingredient, index) => (
                     <View key={index} style={styles.ingredientRow}>
-                        <BoxAmt 
+                        <TextBoxAmt 
                             placeholder={`Amt `}
                             value={ingredient.amount}
-                            onChangeText={(value) => handleAmountChange(index, value)}
+                            onChangeText={(value: string) => handleAmountChange(index, value)}
                             //onIconPress={() => {}}
                         />
-                        <BoxIngredient
+                        <TextBoxIngredient
                             placeholder={`Ingredient ${index + 1}`}
                             value={ingredient.description}
-                            onChangeText={(value) => handleDescriptionChange(index, value)}
+                            onChangeText={(value: string) => handleDescriptionChange(index, value)}
                         />
-                        <ButtonTrash onPress={handleremoveIngredient} />
+                        <ButtonImage style={ButtonTrashStyles.button} source={require('../../assets/images/Trash.png')} onPress={() => handleremoveIngredient(index)} />
                           
                         
                     </View>
                 ))}
             </View>
 
-            <ButtonAdd buttonText="+ Add Ingredient" onPress={handleAddIngredient} />
+            <ButtonAdd title="+ Add Ingredient" onPress={handleAddIngredient} />
             
             <Text style={styles.title}>Instructions</Text>
             <View>
             <View style={styles.ingredientsList}>
               {instructions.map((instruction, index) => (
                     <View key={index} style={styles.instruction}>
-                        <BoxInstruction
+                        <TextBoxInstruction
                             placeholder={`Instruction ${index + 1}                                  `}
                             value={instruction}
-                            onChangeText={(text) => handleInstructionChange(text, index)}
+                            onChangeText={(text: string) => handleInstructionChange(text, index)}
                             
                         />
 
-                        <ButtonTrash onPress={handleDeleteInstruction} />
+                        <ButtonImage style={ButtonTrashStyles.button} source={require('../../assets/images/Trash.png')} onPress={() => handleDeleteInstruction(index)} />
 
                     </View>
                 ))}
             </View>
             </View>
         
-            <ButtonAdd buttonText="+ Add Instruction" onPress={handleAddInstruction} />
+            <ButtonAdd title="+ Add Instruction" onPress={handleAddInstruction} />
 
         </ScrollView>
         </KeyboardAvoidingView>
@@ -258,7 +251,7 @@ const styles = StyleSheet.create({
     container: {
         
         marginHorizontal: 30,
-      },
+    },
     button: {
         flexDirection: 'row',
         justifyContent:'space-between',
@@ -309,11 +302,11 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         borderRadius: 5,
-      },
-      addVideoText: {
+    },
+    addVideoText: {
         color: 'white',
         fontSize: 16,
-      },
+    },
 
     title: {
         fontSize: 14,

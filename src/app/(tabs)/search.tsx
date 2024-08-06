@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Image, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import TextBox from '@/components/search/TextBoxSearch';
-import ButtonSearch from '@/components/search/ButtonSearch';
+import { TextBox } from '@/components/textBox/TextBox';
+import { ButtonSearch } from '@/components/button/Button';
 import {SearchSuggestion, searchRecipes, saveSearchQuery, getRecentSearches } from '@/services/searchServices';
 import { get } from 'firebase/database';
 
@@ -76,7 +76,7 @@ const SearchScreen = () => {
           onChangeText={setSearchQuery}
         />
 
-        <ButtonSearch onPress={handleSearchModal} />
+        <ButtonSearch title='' onPress={handleSearchModal} />
       </View>
 
       <Text style={styles.sectionTitle}>Recent Search</Text>

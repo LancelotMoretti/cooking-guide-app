@@ -1,13 +1,13 @@
 import { ScrollView, View, Text, TextInput, StyleSheet, Image, Modal, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState } from 'react';
-import { RecipeDetailHeader } from '@/constants/Header';
+import { RecipeDetailHeader } from '@/styles/Header';
 import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/services/navigateServices';
 import { remove } from 'firebase/database';
 import { saveNewRecipe, saveUpdatedRecipe } from '@/services/recipeServices';
 import { writeNotification } from '@/services/notificationServices';
 import { Recipe, readRecipeFromDatabase } from '@/services/recipeServices';
-import BoxIngredient from '@/components/recipeDetail/TextBox';
+import { TextBoxIngredient } from '@/components/textBox/TextBox';
 
 
 export default function RecipeDetail() {

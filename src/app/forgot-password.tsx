@@ -1,11 +1,11 @@
-import SignButton from '@/components/signAccount/SignButton';
-import SignBox from '@/components/signAccount/SignTextBox';
-import { LoginHeader } from '@/constants/Header';
-import { useToggle } from '@/hooks/useToggle';
+import { SignButton } from '@/components/button/Button';
+import { SecureSignTextBox, SignTextBox } from '@/components/textBox/SignTextBox';
+import { LoginHeader } from '@/styles/Header';
 import { navigateToStack } from '@/services/navigateServices';
 import { useNavigation } from 'expo-router';
 import { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { SignBoxStyles } from '@/styles/Sign';
 
 export default function ForgotPassword() {
     const window = Dimensions.get("window");
@@ -16,9 +16,6 @@ export default function ForgotPassword() {
     const [code, setCode] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-
-    const [secureTextEntry1, toggleSecureEntry1] = useToggle(true);
-    const [secureTextEntry2, toggleSecureEntry2] = useToggle(true);
 
     const handleEmailSubmit = () => {
         setStep(1);
@@ -60,13 +57,12 @@ export default function ForgotPassword() {
                             marginLeft: window.width / 2 - 180,
                             marginRight: window.width / 2 - 180
                         }}>
-                            <SignBox
-                                label="Email"
+                            <Text style={SignBoxStyles.label}>Email</Text>
+                            <SignTextBox
                                 placeholder="example@example.com"
                                 secureTextEntry={false}
                                 value={email}
                                 onChangeText={setEmail}
-                                onIconPress={() => {}}
                             />
                         </View>
 
@@ -75,7 +71,7 @@ export default function ForgotPassword() {
                             marginLeft: window.width / 2 - 100,
                             marginRight: window.width / 2 - 100
                         }}>
-                            <SignButton buttonText="Continue" onPress={handleEmailSubmit} />
+                            <SignButton title="Continue" onPress={handleEmailSubmit} />
                         </View>
                     </ScrollView>
                 );
@@ -105,13 +101,12 @@ export default function ForgotPassword() {
                             marginLeft: window.width / 2 - 180,
                             marginRight: window.width / 2 - 180
                         }}>
-                            <SignBox
-                                label="Code"
+                            <Text style={SignBoxStyles.label}>Verification Code</Text>
+                            <SignTextBox
                                 placeholder="123456"
                                 secureTextEntry={false}
                                 value={code}
                                 onChangeText={setCode}
-                                onIconPress={() => {}}
                             />
                         </View>
 
@@ -129,7 +124,7 @@ export default function ForgotPassword() {
                             marginLeft: window.width / 2 - 100,
                             marginRight: window.width / 2 - 100
                         }}>
-                            <SignButton buttonText="Continue" onPress={handleCodeSubmit} />
+                            <SignButton title="Continue" onPress={handleCodeSubmit} />
                         </View>
                     </ScrollView>
                 );
@@ -159,23 +154,17 @@ export default function ForgotPassword() {
                             marginLeft: window.width / 2 - 180,
                             marginRight: window.width / 2 - 180
                         }}>
-                            <SignBox
-                                label="Password"
+                            <Text style={SignBoxStyles.label}>Password</Text>
+                            <SecureSignTextBox
                                 placeholder="Enter your password"
-                                secureTextEntry={secureTextEntry1}
                                 value={password}
                                 onChangeText={setPassword}
-                                onIconPress={toggleSecureEntry1}
-                                needSecure={true}
                             />
-                            <SignBox
-                                label="Confirm Password"
+                            <Text style={SignBoxStyles.label}>Confirm Password</Text>
+                            <SecureSignTextBox
                                 placeholder="Enter your password"
-                                secureTextEntry={secureTextEntry2}
                                 value={confirmPassword}
                                 onChangeText={setConfirmPassword}
-                                onIconPress={toggleSecureEntry2}
-                                needSecure={true}
                             />
                         </View>
 
@@ -184,7 +173,7 @@ export default function ForgotPassword() {
                             marginLeft: window.width / 2 - 100,
                             marginRight: window.width / 2 - 100
                         }}>
-                            <SignButton buttonText="Continue" onPress={handlePasswordSubmit} />
+                            <SignButton title="Continue" onPress={handlePasswordSubmit} />
                         </View>
                     </ScrollView>
                 );
@@ -195,7 +184,7 @@ export default function ForgotPassword() {
                         backgroundColor: '#FFFFFF'
                     }}>
                         <Text style={LoginHeader}>Change Password Successful!</Text>
-                        <SignButton buttonText="Go To Home" onPress={navigateToStack(navigation, "log-in")} />
+                        <SignButton title="Go To Home" onPress={navigateToStack(navigation, "log-in")} />
                     </ScrollView>
                 );
             default:

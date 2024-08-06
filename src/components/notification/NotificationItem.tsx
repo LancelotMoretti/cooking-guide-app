@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, Pressable } from 'react-native';
 import { useElapsedTime } from '@/hooks/useElapsedTime';
 import { navigateToStack } from '@/services/navigateServices';
-import { NotificationBoxStyles } from '@/constants/Notification';
+import { NotificationBoxStyles } from '@/styles/Notification';
 import { useNavigation } from 'expo-router';
 import { Recipe, readRecipeFromDatabase } from '@/services/recipeServices';
 

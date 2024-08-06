@@ -12,7 +12,7 @@ export default function LemmeCook() {
 
         return () => clearTimeout(timeout);
     }, [navigation]);
-  
+
     return (
         <View style={{
             flex: 1,

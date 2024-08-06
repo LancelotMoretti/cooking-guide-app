@@ -1,15 +1,16 @@
 import { PrivacyPolicy } from '@/assets/docs/PrivacyPolicy';
 import { TermsOfUse } from '@/assets/docs/TermsOfUse';
-import { ClickableText } from '@/components/signAccount/ClickableObject';
-import SignButton from '@/components/signAccount/SignButton';
-import SignBox from '@/components/signAccount/SignTextBox';
-import { SignUpHeader } from '@/constants/Header';
+import { ClickableText } from '@/components/clickable/ClickableText';
+import { SignButton } from '@/components/button/Button';
+import { SecureSignTextBox, SignTextBox } from '@/components/textBox/SignTextBox';
+import { SignUpHeader } from '@/styles/Header';
 import { useToggle } from '@/hooks/useToggle';
 import { navigateToStack } from '@/services/navigateServices';
 import { signUpAccount } from '@/services/registerServices';
 import { useNavigation } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, View, Text, Dimensions, Modal } from 'react-native';
+import { SignBoxStyles } from '@/styles/Sign';
 
 export default function SignUpScreen() {
     const window = Dimensions.get("window");
@@ -22,9 +23,6 @@ export default function SignUpScreen() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showModal, setShowModal] = useState(false);
-
-    const [secureTextEntry1, toggleSecureEntry1] = useToggle(true);
-    const [secureTextEntry2, toggleSecureEntry2] = useToggle(true);
 
     const handleSignUp = () => {
         if (password === confirmPassword) {
@@ -54,7 +52,7 @@ export default function SignUpScreen() {
                             borderRadius: 10
                         }}>
                             <Text>Passwords match</Text>
-                            <SignButton buttonText="OK" onPress={navigateToStack(navigation, "log-in")} />
+                            <SignButton title="OK" onPress={navigateToStack(navigation, "log-in")} />
                         </View>
                     </View>
                 </Modal>
@@ -79,7 +77,7 @@ export default function SignUpScreen() {
                         borderRadius: 10
                     }}>
                         <Text>Passwords do not match</Text>
-                        <SignButton buttonText="OK" onPress={() => setShowModal(false)} />
+                        <SignButton title="OK" onPress={() => setShowModal(false)} />
                     </View>
                 </View>
             </Modal>
@@ -99,55 +97,44 @@ export default function SignUpScreen() {
                 marginLeft: window.width / 2 - 170,
                 marginRight: window.width / 2 - 170
             }}>
-                <SignBox
-                    label="Full Name"
+                <Text style={SignBoxStyles.label}>Full Name</Text>
+                <SignTextBox
                     placeholder="John Doe"
                     secureTextEntry={false}
                     value={fullName}
                     onChangeText={setFullName}
-                    onIconPress={() => {}}
                 />
-                <SignBox
-                    label="Email"
+                <Text style={SignBoxStyles.label}>Email</Text>
+                <SignTextBox
                     placeholder="example@example.com"
                     secureTextEntry={false}
                     value={email}
                     onChangeText={setEmail}
-                    onIconPress={() => {}}
                 />
-                <SignBox
-                    label="Phone Number (optional)"
+                <Text style={SignBoxStyles.label}>Phone Number</Text>
+                <SignTextBox
                     placeholder="123-456-7890"
                     secureTextEntry={false}
                     value={phoneNumber}
                     onChangeText={setPhoneNumber}
-                    onIconPress={() => {}}
                 />
-                <SignBox
-                    label="Date of Birth (optional)"
+                <Text style={SignBoxStyles.label}>Date of Birth (optional)</Text>
+                <SignTextBox
                     placeholder="MM/DD/YYYY"
                     secureTextEntry={false}
                     value={dateOfBirth}
                     onChangeText={setDateOfBirth}
-                    onIconPress={() => {}}
                 />
-                <SignBox
-                    label="Password"
+                <Text style={SignBoxStyles.label}>Password</Text>
+                <SecureSignTextBox
                     placeholder="Enter your password"
-                    secureTextEntry={secureTextEntry1}
                     value={password}
                     onChangeText={setPassword}
-                    onIconPress={toggleSecureEntry1}
-                    needSecure={true}
                 />
-                <SignBox
-                    label="Confirm Password"
+                <SecureSignTextBox
                     placeholder="Enter your password"
-                    secureTextEntry={secureTextEntry2}
                     value={confirmPassword}
                     onChangeText={setConfirmPassword}
-                    onIconPress={toggleSecureEntry2}
-                    needSecure={true}
                 />
             </View>
 
@@ -162,16 +149,16 @@ export default function SignUpScreen() {
                 flexDirection: "row",
                 justifyContent: "center"
             }}>
-                <ClickableText docHeader="Terms of Use" onPress={navigateToStack(navigation, "doc", "Terms of use", TermsOfUse)} />
+                <ClickableText children="Terms of Use" onPress={navigateToStack(navigation, "doc", "Terms of use", TermsOfUse)} />
                 <Text> and </Text>
-                <ClickableText docHeader="Privacy Policy" onPress={navigateToStack(navigation, "doc", "Privacy Policy", PrivacyPolicy)} />
+                <ClickableText children="Privacy Policy" onPress={navigateToStack(navigation, "doc", "Privacy Policy", PrivacyPolicy)} />
             </View>
 
             <View style={{
                 marginLeft: window.width / 2 - 100,
                 marginRight: window.width / 2 - 100
             }}>
-                <SignButton buttonText="Sign Up" onPress={handleSignUp} />
+                <SignButton title="Sign Up" onPress={handleSignUp} />
             </View>
 
             <View style={{
@@ -179,7 +166,7 @@ export default function SignUpScreen() {
                 justifyContent: "center",
             }}>
                 <Text>Already have an account? </Text>
-                <ClickableText docHeader="Log In" onPress={navigateToStack(navigation, "log-in")} />
+                <ClickableText children="Log In" onPress={navigateToStack(navigation, "log-in")} />
             </View>
             {showSignUpModal()}
         </ScrollView>

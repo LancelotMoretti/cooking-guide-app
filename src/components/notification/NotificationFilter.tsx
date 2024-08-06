@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { NotificationScreenStyles } from '@/constants/Notification';
+import { NotificationScreenStyles } from '@/styles/Notification';
 
 interface NotificationFilterProps {
   filter: 'all' | 'read' | 'unread';

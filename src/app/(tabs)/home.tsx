@@ -1,6 +1,6 @@
 import { View, Text, Button, FlatList, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import ButtonMeal from '@/components/home/ButtonMeal';
+import { ButtonMeal } from '@/components/button/Button';
 
 const recipes: { [key: string]: { id: string; title: string; image: string; time: string; rating: number; }[] } = {
   Breakfast: [

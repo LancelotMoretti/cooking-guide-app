@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { readNotification, writeNotification } from '@/services/notificationServices';
-import { NotificationScreenStyles } from '@/constants/Notification';
+import { NotificationScreenStyles } from '@/styles/Notification';
 import NotificationFilter from '@/components/notification/NotificationFilter';
 import NotificationList from '@/components/notification/NotificationList';
 

@@ -1,4 +1,4 @@
-import { DocHeader } from "@/constants/Header";
+import { DocHeader } from "@/styles/Header";
 import { useRoute } from "@react-navigation/native";
 import { ScrollView, View, Text } from "react-native";
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
-import { CheckboxStyles } from '@/constants/Checkbox';
+import { CheckboxStyles } from '@/styles/Checkbox';
 
 interface CheckboxProps {
     content: string;

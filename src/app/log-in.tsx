@@ -1,14 +1,17 @@
 import { View, Text, Dimensions, ScrollView } from 'react-native';
-import { LoginHeader } from '@/constants/Header';
+import { LoginHeader } from '@/styles/Header';
 import { useState } from 'react';
-import SignBox from '@/components/signAccount/SignTextBox';
-import SignButton from '@/components/signAccount/SignButton';
+import { SignTextBox, SecureSignTextBox } from '@/components/textBox/SignTextBox';
+import { SignButton } from '@/components/button/Button';
 import { navigateToStack } from '@/services/navigateServices';
-import { ClickableText, ClickableLogo } from '@/components/signAccount/ClickableObject';
+import { ClickableText } from '@/components/clickable/ClickableText';
+import { ClickableLogo } from '@/components/clickable/ClickableLogo';
 import Checkbox from '@/components/signAccount/Checkbox';
 import { loginAndGoToHome } from '@/services/loginServices';
 import { useNavigation } from 'expo-router';
 import { useToggle } from '@/hooks/useToggle';
+import { SignBoxStyles } from '@/styles/Sign';
+import { imageMap } from '@/styles/ImageMap';
 
 export default function LoginScreen() {
     const window = Dimensions.get("window");
@@ -36,22 +39,19 @@ export default function LoginScreen() {
                 marginLeft: window.width / 2 - 180,
                 marginRight: window.width / 2 - 180
             }}>
-                <SignBox 
-                    label="Email"
+                <Text style={SignBoxStyles.label}>Email</Text>
+                <SignTextBox 
                     placeholder="example@example.com"
                     secureTextEntry={false}
                     value={email}
                     onChangeText={setEmail}
-                    onIconPress={() => {}}
                 />
-                <SignBox 
-                    label="Password"
+                <Text style={SignBoxStyles.label}>Password</Text>
+                <SecureSignTextBox 
                     placeholder="Enter your password"
                     secureTextEntry={secureTextEntry}
                     value={password}
                     onChangeText={setPassword}
-                    onIconPress={toggleSecureEntry}
-                    needSecure={true}
                 />
                 <Checkbox content="Remember me" />
             </View>
@@ -61,8 +61,8 @@ export default function LoginScreen() {
                 marginLeft: window.width / 2 - 100,
                 marginRight: window.width / 2 - 100
             }}>
-                <SignButton buttonText="Log In" onPress={handleLogin} />
-                <SignButton buttonText="Sign Up" onPress={navigateToStack(navigation, "sign-up")} />
+                <SignButton title="Log In" onPress={handleLogin} />
+                <SignButton title="Sign Up" onPress={navigateToStack(navigation, "sign-up")} />
             </View>
 
             <View style={{
@@ -70,7 +70,7 @@ export default function LoginScreen() {
                 justifyContent: "center",
                 alignItems: "center"
             }}>
-                <ClickableText docHeader="Forgot Password?" onPress={navigateToStack(navigation, "forgot-password")} />
+                <ClickableText children="Forgot Password?" onPress={navigateToStack(navigation, "forgot-password")} />
             </View>
 
             <View style={{
@@ -91,9 +91,9 @@ export default function LoginScreen() {
                 marginLeft: window.width / 2 - 100,
                 marginRight: window.width / 2 - 100
             }}>
-                <ClickableLogo fileName='google-logo' onPress={navigateToStack(navigation, "(tabs)")} />
-                <ClickableLogo fileName='facebook-logo' onPress={navigateToStack(navigation, "(tabs)")} />
-                <ClickableLogo fileName='apple-logo' onPress={navigateToStack(navigation, "(tabs)")} />
+                <ClickableLogo source={imageMap['google-logo']} onPress={navigateToStack(navigation, "(tabs)")} />
+                <ClickableLogo source={imageMap['facebook-logo']} onPress={navigateToStack(navigation, "(tabs)")} />
+                <ClickableLogo source={imageMap['apple-logo']} onPress={navigateToStack(navigation, "(tabs)")} />
             </View>
 
             <View style={{
@@ -106,7 +106,7 @@ export default function LoginScreen() {
                     fontSize: 16,
                     textAlign: "center"
                 }}>Don't have an account?</Text>
-                <ClickableText docHeader="Sign Up" onPress={navigateToStack(navigation, "sign-up")}/>
+                <ClickableText children="Sign Up" onPress={navigateToStack(navigation, "sign-up")}/>
             </View>
         </ScrollView>
     );
