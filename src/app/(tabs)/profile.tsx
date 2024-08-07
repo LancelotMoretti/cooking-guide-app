@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { readProfileInformation } from '@/services/accountServices';
+import { readProfileInformation } from '@/temp/accountServices';
 
 export default function ProfileScreen() {
     const profile = readProfileInformation();

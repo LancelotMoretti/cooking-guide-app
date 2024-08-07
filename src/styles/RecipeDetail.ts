@@ -12,5 +12,5 @@ export const TextBoxIngreStyles = StyleSheet.create({
     input: {
         height: 40,
         fontSize: 16,
-      },
+    },
 });

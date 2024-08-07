@@ -1,7 +1,16 @@
 import { db } from "@/firebaseConfig";
 import { ref, update, remove, push, onValue, off } from "firebase/database";
 import { useEffect, useState } from "react";
-import { NotificationItemProps, NotificationData } from "@/components/notification/NotificationItem";
+import { NotificationItemProps } from "@/components/UI/notification/NotificationItem";
+import { Notification } from "@/components/models/Notification";
+
+interface NotificationData {
+    id: string; // "0" for new notification
+    recipeID: string;
+    read: boolean;
+    checkDelete: boolean;
+    link: string;
+}
 
 export const readNotification = (userID: string): NotificationItemProps[] => {
     const [notifications, setNotifications] = useState<NotificationItemProps[]>([]);
@@ -13,15 +22,15 @@ export const readNotification = (userID: string): NotificationItemProps[] => {
             const data = snapshot.val();
             if (data) {
                 const notificationsArray: NotificationItemProps[] = Object.keys(data).map(key => ({
-                    notification: {
-                        id: key,
+                    notification: Notification.fromPlainObject({
+                        notificationID: key,
                         recipeID: data[key].recipeID,
+                        date: data[key].date,
+                        content: data[key].content,
                         read: data[key].read,
-                        checkDelete: data[key].checkDelete,
-                        link: data[key].link,
-                    },
-                    onReadChange: () => {},
-                    onDeleted: () => {},
+                    }),
+                    onReadChange: () => void {},
+                    onDeleted: () => void {},
                 }));
                 setNotifications(notificationsArray);
             } else {

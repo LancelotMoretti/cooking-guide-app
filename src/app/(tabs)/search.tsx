@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Image, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { TextBox } from '@/components/textBox/TextBox';
-import { ButtonSearch } from '@/components/button/Button';
-import {SearchSuggestion, searchRecipes, saveSearchQuery, getRecentSearches } from '@/services/searchServices';
+import { TextBox } from '@/components/UI/textBox/TextBox';
+import { ButtonSearch } from '@/components/UI/button/Button';
+import {SearchSuggestion, searchRecipes, saveSearchQuery, getRecentSearches } from '@/temp/searchServices';
 import { get } from 'firebase/database';
 
 // const SearchScreen = () => {

@@ -12,6 +12,6 @@ export class UserProfileLink implements UserProfileLinkProps {
     ) {}
 
     navigateToUserProfile() {
-        // navigate to user profile
+        // Implementation for navigating to user profile
     }
 }

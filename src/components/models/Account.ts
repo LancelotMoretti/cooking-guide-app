@@ -1,4 +1,4 @@
-interface AccountProps {
+export interface AccountProps {
     accountID: string;
     username: string;
     email: string;
@@ -46,10 +46,11 @@ export class Account implements AccountProps {
     }
 
     createAccount(): void {
-        // Create account
+        // Implementation for account creation
     }
 
     deleteAccount(): void {
+        // Implementation for account deletion
         this.accountID = '';
         this.username = '';
         this.email = '';

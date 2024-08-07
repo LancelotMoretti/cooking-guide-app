@@ -1,11 +1,11 @@
 import { ScrollView, View, Text, TextInput, StyleSheet, Image, Modal, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState } from 'react';
 import { AddRecipeHeader } from '@/styles/Header';
-import { ButtonPublish, ButtonAdd, ButtonAddVideo } from '@/components/button/Button';
-import { ButtonImage } from '@/components/button/ButtonImage';
-import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction } from '@/components/textBox/TextBox';
+import { ButtonPublish, ButtonAdd, ButtonAddVideo } from '@/components/UI/button/Button';
+import { ButtonImage } from '@/components/UI/button/ButtonImage';
+import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction } from '@/components/UI/textBox/TextBox';
 import { useNavigation } from 'expo-router';
-import { navigateToStack } from '@/services/navigateServices';
+import { navigateToStack } from '@/components/routing/navigateServices';
 import { remove } from 'firebase/database';
 import { ButtonTrashStyles } from '@/styles/AddRecipe';
 

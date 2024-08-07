@@ -1,12 +1,12 @@
 import { PrivacyPolicy } from '@/assets/docs/PrivacyPolicy';
 import { TermsOfUse } from '@/assets/docs/TermsOfUse';
-import { ClickableText } from '@/components/clickable/ClickableText';
-import { SignButton } from '@/components/button/Button';
-import { SecureSignTextBox, SignTextBox } from '@/components/textBox/SignTextBox';
+import { ClickableText } from '@/components/UI/clickable/ClickableText';
+import { SignButton } from '@/components/UI/button/Button';
+import { SecureSignTextBox, SignTextBox } from '@/components/UI/textBox/SignTextBox';
 import { SignUpHeader } from '@/styles/Header';
 import { useToggle } from '@/hooks/useToggle';
-import { navigateToStack } from '@/services/navigateServices';
-import { signUpAccount } from '@/services/registerServices';
+import { navigateToStack } from '@/components/routing/navigateServices';
+import { signUpAccount } from '@/temp/registerServices';
 import { useNavigation } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, View, Text, Dimensions, Modal } from 'react-native';

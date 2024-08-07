@@ -1,48 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, Pressable } from 'react-native';
 import { useElapsedTime } from '@/hooks/useElapsedTime';
-import { navigateToStack } from '@/services/navigateServices';
+import { navigateToStack } from '@/components/routing/Navigation';
 import { NotificationBoxStyles } from '@/styles/Notification';
 import { useNavigation } from 'expo-router';
-import { Recipe, readRecipeFromDatabase } from '@/services/recipeServices';
-
-export interface NotificationData {
-  id: string; // "0" for new notification
-  recipeID: string;
-  read: boolean;
-  checkDelete: boolean;
-  link: string;
-}
+import { readRecipeFromDatabase } from '@/temp/recipeServices';
+import { Notification } from '../../models/Notification'; // Make sure this path is correct
 
 export interface NotificationItemProps {
-  notification: NotificationData;
+  notification: Notification;
   onReadChange: () => void;
   onDeleted: () => void;
 }
 
 const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onReadChange, onDeleted }) => {
   const navigation = useNavigation();
-  const [readState, setReadState] = useState<boolean>(notification.read);
-  const [deleteState, setDeleteState] = useState<boolean>(notification.checkDelete);
-  let recipe = readRecipeFromDatabase(notification.recipeID);
-  if (recipe === null) {
-    recipe = {
-      recipeID: '',
-      userID: '',
-      title: '',
-      description: '',
-      timeDuration: '',
-      ingredients: [],
-      instructions: [],
-      video: '',
-      time: new Date(),
-      status: ''
-    }
-  }
+  const [readState, setReadState] = useState<boolean>(notification.isRead());
+  const [deleteState, setDeleteState] = useState<boolean>(false);
+  const recipe = readRecipeFromDatabase(notification.getRecipeID());
 
   const handlePress = () => {
     if (!readState) {
       setReadState(true);
+      notification.markAsRead();
       onReadChange();
     }
   };
@@ -65,7 +45,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onRea
         readState ? NotificationBoxStyles.read : NotificationBoxStyles.unread,
         deleteState ? { display: 'none' } : { display: 'flex' }
       ]}
-      onPress={() => navigateToStack(navigation, notification.link)}
+      onPress={() => navigateToStack(navigation, `/recipe/${notification.getRecipeID()}`)}
       onPressOut={handlePress}
     >
       <Pressable style={NotificationBoxStyles.deleteButtton} onPress={handleDelete}>
@@ -73,9 +53,9 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onRea
       </Pressable>
       <View style={NotificationBoxStyles.content}>
         <Text style={NotificationBoxStyles.newRecipe}>{'New Recipe Alert'}</Text>
-        <Text style={NotificationBoxStyles.title}>{getShortenedString(recipe.title)}</Text>
-        <Text style={NotificationBoxStyles.author}>{"Author: " + recipe.userID}</Text>
-        <Text style={NotificationBoxStyles.time}>{useElapsedTime({ time: recipe.time })}</Text>
+        <Text style={NotificationBoxStyles.title}>{getShortenedString(recipe?.title || '')}</Text>
+        <Text style={NotificationBoxStyles.author}>{"Author: " + (recipe?.userID || '')}</Text>
+        <Text style={NotificationBoxStyles.time}>{useElapsedTime({ time: new Date(notification.getDate()) })}</Text>
       </View>
       {!readState && (
         <View style={NotificationBoxStyles.iconContainer}>

@@ -1,14 +1,14 @@
 import { ScrollView, View, Text, TextInput, StyleSheet, Image, ImageBackground, Modal, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState } from 'react';
 import { AddRecipeHeader } from '@/styles/Header';
-import { ButtonPublish, ButtonAdd, ButtonAddVideo } from '@/components/button/Button';
-import { ButtonImage } from '@/components/button/ButtonImage';
-import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction } from '@/components/textBox/TextBox';
+import { ButtonPublish, ButtonAdd, ButtonAddVideo } from '@/components/UI/button/Button';
+import { ButtonImage } from '@/components/UI/button/ButtonImage';
+import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction } from '@/components/UI/textBox/TextBox';
 import { useNavigation } from 'expo-router';
-import { navigateToStack } from '@/services/navigateServices';
+import { navigateToStack } from '@/components/routing/navigateServices';
 import { remove } from 'firebase/database';
-import { saveNewRecipe, saveUpdatedRecipe } from '@/services/recipeServices';
-import { writeNotification } from '@/services/notificationServices';
+import { saveNewRecipe, saveUpdatedRecipe } from '@/temp/recipeServices';
+import { writeNotification } from '@/temp/notificationServices';
 import { ButtonTrashStyles } from '@/styles/AddRecipe';
 
 export default function AddRecipe() {

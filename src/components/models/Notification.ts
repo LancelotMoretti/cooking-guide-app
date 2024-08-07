@@ -23,6 +23,10 @@ export class Notification implements NotificationProps {
         public read: boolean
     ) {}
 
+    static fromPlainObject(data: any): Notification {
+        return new Notification(data.notificationID, data.recipeID, data.date, data.content, data.read);
+    }
+
     getContent(): string {
         return this.content;
     }

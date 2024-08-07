@@ -1,10 +1,10 @@
-import { UserProfileLink } from "./UserProfileLink";
+import { UserProfileLink } from './UserProfileLink';
 
 interface UserCommentProps {
     user: UserProfileLink;
     date: string;
     content: string;
-    reply?: UserComment;
+    reply?: UserComment[];
 }
 
 export class UserComment implements UserCommentProps {
@@ -12,22 +12,22 @@ export class UserComment implements UserCommentProps {
         public user: UserProfileLink,
         public date: string,
         public content: string,
-        public reply?: UserComment
+        public reply?: UserComment[]
     ) {}
 
-    private clickUserProfile() {
+    clickUserProfile() {
         this.user.navigateToUserProfile();
     }
 
-    private deleteComment() {
+    deleteComment() {
         this.content = '';
     }
 
-    private editComment(newContent: string) {
+    editComment(newContent: string) {
         this.content = newContent;
     }
 
-    private replyToComment() {
-        // reply to comment
+    replyToComment(replyContent: string) {
+        this.reply?.push(new UserComment(this.user, new Date().toISOString(), replyContent));
     }
 }

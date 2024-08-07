@@ -1,6 +1,6 @@
 import { auth } from "@/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { directToStack } from "./navigateServices";
+import { directToStack } from "@/components/routing/Navigation";
 
 export const loginAndGoToHome = async (
     navigation: any,

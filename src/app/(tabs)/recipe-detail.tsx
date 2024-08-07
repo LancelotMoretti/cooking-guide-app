@@ -2,12 +2,12 @@ import { ScrollView, View, Text, TextInput, StyleSheet, Image, Modal, TouchableO
 import { useState } from 'react';
 import { RecipeDetailHeader } from '@/styles/Header';
 import { useNavigation } from 'expo-router';
-import { navigateToStack } from '@/services/navigateServices';
+import { navigateToStack } from '@/components/routing/navigateServices';
 import { remove } from 'firebase/database';
-import { saveNewRecipe, saveUpdatedRecipe } from '@/services/recipeServices';
-import { writeNotification } from '@/services/notificationServices';
-import { Recipe, readRecipeFromDatabase } from '@/services/recipeServices';
-import { TextBoxIngredient } from '@/components/textBox/TextBox';
+import { saveNewRecipe, saveUpdatedRecipe } from '@/temp/recipeServices';
+import { writeNotification } from '@/temp/notificationServices';
+import { Recipe, readRecipeFromDatabase } from '@/temp/recipeServices';
+import { TextBoxIngredient } from '@/components/UI/textBox/TextBox';
 
 
 export default function RecipeDetail() {

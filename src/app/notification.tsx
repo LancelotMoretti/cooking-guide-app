@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { readNotification, writeNotification } from '@/services/notificationServices';
+import { readNotification, writeNotification } from '@/temp/notificationServices';
 import { NotificationScreenStyles } from '@/styles/Notification';
-import NotificationFilter from '@/components/notification/NotificationFilter';
-import NotificationList from '@/components/notification/NotificationList';
+import NotificationFilter from '@/components/UI/notification/NotificationFilter';
+import NotificationList from '@/components/UI/notification/NotificationList';
 
 // const testList = [
 //   {
