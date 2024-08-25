@@ -6,7 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 interface CheckboxProps {
     initialChecked?: boolean;
     onPress?: (checked: boolean) => void;
-    style?: object;
 }
 
 interface CheckboxState {
@@ -33,11 +32,10 @@ export class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
     };
 
     render() {
-        const { style } = this.props;
         const { checked } = this.state;
 
         return (
-            <Pressable onPress={this.handlePress} style={[CheckboxStyles.checkbox, style]}>
+            <Pressable onPress={this.handlePress} style={CheckboxStyles.checkbox}>
                 {checked && <Ionicons name="checkmark" size={24} color="white" />}
             </Pressable>
         );

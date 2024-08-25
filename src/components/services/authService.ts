@@ -1,7 +1,7 @@
 import { db, auth } from "@/firebaseConfig";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, update } from "firebase/database";
-import { directToStack } from "@/components/routing/Navigation";
+import { directToStack } from "@/components/routingAndMiddleware/Navigation";
 
 const createUser = async (
     response: any,

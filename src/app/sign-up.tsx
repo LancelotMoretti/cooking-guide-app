@@ -5,12 +5,12 @@ import { SignButton } from '@/components/UI/button/Button';
 import { SecureSignTextBox, SignTextBox } from '@/components/UI/textBox/SignTextBox';
 import { SignUpHeader } from '@/styles/Header';
 import { useToggle } from '@/hooks/useToggle';
-import { navigateToStack } from '@/components/routing/navigateServices';
+import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { signUpAccount } from '@/temp/registerServices';
 import { useNavigation } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, View, Text, Dimensions, Modal } from 'react-native';
-import { SignBoxStyles } from '@/styles/Sign';
+import { SignBoxStyles, SignButtonStyles } from '@/styles/Sign';
 
 export default function SignUpScreen() {
     const window = Dimensions.get("window");
@@ -99,6 +99,9 @@ export default function SignUpScreen() {
             }}>
                 <Text style={SignBoxStyles.label}>Full Name</Text>
                 <SignTextBox
+                    containerStyle={SignBoxStyles.container}
+                    inputContainerStyle={SignBoxStyles.inputContainer}
+                    style={SignBoxStyles.input}
                     placeholder="John Doe"
                     secureTextEntry={false}
                     value={fullName}
@@ -106,6 +109,9 @@ export default function SignUpScreen() {
                 />
                 <Text style={SignBoxStyles.label}>Email</Text>
                 <SignTextBox
+                    containerStyle={SignBoxStyles.container}
+                    inputContainerStyle={SignBoxStyles.inputContainer}
+                    style={SignBoxStyles.input}
                     placeholder="example@example.com"
                     secureTextEntry={false}
                     value={email}
@@ -113,6 +119,9 @@ export default function SignUpScreen() {
                 />
                 <Text style={SignBoxStyles.label}>Phone Number</Text>
                 <SignTextBox
+                    containerStyle={SignBoxStyles.container}
+                    inputContainerStyle={SignBoxStyles.inputContainer}
+                    style={SignBoxStyles.input}
                     placeholder="123-456-7890"
                     secureTextEntry={false}
                     value={phoneNumber}
@@ -120,6 +129,9 @@ export default function SignUpScreen() {
                 />
                 <Text style={SignBoxStyles.label}>Date of Birth (optional)</Text>
                 <SignTextBox
+                    containerStyle={SignBoxStyles.container}
+                    inputContainerStyle={SignBoxStyles.inputContainer}
+                    style={SignBoxStyles.input}
                     placeholder="MM/DD/YYYY"
                     secureTextEntry={false}
                     value={dateOfBirth}
@@ -130,11 +142,14 @@ export default function SignUpScreen() {
                     placeholder="Enter your password"
                     value={password}
                     onChangeText={setPassword}
+                    style={SignBoxStyles.container}
                 />
+                <Text style={SignBoxStyles.label}>Comfirm your password</Text>
                 <SecureSignTextBox
                     placeholder="Enter your password"
                     value={confirmPassword}
                     onChangeText={setConfirmPassword}
+                    style={SignBoxStyles.container}
                 />
             </View>
 
@@ -158,7 +173,7 @@ export default function SignUpScreen() {
                 marginLeft: window.width / 2 - 100,
                 marginRight: window.width / 2 - 100
             }}>
-                <SignButton title="Sign Up" onPress={handleSignUp} />
+                <SignButton title="Sign Up" onPress={handleSignUp} containerStyle={SignButtonStyles.container} style={SignButtonStyles.text}/>
             </View>
 
             <View style={{

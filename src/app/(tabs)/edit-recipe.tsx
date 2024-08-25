@@ -5,7 +5,7 @@ import { ButtonPublish, ButtonAdd, ButtonAddVideo } from '@/components/UI/button
 import { ButtonImage } from '@/components/UI/button/ButtonImage';
 import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction } from '@/components/UI/textBox/TextBox';
 import { useNavigation } from 'expo-router';
-import { navigateToStack } from '@/components/routing/navigateServices';
+import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { remove } from 'firebase/database';
 import { ButtonTrashStyles } from '@/styles/AddRecipe';
 

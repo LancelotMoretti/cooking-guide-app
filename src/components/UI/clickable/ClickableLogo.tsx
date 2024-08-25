@@ -9,9 +9,9 @@ interface ClickableLogoProps extends ImageProps {
 
 export class ClickableLogo extends React.Component<ClickableLogoProps> {
     render() {
-        const { onPress, style, ...otherProps } = this.props;
+        const { onPress, ...otherProps } = this.props;
         return (
-            <ClickableObject onPress={onPress} style={[ClickableStyles.clickableLogo, {width: 30, height: 30}]}>
+            <ClickableObject onPress={onPress}>
                 <Image {...otherProps} />
             </ClickableObject>
         );

@@ -2,7 +2,7 @@ import { ScrollView, View, Text, TextInput, StyleSheet, Image, Modal, TouchableO
 import { useState } from 'react';
 import { RecipeDetailHeader } from '@/styles/Header';
 import { useNavigation } from 'expo-router';
-import { navigateToStack } from '@/components/routing/navigateServices';
+import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { remove } from 'firebase/database';
 import { saveNewRecipe, saveUpdatedRecipe } from '@/temp/recipeServices';
 import { writeNotification } from '@/temp/notificationServices';

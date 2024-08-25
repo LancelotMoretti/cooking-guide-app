@@ -1,7 +1,7 @@
 import { SignButton } from '@/components/UI/button/Button';
 import { SecureSignTextBox, SignTextBox } from '@/components/UI/textBox/SignTextBox';
 import { LoginHeader } from '@/styles/Header';
-import { navigateToStack } from '@/components/routing/navigateServices';
+import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { useNavigation } from 'expo-router';
 import { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';

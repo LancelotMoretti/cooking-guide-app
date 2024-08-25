@@ -3,15 +3,17 @@ import { LoginHeader } from '@/styles/Header';
 import { useState } from 'react';
 import { SignTextBox, SecureSignTextBox } from '@/components/UI/textBox/SignTextBox';
 import { SignButton } from '@/components/UI/button/Button';
-import { navigateToStack } from '@/components/routing/navigateServices';
+import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { ClickableText } from '@/components/UI/clickable/ClickableText';
 import { ClickableLogo } from '@/components/UI/clickable/ClickableLogo';
-import Checkbox from '@/components/signAccount/Checkbox';
+import { Checkbox } from '@/components/UI/tickable/Checkbox';
 import { loginAndGoToHome } from '@/temp/loginServices';
 import { useNavigation } from 'expo-router';
 import { useToggle } from '@/hooks/useToggle';
-import { SignBoxStyles } from '@/styles/Sign';
+import { SignBoxStyles, SignButtonStyles } from '@/styles/Sign';
 import { imageMap } from '@/styles/ImageMap';
+import { CheckboxStyles } from '@/styles/Checkbox';
+import { ClickableStyles } from '@/styles/ClickableObject';
 
 export default function LoginScreen() {
     const window = Dimensions.get("window");
@@ -40,7 +42,10 @@ export default function LoginScreen() {
                 marginRight: window.width / 2 - 180
             }}>
                 <Text style={SignBoxStyles.label}>Email</Text>
-                <SignTextBox 
+                <SignTextBox
+                    containerStyle={SignBoxStyles.container}
+                    inputContainerStyle={SignBoxStyles.inputContainer}
+                    style={SignBoxStyles.input}
                     placeholder="example@example.com"
                     secureTextEntry={false}
                     value={email}
@@ -52,8 +57,12 @@ export default function LoginScreen() {
                     secureTextEntry={secureTextEntry}
                     value={password}
                     onChangeText={setPassword}
+                    style={SignBoxStyles.container}
                 />
-                <Checkbox content="Remember me" />
+                <View style={CheckboxStyles.container}>
+                    <Checkbox/>
+                    <Text>Remember me</Text>
+                </View>
             </View>
             
             <View style={{
@@ -61,8 +70,8 @@ export default function LoginScreen() {
                 marginLeft: window.width / 2 - 100,
                 marginRight: window.width / 2 - 100
             }}>
-                <SignButton title="Log In" onPress={handleLogin} />
-                <SignButton title="Sign Up" onPress={navigateToStack(navigation, "sign-up")} />
+                <SignButton title="Log In" onPress={handleLogin} containerStyle={SignButtonStyles.container} style={SignButtonStyles.text}/>
+                <SignButton title="Sign Up" onPress={navigateToStack(navigation, "sign-up")} containerStyle={SignButtonStyles.container} style={SignButtonStyles.text}/>
             </View>
 
             <View style={{
@@ -91,9 +100,9 @@ export default function LoginScreen() {
                 marginLeft: window.width / 2 - 100,
                 marginRight: window.width / 2 - 100
             }}>
-                <ClickableLogo source={imageMap['google-logo']} onPress={navigateToStack(navigation, "(tabs)")} />
-                <ClickableLogo source={imageMap['facebook-logo']} onPress={navigateToStack(navigation, "(tabs)")} />
-                <ClickableLogo source={imageMap['apple-logo']} onPress={navigateToStack(navigation, "(tabs)")} />
+                <ClickableLogo source={imageMap['google-logo']} onPress={navigateToStack(navigation, "(tabs)")} style={[ClickableStyles.clickableLogo, { width: 30, height: 30 }]} />
+                <ClickableLogo source={imageMap['facebook-logo']} onPress={navigateToStack(navigation, "(tabs)")} style={[ClickableStyles.clickableLogo, { width: 30, height: 30 }]} />
+                <ClickableLogo source={imageMap['apple-logo']} onPress={navigateToStack(navigation, "(tabs)")} style={[ClickableStyles.clickableLogo, { width: 30, height: 30 }]} />
             </View>
 
             <View style={{

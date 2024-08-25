@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { readNotification, writeNotification } from '@/temp/notificationServices';
+import { readNotification, writeNotification } from '@/components/stateManagement/Notification';
 import { NotificationScreenStyles } from '@/styles/Notification';
 import NotificationFilter from '@/components/UI/notification/NotificationFilter';
 import NotificationList from '@/components/UI/notification/NotificationList';
@@ -52,7 +52,7 @@ export default function Notification (userID: string) {
   return (
     <View style={NotificationScreenStyles.container}>
       <NotificationFilter filter={filter} setFilter={setFilter} />
-      <NotificationList list={list} filter={filter} userID={userID} />
+      {/* <NotificationList list={list} filter={filter} userID={userID} /> */}
     </View>
   );
 };
