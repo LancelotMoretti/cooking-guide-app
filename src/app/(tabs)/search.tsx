@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Image, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { TextBox } from '@/components/UI/textBox/TextBox';
-import { ButtonSearch } from '@/components/UI/button/Button';
+import { ButtonSearchStyles } from '@/styles/Search';
 import {SearchSuggestion, searchRecipes, saveSearchQuery, getRecentSearches } from '@/temp/searchServices';
 import { get } from 'firebase/database';
+import { ButtonImage } from '@/components/UI/button/ButtonImg';
+import { ButtonIonicons } from '@/components/UI/button/ButtonIonicons';
 
 // const SearchScreen = () => {
 //   const [searchQuery, setSearchQuery] = useState('');
@@ -70,13 +72,21 @@ const SearchScreen = () => {
       </View>
 
       <View style={styles.searchBarContainer}>
+        <View style={styles.searchBar}>
         <TextBox
           placeholder="Search recipe"
           value={searchQuery}
           onChangeText={setSearchQuery}
+          placeholderTextColor="#9EA0A4"
         />
+        </View>
 
-        <ButtonSearch title='' onPress={handleSearchModal} />
+        <ButtonIonicons
+          style={ButtonSearchStyles.button}
+          outerStyle={ButtonSearchStyles.container}
+          iconName="search"
+          onPress={handleSearchModal} />
+        
       </View>
 
       <Text style={styles.sectionTitle}>Recent Search</Text>
@@ -139,9 +149,9 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   searchBar: {
-    flex: 1,
+    flex: 7,
     padding: 8,
-    backgroundColor: '#E3F6F5',
+    //backgroundColor: '#E3F6F5',
     borderRadius: 10,
     marginRight: 8,
   },

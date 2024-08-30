@@ -39,7 +39,7 @@ export const TextBoxIngreStyles = StyleSheet.create({
         marginRight: 10,
         backgroundColor: '#9FEADD',
         borderRadius: 20,
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
     },
     input: {
         height: 40,

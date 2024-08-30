@@ -1,8 +1,8 @@
 import { ScrollView, View, Text, TextInput, StyleSheet, Image, Modal, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState } from 'react';
 import { AddRecipeHeader } from '@/styles/Header';
-import { ButtonPublish, ButtonAdd, ButtonAddVideo } from '@/components/UI/button/Button';
-import { ButtonImage } from '@/components/UI/button/ButtonImage';
+import { ButtonPublish_First, ButtonPublish, ButtonAdd, ButtonAddVideo } from '@/components/UI/button/Button';
+import { ButtonImage } from '@/components/UI/button/ButtonImg';
 import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction } from '@/components/UI/textBox/TextBox';
 import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
@@ -89,8 +89,8 @@ export default function AddRecipe() {
         <ScrollView style={styles.container}>
             <Text style={AddRecipeHeader}>Edit Recipe</Text>
             <View style={styles.button}>
-                <ButtonAdd title="Update" onPress={() => setModalVisible(true)} />
-                <ButtonImage style={ButtonTrashStyles.button} source={require('../../assets/images/Trash.png')} onPress={handleDelete} />
+                <ButtonPublish_First title="Update" onPress={() => setModalVisible(true)} />
+                <ButtonPublish_First title="Delete" onPress={handleDelete} />
             </View>
 
             <Modal
@@ -138,6 +138,7 @@ export default function AddRecipe() {
                 placeholder="Recipe description"
                 value={description}
                 onChangeText={setDescription}
+                placeholderTextColor="#9EA0A4"
             />
 
             <Text style={styles.title}>Time Recipe</Text>
@@ -145,6 +146,7 @@ export default function AddRecipe() {
                 placeholder="1hour, 30min,..."
                 value={timeRecipe}
                 onChangeText={setTimeRecipe}
+                placeholderTextColor="#9EA0A4"
             />
         
             <Text style={styles.title}>Ingredients</Text>
@@ -156,12 +158,14 @@ export default function AddRecipe() {
                             placeholder={`Amt `}
                             value={ingredient.amount}
                             onChangeText={(value) => handleAmountChange(index, value)}
+                            placeholderTextColor="#9EA0A4"
                             //onIconPress={() => {}}
                         />
                         <TextBoxIngredient
                             placeholder={`Ingredient ${index + 1}`}
                             value={ingredient.description}
                             onChangeText={(value) => handleDescriptionChange(index, value)}
+                            placeholderTextColor="#9EA0A4"
                         />
                         <ButtonImage style={ButtonTrashStyles.button} source={require('../../assets/images/Trash.png')} onPress={() => handleremoveIngredient(index)} />
                         
@@ -179,7 +183,7 @@ export default function AddRecipe() {
                             placeholder={`Instruction ${index + 1}                                  `}
                             value={instruction}
                             onChangeText={(text) => handleInstructionChange(text, index)}
-                            
+                            placeholderTextColor="#9EA0A4"
                         />
                         <ButtonImage style={ButtonTrashStyles.button} source={require('../../assets/images/Trash.png')} onPress={() => handleDeleteInstruction(index)} />
                     </View>
