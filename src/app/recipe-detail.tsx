@@ -23,7 +23,7 @@ export default function RecipeDetail() {
         {recipe ? (
         <ScrollView style={styles.container}>
             <View style={styles.image}>
-                <Image source={require('../../assets/images/addRecipe/Food.png')} style={{ width: '100%' }} />
+                <Image source={require('../assets/images/addRecipe/Food.png')} style={{ width: '100%' }} />
             </View>
 
             <Text style={RecipeDetailHeader}>{recipe.title}</Text>

@@ -128,9 +128,7 @@ export default function AddRecipe() {
                 </View>
             </Modal>
 
-            <View style={styles.image}>
-                <Image source={require('../../assets/images/addRecipe/Food.png')} style={{ width: '100%' }} />
-            </View>
+            
             
 
             <Text style={styles.title}>Desription</Text>
@@ -167,7 +165,11 @@ export default function AddRecipe() {
                             onChangeText={(value) => handleDescriptionChange(index, value)}
                             placeholderTextColor="#9EA0A4"
                         />
-                        <ButtonImage style={ButtonTrashStyles.button} source={require('../../assets/images/Trash.png')} onPress={() => handleremoveIngredient(index)} />
+                        <ButtonImage 
+                            outerStyle={ButtonTrashStyles.button}
+                            style={ButtonTrashStyles.container} 
+                            source={require('../assets/images/Trash.png')} 
+                            onPress={() => handleDeleteInstruction(index)} />
                         
                     </View>
                 ))}
@@ -185,7 +187,11 @@ export default function AddRecipe() {
                             onChangeText={(text) => handleInstructionChange(text, index)}
                             placeholderTextColor="#9EA0A4"
                         />
-                        <ButtonImage style={ButtonTrashStyles.button} source={require('../../assets/images/Trash.png')} onPress={() => handleDeleteInstruction(index)} />
+                        <ButtonImage 
+                            outerStyle={ButtonTrashStyles.button}
+                            style={ButtonTrashStyles.container} 
+                            source={require('../assets/images/Trash.png')} 
+                            onPress={() => handleDeleteInstruction(index)} />
                     </View>
                 ))}
             </View>

@@ -3,6 +3,8 @@ import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { useNavigation } from 'expo-router';
 import { useState } from 'react';
 import { ButtonPublish } from '@/components/UI/button/Button';
+import { ButtonImageText } from '@/components/UI/button/ButtonImageText';
+import { ButtonImageTextStyles } from '@/styles/Setting';
 
 export default function Setting() {
     const navigationSetting = useNavigation();
@@ -14,9 +16,33 @@ export default function Setting() {
     };
     return (
         <ScrollView>
-            <Button title="Help" onPress={navigateToStack(navigationSetting, "help")} />
-            <Button title="Foundation"  onPress={navigateToStack(navigationSetting, "foundation")} />
-            <Button title="Log out"  onPress={()=>setShowLogoutDialog(true)} />
+            <ButtonImageText
+                onPress={navigateToStack(navigationSetting, "help")}
+                outerStyleContainer={ButtonImageTextStyles.outercontainer}
+                interStyleContainer={ButtonImageTextStyles.intercontainer}
+                IoncStyle={ButtonImageTextStyles.ionc}
+                TextStyle={ButtonImageTextStyles.text}
+                source={require('../../assets/images/Help.png')} 
+                title="Help"
+            />
+            <ButtonImageText
+                onPress={navigateToStack(navigationSetting, "foudation")}
+                outerStyleContainer={ButtonImageTextStyles.outercontainer}
+                interStyleContainer={ButtonImageTextStyles.intercontainer}
+                IoncStyle={ButtonImageTextStyles.ionc}
+                TextStyle={ButtonImageTextStyles.text}
+                source={require('../../assets/images/foundation.png')} 
+                title="Foundation"
+            />
+            <ButtonImageText
+                onPress={navigateToStack(navigationSetting, "log-out")}
+                outerStyleContainer={ButtonImageTextStyles.outercontainer}
+                interStyleContainer={ButtonImageTextStyles.intercontainer}
+                IoncStyle={ButtonImageTextStyles.ionc}
+                TextStyle={ButtonImageTextStyles.text}
+                source={require('../../assets/images/log-out.png')} 
+                title="Log out"
+            />
             <Modal
                 animationType="slide"
                 transparent={true}
