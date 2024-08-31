@@ -1,8 +1,13 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { readProfileInformation } from '@/temp/accountServices';
+import { useNavigation } from 'expo-router';
+import { ButtonIonicons } from '@/components/UI/button/ButtonIonicons';
+import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
+import Setting from '@/app/setting/setting';
 
 export default function ProfileScreen() {
+    const navigator = useNavigation();
     const profile = readProfileInformation();
     const bio = 'Passionate about food and life 🍲🍵🍰🚋';
     const numberOfRecipe = 4;
@@ -21,6 +26,11 @@ export default function ProfileScreen() {
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
+            <ButtonIonicons 
+                iconName="settings-outline" 
+                onPress={navigateToStack(navigator, "setting")}
+            />
+
         <View style={styles.header}>
             <Image 
             source={{ uri: 'https://via.placeholder.com/150' }} 

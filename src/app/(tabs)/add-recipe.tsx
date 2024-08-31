@@ -10,6 +10,7 @@ import { remove } from 'firebase/database';
 import { saveNewRecipe, saveUpdatedRecipe } from '@/temp/recipeServices';
 import { writeNotification } from '@/temp/notificationServices';
 import { ButtonTrashStyles } from '@/styles/AddRecipe';
+import { ButtonAddVideoStyles } from '@/styles/AddRecipe';
 
 export default function AddRecipe() {
     const navigation = useNavigation();
@@ -171,7 +172,12 @@ export default function AddRecipe() {
                 style={styles.videoContainer}
                 imageStyle={{ borderRadius: 10 }}
             >
-                <ButtonAddVideo title="Add video recipe" onPress={handleAddVideo} />
+                
+                <ButtonImage 
+                            style={ButtonTrashStyles.container} 
+                            source={require('../../assets/images/addRecipe/video-bot.png')} 
+                            onPress={handleAddVideo} 
+                        />
                 
             </ImageBackground>
 

@@ -36,6 +36,11 @@ export default function RootLayout() {
         options={{ title: 'Notification'}}
         getId={() => 'notification'}
       />
+      <Stack.Screen
+        name="setting"
+        options={{ title: 'Setting'}}
+        getId={() => 'setting'}
+      />
     </Stack>
   );
 }

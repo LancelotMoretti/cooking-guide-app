@@ -1,6 +1,7 @@
-import { Tabs } from 'expo-router';
+import { Tabs, Stack } from 'expo-router';
 import React from 'react';
 import { TabBarIcon } from '@/components/routingAndMiddleware/TabBarIcon';
+// import Help from './setting/help';
 
 export default function TabLayout() {
     return (
@@ -14,9 +15,6 @@ export default function TabLayout() {
                     ),
                 }}
             />
-
-            
-
             <Tabs.Screen
                 name="recipe-detail"
                 options={{
@@ -26,7 +24,6 @@ export default function TabLayout() {
                     ),
                 }}
             />
-
             <Tabs.Screen
                 name="search"
                 options={{
@@ -36,7 +33,6 @@ export default function TabLayout() {
                     ),
                 }}
             />
-
             <Tabs.Screen
                 name="add-recipe"
                 options={{
@@ -46,13 +42,21 @@ export default function TabLayout() {
                     ),
                 }}
             />
-
             <Tabs.Screen
                 name="edit-recipe"
                 options={{
                     title: 'Edit',
                     tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
                         <TabBarIcon name={focused ? 'pencil' : 'pencil-outline'} color={color} />
+                    ),
+                }}
+            />
+            <Tabs.Screen
+                name="profile"
+                options={{
+                    title: 'Profile',
+                    tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
+                        <TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} />
                     ),
                 }}
             />
