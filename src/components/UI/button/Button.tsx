@@ -13,7 +13,7 @@ export class SignButton extends BaseButton {
     }
 }
 
-export class ButtonPublish_First extends BaseButton {
+export class ButtonFirst extends BaseButton {
     static defaultProps = {
         containerStyle: ButtonStyles.container,
         style: ButtonStyles.text,

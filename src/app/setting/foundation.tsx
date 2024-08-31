@@ -1,16 +1,65 @@
-import { View, Text, Dimensions, ScrollView } from 'react-native';
+import { View, Text, Dimensions, ScrollView, StyleSheet, FlatList } from 'react-native';
+
+const data = [
+    { id: '22127121', name: 'Đào Việt Hoàng' },
+    { id: '22127320', name: 'Bùi Tá Phát' },
+    { id: '22127420', name: 'Nguyễn Hà Nam Trân' },
+    { id: '22127433', name: 'Nguyễn Ngọc Anh Tú' },
+    { id: '22127476', name: 'Đặng Triệu Kha' }
+  ];
+  
+  const Item = ({ id, name }: { id: string, name: string }) => (
+    <View style={styles.itemContainer}>
+      <Text style={styles.itemId}>{id}</Text>
+      <Text style={styles.itemName}>{name}</Text>
+    </View>
+  );
+  
 
 export default function foundation() {
     return (
     <ScrollView>
-        <View>
-            <Text>22127121 - Đào Việt Hoàng</Text>
-            <Text>22127320 - Bùi Tá Phát</Text>
-            <Text>22127420 - Nguyễn Hà Nam Trân</Text>
-            <Text>22127433 - Nguyễn Ngọc Anh Tú</Text>
-            <Text>22127476 - Đặng Triệu Kha</Text>
-        </View>
+        <View style={styles.container}>
+      <FlatList
+        data={data}
+        renderItem={({ item }) => <Item id={item.id} name={item.name} />}
+        keyExtractor={item => item.id}
+        contentContainerStyle={styles.list}
+      />
+    </View>
     </ScrollView>
     )
 
 };
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f0f0f0',
+      paddingTop: 50,
+    },
+    list: {
+      paddingHorizontal: 20,
+    },
+    itemContainer: {
+      backgroundColor: '#fff',
+      padding: 15,
+      marginVertical: 8,
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3,
+    },
+    itemId: {
+      fontSize: 14,
+      color: '#888',
+      marginBottom: 5,
+    },
+    itemName: {
+      fontSize: 16,
+      color: '#333',
+      fontWeight: 'bold',
+    },
+  });

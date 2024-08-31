@@ -4,7 +4,7 @@ import { readProfileInformation } from '@/temp/accountServices';
 import { useNavigation } from 'expo-router';
 import { ButtonIonicons } from '@/components/UI/button/ButtonIonicons';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
-import Setting from '@/app/setting/setting';
+
 
 export default function ProfileScreen() {
     const navigator = useNavigation();

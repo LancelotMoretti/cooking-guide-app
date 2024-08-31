@@ -1,7 +1,7 @@
 import { ScrollView, View, Text, TextInput, StyleSheet, Image, Modal, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState } from 'react';
 import { AddRecipeHeader } from '@/styles/Header';
-import { ButtonPublish_First, ButtonPublish, ButtonAdd, ButtonAddVideo } from '@/components/UI/button/Button';
+import { ButtonFirst, ButtonPublish, ButtonAdd, ButtonAddVideo } from '@/components/UI/button/Button';
 import { ButtonImage } from '@/components/UI/button/ButtonImg';
 import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction } from '@/components/UI/textBox/TextBox';
 import { useNavigation } from 'expo-router';
@@ -89,8 +89,7 @@ export default function AddRecipe() {
         <ScrollView style={styles.container}>
             <Text style={AddRecipeHeader}>Edit Recipe</Text>
             <View style={styles.button}>
-                <ButtonPublish_First title="Update" onPress={() => setModalVisible(true)} />
-                <ButtonPublish_First title="Delete" onPress={handleDelete} />
+                <ButtonFirst title="Delete" onPress={handleDelete} />
             </View>
 
             <Modal
@@ -132,6 +131,7 @@ export default function AddRecipe() {
             <View style={styles.image}>
                 <Image source={require('../../assets/images/addRecipe/Food.png')} style={{ width: '100%' }} />
             </View>
+            
 
             <Text style={styles.title}>Desription</Text>
             <TextBox 

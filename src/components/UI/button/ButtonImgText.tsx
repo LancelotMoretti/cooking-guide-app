@@ -1,13 +1,16 @@
 import React from 'react';
-import { Pressable, Image, StyleSheet, GestureResponderEvent, ImageProps, View, ViewStyle } from 'react-native';
+import { Pressable, Image, StyleSheet, GestureResponderEvent, ImageProps, View, ViewStyle, Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-interface ButtonImageProps extends ImageProps {
+interface ButtonIoniconsProps extends ImageProps {
     onPress: (event: GestureResponderEvent) => void;
     style?: object;
     outerStyle?: ViewStyle; // Style for the outer View
+    iconName: string; // Icon name
+    title: string;
 }
 
-export class ButtonImage extends React.Component<ButtonImageProps> {
+export class ButtonIonicons extends React.Component<ButtonIoniconsProps> {
     render() {
         const { onPress, style, ...otherProps } = this.props;
         return (
@@ -16,10 +19,10 @@ export class ButtonImage extends React.Component<ButtonImageProps> {
             style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }, style]}
             onPress={onPress}
         >
-            <Image {...otherProps}/>
+            <Ionicons name={this.props.iconName as any} size={24} color="black" />
+            <Text>{this.props.title}</Text>
         </Pressable>
         </View>
         );
     }
 }
-
