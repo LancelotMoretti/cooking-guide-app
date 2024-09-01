@@ -5,7 +5,24 @@ import { TabBarIcon } from '@/components/routingAndMiddleware/TabBarIcon';
 
 export default function TabLayout() {
     return (
-        <Tabs>
+        <Tabs
+            screenOptions={{
+                tabBarActiveTintColor: 'green',
+                tabBarInactiveTintColor: 'gray',
+                tabBarStyle: {
+                backgroundColor: '#E1F2F7',
+                borderRadius: 25,
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                position: 'absolute',
+                bottom: 10,
+                left: 20,
+                right: 20,
+                height: 70,
+                },
+                tabBarShowLabel: false,
+            }}
+        >
             <Tabs.Screen
                 name="home"
                 options={{
