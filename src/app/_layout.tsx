@@ -42,6 +42,16 @@ export default function RootLayout() {
         getId={() => 'setting'}
       />
       <Stack.Screen
+        name="help"
+        options={{ title: 'Help'}}
+        getId={() => 'help'}
+      />
+      <Stack.Screen
+        name="foundation"
+        options={{ title: 'Foundation'}}
+        getId={() => 'foundation'}
+      />
+      <Stack.Screen
         name="recipe-detail"
         options={{ title: 'Recipe Detail'}}
         getId={() => 'recipe-detail'}

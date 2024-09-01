@@ -30,6 +30,7 @@ export default function TabLayout() {
                     tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
                         <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
                     ),
+                    header: () => null
                 }}
             />
             <Tabs.Screen
@@ -39,6 +40,7 @@ export default function TabLayout() {
                     tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
                         <TabBarIcon name={focused ? 'search' : 'search-outline'} color={color} />
                     ),
+                    header: () => null
                 }}
             />
             <Tabs.Screen
@@ -48,6 +50,7 @@ export default function TabLayout() {
                     tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
                         <TabBarIcon name={focused ? 'add' : 'add-sharp'} color={color} />
                     ),
+                    header: () => null
                 }}
             />
             <Tabs.Screen
@@ -57,6 +60,7 @@ export default function TabLayout() {
                     tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
                         <TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} />
                     ),
+                    header: () => null
                 }}
             />
         </Tabs>

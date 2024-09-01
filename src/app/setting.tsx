@@ -22,7 +22,7 @@ export default function Setting() {
                 interStyleContainer={ButtonImageTextStyles.intercontainer}
                 IoncStyle={ButtonImageTextStyles.ionc}
                 TextStyle={ButtonImageTextStyles.text}
-                source={require('../../assets/images/Help.png')} 
+                source={require('../assets/images/Help.png')} 
                 title="Help"
             />
             <ButtonImageText
@@ -31,7 +31,7 @@ export default function Setting() {
                 interStyleContainer={ButtonImageTextStyles.intercontainer}
                 IoncStyle={ButtonImageTextStyles.ionc}
                 TextStyle={ButtonImageTextStyles.text}
-                source={require('../../assets/images/foundation.png')} 
+                source={require('../assets/images/foundation.png')} 
                 title="Foundation"
             />
             <ButtonImageText
@@ -40,7 +40,7 @@ export default function Setting() {
                 interStyleContainer={ButtonImageTextStyles.intercontainer}
                 IoncStyle={ButtonImageTextStyles.ionc}
                 TextStyle={ButtonImageTextStyles.text}
-                source={require('../../assets/images/log-out.png')} 
+                source={require('../assets/images/log-out.png')} 
                 title="Log out"
             />
             <Modal
