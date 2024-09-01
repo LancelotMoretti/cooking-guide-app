@@ -57,7 +57,7 @@ export default function RecipeDetail() {
         </ScrollView>
         ) : (
             <Text>Loading...</Text>
-          )}
+        )}
         </KeyboardAvoidingView>
     );
 
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     container: {
         
         marginHorizontal: 30,
-      },
+    },
     button: {
         flexDirection: 'row',
         justifyContent:'space-between',
@@ -123,13 +123,13 @@ const styles = StyleSheet.create({
 
     ingredientTextContainer: {
         flex: 1,
-      },
-      ingredientDescription: {
+    },
+    ingredientDescription: {
         fontSize: 16,
-      },
-      ingredientAmount: {
+    },
+    ingredientAmount: {
         color: 'gray',
-      },
+    },
 
     instructionsList: {
         marginBottom: 20,

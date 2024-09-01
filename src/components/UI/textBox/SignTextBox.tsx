@@ -4,25 +4,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { BaseTextBox, BaseTextBoxProps } from './BaseTextBox';
 import { SignBoxStyles } from '@/styles/Sign';
 
-interface SignTextBoxProps extends BaseTextBoxProps {
-    containerStyle?: object;
-    inputContainerStyle?: object;
-    style?: object;
-}
-
 export class SignTextBox extends BaseTextBox {
-    containerStyle: object | undefined;
-    inputContainerStyle: object | undefined;
-
-    constructor(props: SignTextBoxProps) {
-        super(props);
-        this.containerStyle = props.containerStyle;
-        this.inputContainerStyle = props.inputContainerStyle
-    }
     render() {
         return (
-            <View style={this.containerStyle}>
-                <View style={this.inputContainerStyle}>
+            <View style={SignBoxStyles.container}>
+                <View style={SignBoxStyles.inputContainer}>
                     {super.render()}
                 </View>
             </View>
@@ -30,7 +16,7 @@ export class SignTextBox extends BaseTextBox {
     }
 }
 
-export const SecureSignTextBox: React.FC<SignTextBoxProps> = (props) => {
+export const SecureSignTextBox: React.FC<BaseTextBoxProps> = (props) => {
     const [secureTextEntry, setSecureTextEntry] = useState(true);
 
     return (

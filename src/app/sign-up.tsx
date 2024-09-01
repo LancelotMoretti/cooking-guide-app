@@ -4,7 +4,6 @@ import { ClickableText } from '@/components/UI/clickable/ClickableText';
 import { SignButton } from '@/components/UI/button/Button';
 import { SecureSignTextBox, SignTextBox } from '@/components/UI/textBox/SignTextBox';
 import { SignUpHeader } from '@/styles/Header';
-import { useToggle } from '@/hooks/useToggle';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { signUpAccount } from '@/temp/registerServices';
 import { useNavigation } from 'expo-router';
@@ -99,8 +98,6 @@ export default function SignUpScreen() {
             }}>
                 <Text style={SignBoxStyles.label}>Full Name</Text>
                 <SignTextBox
-                    containerStyle={SignBoxStyles.container}
-                    inputContainerStyle={SignBoxStyles.inputContainer}
                     style={SignBoxStyles.input}
                     placeholder="John Doe"
                     secureTextEntry={false}
@@ -109,8 +106,6 @@ export default function SignUpScreen() {
                 />
                 <Text style={SignBoxStyles.label}>Email</Text>
                 <SignTextBox
-                    containerStyle={SignBoxStyles.container}
-                    inputContainerStyle={SignBoxStyles.inputContainer}
                     style={SignBoxStyles.input}
                     placeholder="example@example.com"
                     secureTextEntry={false}
@@ -119,8 +114,6 @@ export default function SignUpScreen() {
                 />
                 <Text style={SignBoxStyles.label}>Phone Number</Text>
                 <SignTextBox
-                    containerStyle={SignBoxStyles.container}
-                    inputContainerStyle={SignBoxStyles.inputContainer}
                     style={SignBoxStyles.input}
                     placeholder="123-456-7890"
                     secureTextEntry={false}
@@ -129,8 +122,6 @@ export default function SignUpScreen() {
                 />
                 <Text style={SignBoxStyles.label}>Date of Birth (optional)</Text>
                 <SignTextBox
-                    containerStyle={SignBoxStyles.container}
-                    inputContainerStyle={SignBoxStyles.inputContainer}
                     style={SignBoxStyles.input}
                     placeholder="MM/DD/YYYY"
                     secureTextEntry={false}

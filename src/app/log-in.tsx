@@ -21,8 +21,6 @@ export default function LoginScreen() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    
-    const [secureTextEntry, toggleSecureEntry] = useToggle(true);
 
     const handleLogin = () => {
         loginAndGoToHome(navigation, email, password);
@@ -43,8 +41,6 @@ export default function LoginScreen() {
             }}>
                 <Text style={SignBoxStyles.label}>Email</Text>
                 <SignTextBox
-                    containerStyle={SignBoxStyles.container}
-                    inputContainerStyle={SignBoxStyles.inputContainer}
                     style={SignBoxStyles.input}
                     placeholder="example@example.com"
                     secureTextEntry={false}
@@ -54,7 +50,6 @@ export default function LoginScreen() {
                 <Text style={SignBoxStyles.label}>Password</Text>
                 <SecureSignTextBox 
                     placeholder="Enter your password"
-                    secureTextEntry={secureTextEntry}
                     value={password}
                     onChangeText={setPassword}
                     style={SignBoxStyles.container}
