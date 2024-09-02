@@ -26,7 +26,7 @@ export default function Setting() {
                 title="Help"
             />
             <ButtonImageText
-                onPress={navigateToStack(navigationSetting, "foudation")}
+                onPress={navigateToStack(navigationSetting, "foundation")}
                 outerStyleContainer={ButtonImageTextStyles.outercontainer}
                 interStyleContainer={ButtonImageTextStyles.intercontainer}
                 IoncStyle={ButtonImageTextStyles.ionc}

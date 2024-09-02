@@ -12,6 +12,7 @@ export interface Recipe {
     instructions: string[];
     video: any;
     time: Date;
+    meal: { breakfast: boolean, lunch: boolean, dinner: boolean };
     status: string
 }
 
@@ -33,6 +34,7 @@ export function readRecipesListFromDatabase() {
                     ingredients: data[key].ingredients,
                     instructions: data[key].instructions,
                     video: data[key].video,
+                    meal: data[key].meal,
                     time: new Date(data[key].time),
                     status: data[key].status
                 }));
@@ -73,6 +75,7 @@ export function readRecipeFromDatabase(recipeId: string) {
                     ingredients: data.ingredients,
                     instructions: data.instructions,
                     video: data.video,
+                    meal: data.meal,
                     time: new Date(data.time),
                     status: data.status
 

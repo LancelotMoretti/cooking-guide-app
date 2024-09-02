@@ -148,3 +148,38 @@ export const ButtonTrashStyles = StyleSheet.create({
         alignItems: 'center',
       },
 });
+
+export const ButtonChooseStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 5,
+        marginBottom: 10,
+        
+      },
+    unselectText: {
+        color: '#129575',
+        fontWeight: 'bold',
+    },
+    selectText: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+    },
+      unselectButton: {
+        height: 30,
+        backgroundColor: '#9FEADD',
+        paddingHorizontal: 10,
+        borderRadius: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      selectButton: {
+        height: 30,
+        backgroundColor: '#129575',
+        paddingHorizontal: 10,
+        borderRadius: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+});

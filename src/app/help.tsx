@@ -1,22 +1,42 @@
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput, FlatList, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, Image } from 'react-native';
 import { useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Help() {
     const [selectedTab, setSelectedTab] = useState('General');
 
     const generalData = [
-        { id: '1', question: 'How to use the app?', answer: 'Explanation of how to use the app.' },
-        { id: '2', question: 'How to save favorite recipes?', answer: 'Explanation of how to save favorite recipes.' },
-        { id: '3', question: 'How to get notifications?', answer: 'Explanation of how to get notifications.' },
+        {
+            id: '1',
+            question: 'How to post a recipe?',
+            answer: (
+                <Text>
+                    1. Click icon <Ionicons name="add" size={20} color="black" /> {"\n"}
+                    2. Assign information about the recipe {"\n"}
+                    3. Click "Publish" to publish the recipe or "Delete" to delete the recipe
+                </Text>
+            ),
+        },
+        {
+            id: '2',
+            question: 'How to search a recipe?',
+            answer: (
+                <Text>
+                    1. Click icon <Ionicons name="search" size={20} color="black" /> {"\n"}
+                    2. Enter the name of the dish for the recipe in the search bar {"\n"}
+                    3. Click the icon <Ionicons name="search" size={20} color="black" /> next to the search bar
+                </Text>
+            ),
+        },
         // Add more questions and answers here
     ];
 
     const contactData = [
-        { id: '1', name: 'dtkha22@clc.fitus.edu.vn' }, // Replace with actual icon paths
-        { id: '2', name: 'nhntran22@clc.fitus.edu.vn'},
+        { id: '1', name: 'dtkha22@clc.fitus.edu.vn' },
+        { id: '2', name: 'nhntran22@clc.fitus.edu.vn' },
         { id: '3', name: 'btphat22@clc.fitus.edu.vn' },
-        { id: '4', name: 'dvhoang22@clc.fitus.edu.vn'},
-        { id: '5', name: 'nnatu22@clc.fitus.edu.vn'},
+        { id: '4', name: 'dvhoang22@clc.fitus.edu.vn' },
+        { id: '5', name: 'nnatu22@clc.fitus.edu.vn' },
     ];
 
     const renderGeneralItem = ({ item }: { item: any }) => (
@@ -39,14 +59,14 @@ export default function Help() {
                 <Text style={styles.headerText}>Help Center</Text>
             </View>
             <View style={styles.tabContainer}>
-                <TouchableOpacity 
-                    style={[styles.tab, selectedTab === 'General' && styles.activeTab]} 
+                <TouchableOpacity
+                    style={[styles.tab, selectedTab === 'General' && styles.activeTab]}
                     onPress={() => setSelectedTab('General')}
                 >
                     <Text style={[styles.tabText, selectedTab === 'General' && styles.activeTabText]}>FAQ</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                    style={[styles.tab, selectedTab === 'Contact Us' && styles.activeTab]} 
+                <TouchableOpacity
+                    style={[styles.tab, selectedTab === 'Contact Us' && styles.activeTab]}
                     onPress={() => setSelectedTab('Contact Us')}
                 >
                     <Text style={[styles.tabText, selectedTab === 'Contact Us' && styles.activeTabText]}>Contact Us</Text>
@@ -55,7 +75,7 @@ export default function Help() {
 
             {selectedTab === 'General' && (
                 <View>
-                    <FlatList 
+                    <FlatList
                         data={generalData}
                         renderItem={renderGeneralItem}
                         keyExtractor={item => item.id}
@@ -65,7 +85,7 @@ export default function Help() {
 
             {selectedTab === 'Contact Us' && (
                 <View>
-                    <FlatList 
+                    <FlatList
                         data={contactData}
                         renderItem={renderContactItem}
                         keyExtractor={item => item.id}
