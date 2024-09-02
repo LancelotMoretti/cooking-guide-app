@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { readProfileInformation } from '@/temp/accountServices';
+import { readProfileInformation } from '@/components/services/profileService';
 import { useNavigation } from 'expo-router';
 import { ButtonIonicons } from '@/components/UI/button/ButtonIonicons';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
@@ -10,10 +10,10 @@ import { useState } from 'react';
 export default function ProfileScreen() {
     const navigator = useNavigation();
     const profile = readProfileInformation();
-    const bio = 'Passionate about food and life 🍲🍵🍰🚋';
-    const numberOfRecipe = 4;
-    const numberOfFollowers = 2500000;
-    const numberOfFollowing = 259;
+    const bio = 'Bio here';
+    const numberOfRecipe = 0;
+    const numberOfFollowers = 0;
+    const numberOfFollowing = 0;
 
     const formatNumber = (num: number) => {
         if (num > 999 && num < 1000000) {

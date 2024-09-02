@@ -10,7 +10,7 @@ export interface Profile {
     dateOfBirth: string;
 }
 
-export function useProfile(): Profile | null {
+export function readProfileInformation() {
     const [profile, setProfile] = useState<Profile | null>(null);
 
     useEffect(() => {
