@@ -1,23 +1,26 @@
-import { ScrollView, View, Text, TextInput, StyleSheet, Image, ImageBackground, Modal, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
-import { useState } from 'react';
+import { ScrollView, View, Text, TextInput, StyleSheet, Image, ImageBackground, Modal, TouchableOpacity, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import React, { useState } from 'react';
+import * as ImagePicker from 'expo-image-picker';
 import { AddRecipeHeader } from '@/styles/Header';
 import { ButtonFirst, ButtonPublish, ButtonAdd, ButtonAddVideo} from '@/components/UI/button/Button';
 import { ButtonImage } from '@/components/UI/button/ButtonImg';
+import { ButtonChoose } from '@/components/UI/button/ButtonChoose';
 import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction } from '@/components/UI/textBox/TextBox';
 import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { remove } from 'firebase/database';
 import { saveNewRecipe, saveUpdatedRecipe } from '@/temp/recipeServices';
-import { ButtonTrashStyles } from '@/styles/AddRecipe';
-import { ButtonAddVideoStyles } from '@/styles/AddRecipe';
+import { ButtonTrashStyles,  ButtonAddVideoStyles, ButtonChooseStyles } from '@/styles/AddRecipe';
+
 
 export default function AddRecipe() {
     const navigation = useNavigation();
     
-    const [video, setVideo] = useState('');
+    const [video, setVideo] = useState<any | null>(null);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [timeRecipe, setTimeRecipe] = useState('');
+    const [meal, setMeal] = useState({ breakfast: false, lunch: false, dinner: false });
     const [ingredients, setIngredients] = useState([{ amount: '', description: '' }]);
 
     const [instructions, setInstructions] = useState(['']);
@@ -29,7 +32,18 @@ export default function AddRecipe() {
         setModalVisible(false);
     };
 
+    const validateFields = (): boolean => {
+        if (title == '' || description == '' || timeRecipe == '' || ingredients.length === 0 || instructions.length === 0 || !meal) {
+            Alert.alert('Missing Information', 'Please fill in all the fields before publishing.');
+            return false;
+        }
+        return true;
+    };
+
+
     const handlePublish = () => {
+        if (validateFields()) {
+
         saveNewRecipe(
             {
                 recipeID: '0',
@@ -39,13 +53,15 @@ export default function AddRecipe() {
                 timeDuration: timeRecipe,
                 ingredients: ingredients,
                 instructions: instructions,
-                video: "",
+                video: video,
                 time: new Date(),
+                meal: meal,
                 status: "Pending"
             }
         );
         setModalVisible(false);
         console.log('Recipe published');
+    }
     };
 
     const handleDelete = () => {
@@ -61,8 +77,18 @@ export default function AddRecipe() {
         setDeleteModalVisible(false);
     };
 
-    const handleAddVideo = () => {
+    const handleAddVideo = async () => {
         // Xử lý thêm video ở đây
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All, // Allows both image and video selection
+            allowsEditing: true, // Allows the user to edit the media (crop, etc.)
+            aspect: [4, 3], // The aspct ratio the user can crop to
+            quality: 1, // The quality of the selected media
+        });
+
+        if (result.assets && result.assets.length > 0) {
+            setVideo(result.assets[0].uri); // Update to handle selected media
+        }
         
     };
     
@@ -104,6 +130,8 @@ export default function AddRecipe() {
         setInstructions(newInstructions);
     };
 
+    
+
     return (
         <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -131,17 +159,6 @@ export default function AddRecipe() {
                             <ButtonPublish title="Cancel" onPress={handleCloseModal} />
                             <ButtonPublish title="Publish" onPress={() => {
                                 handlePublish();
-                                saveNewRecipe({
-                                    recipeID: '0', 
-                                    userID: '0',
-                                    title: title,
-                                    description: description,
-                                    timeDuration: timeRecipe,
-                                    ingredients: ingredients,
-                                    instructions: instructions,
-                                    video: "",
-                                    time: new Date(),
-                                    status: "Pending"})
                             }} />
                         </View>
                     </View>
@@ -177,8 +194,9 @@ export default function AddRecipe() {
                             source={require('../../assets/images/addRecipe/video-bot.png')} 
                             onPress={handleAddVideo} 
                         />
-                
+                {video && <Image source={{ uri: video }} style={styles.backgroundVideo} />}
             </ImageBackground>
+
 
             <Text style={styles.title}>Title</Text>
             <TextBox 
@@ -203,6 +221,42 @@ export default function AddRecipe() {
                 onChangeText={setTimeRecipe}
                 placeholderTextColor="#9EA0A4"
             />
+
+            <Text style={styles.title}>Meal</Text>
+            <View style={styles.button}>
+                <ButtonChoose 
+                    title="Breakfast" 
+                    onPress={() => setMeal({ ...meal, breakfast: !meal.breakfast })} 
+                    selected={meal.breakfast}
+                    containerStyle={ButtonChooseStyles.container}
+                    unselTextStyle={ButtonChooseStyles.unselectText}
+                    selTextStyle={ButtonChooseStyles.selectText}
+                    unselStyle={ButtonChooseStyles.unselectButton}
+                    selStyle={ButtonChooseStyles.selectButton}
+                    />
+
+                <ButtonChoose 
+                    title="Lunch" 
+                    onPress={() => setMeal({ ...meal, lunch: !meal.lunch })}
+                    selected={meal.lunch}
+                    containerStyle={ButtonChooseStyles.container}
+                    unselTextStyle={ButtonChooseStyles.unselectText}
+                    selTextStyle={ButtonChooseStyles.selectText}
+                    unselStyle={ButtonChooseStyles.unselectButton}
+                    selStyle={ButtonChooseStyles.selectButton}
+                />
+
+                <ButtonChoose 
+                    title="Dinner" 
+                    onPress={() => setMeal({ ...meal, dinner: !meal.dinner })}
+                    selected={meal.dinner}
+                    containerStyle={ButtonChooseStyles.container}
+                    unselTextStyle={ButtonChooseStyles.unselectText}
+                    selTextStyle={ButtonChooseStyles.selectText}
+                    unselStyle={ButtonChooseStyles.unselectButton}
+                    selStyle={ButtonChooseStyles.selectButton}
+                />
+            </View>
         
             <Text style={styles.title}>Ingredients</Text>
 
@@ -359,5 +413,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginBottom: 5,
     },
-    
+    backgroundVideo: {
+        width: '100%',
+        height: 300, // Adjust height as per your needs
+      },
 });
