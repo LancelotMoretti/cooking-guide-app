@@ -6,7 +6,7 @@ export interface SearchSuggestion {
     query: string;
 }
 
-const RECENT_SEARCHES_LIMIT = 10;
+const RECENT_SEARCHES_LIMIT = 7;
 
 export const getRecentSearches = async (userID: string): Promise<SearchSuggestion[]> => {
     const searchesRef = ref(db, `${userID}/recentSearches`);

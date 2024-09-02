@@ -61,6 +61,11 @@ export default function RootLayout() {
         options={{ title: 'Edit Recipe'}}
         getId={() => 'edit-recipe'}
       />
+      <Stack.Screen
+        name="moderator"
+        options={{ title: 'Moderator'}}
+        getId={() => 'moderator'}
+      />
     </Stack>
   );
 }

@@ -4,7 +4,7 @@ import { Notification } from '@/components/models/Notification';
 export class FirebaseService {
     static async getUser(userID: string): Promise<User> {
         // Firebase logic to get user
-        return new User(userID, 'username', 'email', 'password', 'User', 'Free', [], [], [], [], []);
+        return new User(userID, 'username', 'email', 'password', 'User', false, 'Free', [], [], [], [], [])
     }
 
     static async updateUser(userID: string, data: Partial<User>): Promise<void> {

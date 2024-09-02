@@ -82,8 +82,8 @@ export const searchRecipes = async (query: string): Promise<Recipe[]> => {
             if (data) {
                 Object.keys(data).forEach((recipeID) => {
                     const recipeData = data[recipeID];
-                    if (recipeData.title.toLowerCase().includes(query.toLowerCase()) ||
-                        recipeData.description.toLowerCase().includes(query.toLowerCase())) {
+                    if ((recipeData.title?.toLowerCase().includes(query.toLowerCase())) ||
+                        (recipeData.description?.toLowerCase().includes(query.toLowerCase()))) {
                         recipes.push(Recipe.fromPlainObject(recipeData));
                     }
                 });

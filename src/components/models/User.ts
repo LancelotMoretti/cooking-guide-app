@@ -9,6 +9,7 @@ interface UserProps extends AccountProps {
     followers: string[];
     following: string[];
 
+    getType(): 'User' | 'Admin' | 'Moderator';
     getUserType(): 'Free' | 'Premium';
     getRecipesID(): string[];
     getSavedRecipesID(): string[];
@@ -35,12 +36,15 @@ interface UserProps extends AccountProps {
 }
 
 export class User extends Account implements UserProps {
+    public banned: boolean;
+
     constructor(
         accountID: string,
         username: string,
         email: string,
         password: string,
         type: 'User' | 'Admin' | 'Moderator',
+        banned: boolean = false,
         public userType: 'Free' | 'Premium',
         public recipesID: string[],
         public savedRecipesID: string[],
@@ -49,6 +53,19 @@ export class User extends Account implements UserProps {
         public following: string[]
     ) {
         super(accountID, username, email, password, type);
+        this.banned = banned;
+    }
+
+    banUser(): void {
+        this.banned = true;
+    }
+    
+    unbanUser(): void {
+        this.banned = false;
+    }
+    
+    isBanned(): boolean {
+        return this.banned;
     }
 
     addFollower(followerID: string): void {
@@ -93,6 +110,10 @@ export class User extends Account implements UserProps {
 
     getSavedRecipesID(): string[] {
         return this.savedRecipesID;
+    }
+
+    getType(): 'User' | 'Admin' | 'Moderator' {
+        return this.type;
     }
 
     getUserType(): 'Free' | 'Premium' {

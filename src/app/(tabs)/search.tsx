@@ -22,10 +22,12 @@ const SearchScreen = () => {
   });
 
   const handleSearchModal = () => {
-    searchRecipes(searchQuery).then((recipes) => {
+    const query = searchQuery || '';
+
+    searchRecipes(query).then((recipes) => {
       setRecipes(recipes);
     });
-    saveSearchQuery('1', searchQuery);
+    saveSearchQuery('1', query);
   };
 
   const handleKeyPress = (e: any) => {
@@ -100,14 +102,14 @@ const SearchScreen = () => {
           <TouchableOpacity 
             style={styles.recipeCard}
             onPress={() => navigateToStack(navigation, 'recipe-detail')()}
-            >
+          >
             <View style={styles.recipeInfo}>
-              <Text style={styles.recipeTitle}>{item.title}</Text>
-              <Text style={styles.recipeChef}>By {item.userID}</Text>
+              <Text style={styles.recipeTitle}>{item.title || 'Unknown Title'}</Text>
+              <Text style={styles.recipeChef}>By {item.userID || 'Unknown User'}</Text>
             </View>
             <View style={styles.recipeRatingContainer}>
               <Ionicons name="star" size={14} color="#FFD700" />
-              <Text style={styles.recipeRating}>{item.rating}</Text>
+              <Text style={styles.recipeRating}>{item.rating || 0}</Text>
             </View>
           </TouchableOpacity>
         )}
