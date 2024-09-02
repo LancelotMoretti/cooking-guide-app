@@ -4,6 +4,7 @@ import { readProfileInformation } from '@/temp/accountServices';
 import { useNavigation } from 'expo-router';
 import { ButtonIonicons } from '@/components/UI/button/ButtonIonicons';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
+import { useState } from 'react';
 
 
 export default function ProfileScreen() {
@@ -24,6 +25,8 @@ export default function ProfileScreen() {
         }
     }
 
+    const [selectedTab, setSelectedTab] = useState('Recipe');
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <ButtonIonicons 
@@ -31,72 +34,43 @@ export default function ProfileScreen() {
                 onPress={navigateToStack(navigator, "setting")}
             />
 
-        <View style={styles.header}>
-            <Image 
-            source={{ uri: 'https://via.placeholder.com/150' }} 
-            style={styles.profileImage} 
-            />
-            <Text style={styles.name}>{}</Text>
-            <Text style={styles.description}>{bio}</Text>
-            <View style={styles.stats}>
-            <View style={styles.stat}>
-                <Text style={styles.statNumber}>{numberOfRecipe}</Text>
-                <Text style={styles.statLabel}>Recipe</Text>
+            <View style={styles.header}>
+                <Image 
+                source={{ uri: 'https://via.placeholder.com/150' }} 
+                style={styles.profileImage} 
+                />
+                <Text style={styles.name}>{profile?.fullName}</Text>
+                <Text style={styles.description}>{bio}</Text>
+                <View style={styles.stats}>
+                    <View style={styles.stat}>
+                        <Text style={styles.statNumber}>{numberOfRecipe}</Text>
+                        <Text style={styles.statLabel}>Recipe</Text>
+                    </View>
+                    <View style={styles.stat}>
+                        <Text style={styles.statNumber}>{formatNumber(numberOfFollowers)}</Text>
+                        <Text style={styles.statLabel}>Followers</Text>
+                    </View>
+                    <View style={styles.stat}>
+                        <Text style={styles.statNumber}>{formatNumber(numberOfFollowing)}</Text>
+                        <Text style={styles.statLabel}>Following</Text>
+                    </View>
+                </View>
             </View>
-            <View style={styles.stat}>
-                <Text style={styles.statNumber}>{formatNumber(numberOfFollowers)}</Text>
-                <Text style={styles.statLabel}>Followers</Text>
-            </View>
-            <View style={styles.stat}>
-                <Text style={styles.statNumber}>{formatNumber(numberOfFollowing)}</Text>
-                <Text style={styles.statLabel}>Following</Text>
-            </View>
-            </View>
-        </View>
 
-        <View style={styles.tabs}>
-            <TouchableOpacity style={styles.tabActive}>
-            <Text style={styles.tabTextActive}>Recipe</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.tab}>
-            <Text style={styles.tabText}>Videos</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.tab}>
-            <Text style={styles.tabText}>Tag</Text>
-            </TouchableOpacity>
-        </View>
-        
-        {/* example of recipe, can delete later */}
-        <View style={styles.recipe}>
-            <Image 
-            source={{ uri: 'https://via.placeholder.com/300' }} 
-            style={styles.recipeImage} 
-            />
-            <View style={styles.recipeInfo}>
-            <Text style={styles.recipeTitle}>Traditional spare ribs baked</Text>
-            <Text style={styles.recipeChef}>By Chef John</Text>
-            <View style={styles.recipeMeta}>
-                <Text style={styles.recipeTime}>20 min</Text>
-                <Text style={styles.recipeRating}>⭐ 4.0</Text>
+            <View style={styles.tabs}>
+                <TouchableOpacity
+                style={selectedTab === 'Recipe' ? styles.tabActive : styles.tab}
+                onPress={() => setSelectedTab('Recipe')}
+                >
+                    <Text style={selectedTab === 'Recipe' ? styles.tabTextActive : styles.tabText}>Recipe</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                style={selectedTab === 'Favorites' ? styles.tabActive : styles.tab}
+                onPress={() => setSelectedTab('Favorites')}
+                >
+                    <Text style={selectedTab === 'Favorites' ? styles.tabTextActive : styles.tabText}>Favorites</Text>
+                </TouchableOpacity>
             </View>
-            </View>
-        </View>
-
-        <View style={styles.recipe}>
-            <Image 
-            source={{ uri: 'https://via.placeholder.com/300' }} 
-            style={styles.recipeImage} 
-            />
-            <View style={styles.recipeInfo}>
-            <Text style={styles.recipeTitle}>Spice roasted chicken with flavored rice</Text>
-            <Text style={styles.recipeChef}>By Mark Kelvin</Text>
-            <View style={styles.recipeMeta}>
-                <Text style={styles.recipeTime}>20 min</Text>
-                <Text style={styles.recipeRating}>⭐ 4.0</Text>
-            </View>
-            </View>
-        </View>
-        {/* end of example */}
         </ScrollView>
     );
 };
@@ -129,7 +103,7 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: 14,
-        textAlign: 'center',
+        textAlign: 'left',
         marginVertical: 10,
     },
     more: {
