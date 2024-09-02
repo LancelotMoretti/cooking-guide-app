@@ -53,6 +53,18 @@ export default function TabLayout() {
                     header: () => null
                 }}
             />
+
+            <Tabs.Screen
+                name="notification"
+                options={{
+                    title: 'Notification',
+                    tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
+                        <TabBarIcon name={focused ? 'notifications' : 'notifications-outline'} color={color} />
+                    ),
+                    header: () => null
+                }}
+            />
+
             <Tabs.Screen
                 name="profile"
                 options={{

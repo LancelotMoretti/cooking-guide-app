@@ -4,16 +4,8 @@ import { useEffect, useState } from "react";
 import { NotificationItemProps } from "@/components/UI/notification/NotificationItem";
 import { Notification } from "@/components/models/Notification";
 
-interface NotificationData {
-    id: string; // "0" for new notification
-    recipeID: string;
-    read: boolean;
-    checkDelete: boolean;
-    link: string;
-}
-
-export const useNotifications = (userID: string): NotificationItemProps[] => {
-    const [notifications, setNotifications] = useState<NotificationItemProps[]>([]);
+export const useNotifications = (userID: string): Notification[] => {
+    const [notifications, setNotifications] = useState<Notification[]>([]);
 
     useEffect(() => {
         const notificationsRef = ref(db, `${userID}/notifications`);
@@ -21,17 +13,17 @@ export const useNotifications = (userID: string): NotificationItemProps[] => {
         const handleData = (snapshot: any) => {
             const data = snapshot.val();
             if (data) {
-                const notificationsArray: NotificationItemProps[] = Object.keys(data).map(key => ({
-                    notification: Notification.fromPlainObject({
+                const notificationsArray: Notification[] = Object.keys(data).map(key => 
+                    Notification.fromPlainObject({
                         notificationID: key,
                         recipeID: data[key].recipeID,
                         date: data[key].date,
                         content: data[key].content,
                         read: data[key].read,
-                    }),
-                    onReadChange: () => void {},
-                    onDeleted: () => void {},
-                }));
+                        link: data[key].link,  // Assuming link is part of Notification
+                        // Add any other necessary fields here
+                    })
+                );
                 setNotifications(notificationsArray);
             } else {
                 setNotifications([]);

@@ -8,7 +8,6 @@ import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { remove } from 'firebase/database';
 import { saveNewRecipe, saveUpdatedRecipe } from '@/temp/recipeServices';
-import { writeNotification } from '@/temp/notificationServices';
 import { ButtonTrashStyles } from '@/styles/AddRecipe';
 import { ButtonAddVideoStyles } from '@/styles/AddRecipe';
 

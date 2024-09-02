@@ -65,6 +65,13 @@ export const deleteRecipe = (recipeID: string): void => {
     remove(recipeRef);
 }
 
+export const setStatusRecipe = (recipeID: string, status: string): void => {
+    const recipeRef = ref(db, `recipes/${recipeID}`);
+    update(recipeRef, {
+        status
+    });
+}
+
 export const searchRecipes = async (query: string): Promise<Recipe[]> => {
     const recipesRef = ref(db, 'recipes');
     const recipes: Recipe[] = [];

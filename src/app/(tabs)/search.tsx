@@ -1,55 +1,22 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Switch, FlatList, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { TextBox } from '@/components/UI/textBox/TextBox';
-import { ButtonSearchStyles } from '@/styles/Search';
-import {SearchSuggestion, searchRecipes, saveSearchQuery, getRecentSearches } from '@/temp/searchServices';
-import { get } from 'firebase/database';
-import { ButtonImage } from '@/components/UI/button/ButtonImg';
 import { ButtonIonicons } from '@/components/UI/button/ButtonIonicons';
+import { SearchSuggestion, saveSearchQuery, getRecentSearches }  from '@/components/services/searchService';
+import { searchRecipes } from '@/components/services/recipeService';
+import { Recipe} from '../../components/models/Recipe';
+import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
+import { useNavigation } from 'expo-router';
 
-// const SearchScreen = () => {
-//   const [searchQuery, setSearchQuery] = useState('');
-//   const [search, setSearch] = useState(false);
-
-//   const recentSearches = [
-//     { id: '1', title: 'Traditional spare ribs baked', chef: 'Chef John', rating: 4.8},
-//     { id: '2', title: 'Lamb chops with fruity couscous and mint', chef: 'Spicy Kelly', rating: 4.9},
-//     { id: '3', title: 'Spice roasted chicken with flavored rice', chef: 'Mark Smith', rating: 4.7},
-//     { id: '4', title: 'Chinese style Egg fried rice with sliced pork', chef: 'Yumei Chen', rating: 4.6},
-//     // Add more recipes as needed
-//   ];
-
-//   const handleSearchModal = () => {
-//     setSearch(true);
-// };
-//   return (
-//     <View style={styles.container}>
-//       <View style={styles.header}>
-//         <Text style={styles.headerTitle}>Search recipes</Text>
-//       </View>
-
-//       <View style={styles.searchBarContainer}>
-//         <TextBox
-//           placeholder="Search recipe"
-//           value={searchQuery}
-//           onChangeText={setSearchQuery}
-//         />
-
-//         <ButtonSearch onPress={handleSearchModal} />
-
-//       </View>
-
-//       <Text style={styles.sectionTitle}>Recent Search</Text>
-
-//     </View>
-//   );
-// };
 
 const SearchScreen = () => {
+  const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
-  const [recipes, setRecipes] = useState<string[]>([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [recentSearches, setRecentSearches] = useState<SearchSuggestion[]>([]);
+  const [showRecentSearch, setShowRecentSearch] = useState(true);
+
   getRecentSearches('1').then((searches) => {
     setRecentSearches(searches);
   });
@@ -59,66 +26,94 @@ const SearchScreen = () => {
       setRecipes(recipes);
     });
     saveSearchQuery('1', searchQuery);
+  };
 
-    // getRecentSearches('1').then((searches) => {
-    //   setRecentSearches(searches);
-    // });
+  const handleKeyPress = (e: any) => {
+    if (e.nativeEvent.key === 'Enter') {
+      handleSearchModal();
+      Keyboard.dismiss(); // Dismiss the keyboard after searching
+    }
+  };
+
+  const handleRecentSearchToggle = () => {
+    setShowRecentSearch((prev) => !prev);
+  };
+
+  const handleRecentSearchItemPress = (query: string) => {
+    setSearchQuery(query);
+    handleSearchModal();
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Search recipes</Text>
-      </View>
-
       <View style={styles.searchBarContainer}>
         <View style={styles.searchBar}>
-        <TextBox
-          placeholder="Search recipe"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholderTextColor="#9EA0A4"
-        />
+          <TextBox
+            placeholder="Search recipe"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            onKeyPress={handleKeyPress}
+            placeholderTextColor="#9EA0A4"
+          />
         </View>
 
         <ButtonIonicons
-          style={ButtonSearchStyles.button}
-          outerStyle={ButtonSearchStyles.container}
+          style={styles.searchButton}
+          outerStyle={styles.searchButtonContainer}
           iconName="search"
-          onPress={handleSearchModal} />
-        
+          onPress={handleSearchModal}
+        />
       </View>
 
-      <Text style={styles.sectionTitle}>Recent Search</Text>
-      
-      <FlatList
-        data={recentSearches}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity>
-            <Text>{item.query}</Text>
-          </TouchableOpacity>
-        )}
-      />
+      <View style={styles.recentSearchContainer}>
+        <Text style={styles.sectionTitle}>Recent Search</Text>
+        <Switch
+          value={showRecentSearch}
+          onValueChange={handleRecentSearchToggle}
+          trackColor={{ false: '#767577', true: '#81b0ff' }}
+          thumbColor={showRecentSearch ? '#129575' : '#f4f3f4'}
+        />
+      </View>
+
+      {showRecentSearch && (
+        <FlatList
+          data={recentSearches}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.recentSearchItem}
+              onPress={() => handleRecentSearchItemPress(item.query)}
+            >
+              <Ionicons name="time" size={24} color="#333" style={styles.recentSearchIcon} />
+              <Text style={styles.recentSearchText}>{item.query}</Text>
+            </TouchableOpacity>
+          )}
+          contentContainerStyle={styles.recentSearchList}
+        />
+      )}
+
+      <Text style={styles.searchResultTitle}>Search Result</Text>
       <FlatList
         data={recipes}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.recipeID}
         renderItem={({ item }) => (
-          <View style={styles.recipeCard}>
-            <Image
-              source={require('../../assets/images/addRecipe/Food.png')}
-              style={styles.recipeImage}
-            />
+          <TouchableOpacity 
+            style={styles.recipeCard}
+            onPress={() => navigateToStack(navigation, 'recipe-detail')()}
+            >
             <View style={styles.recipeInfo}>
-              <Text style={styles.recipeTitle}>{item}</Text>
-              <Text style={styles.recipeChef}>Chef: John Doe</Text>
-              <Text style={styles.recipeRating}>⭐️⭐️⭐️⭐️⭐️</Text>
+              <Text style={styles.recipeTitle}>{item.title}</Text>
+              <Text style={styles.recipeChef}>By {item.userID}</Text>
             </View>
-          </View>
+            <View style={styles.recipeRatingContainer}>
+              <Ionicons name="star" size={14} color="#FFD700" />
+              <Text style={styles.recipeRating}>{item.rating}</Text>
+            </View>
+          </TouchableOpacity>
         )}
+        numColumns={2} // Hiển thị 2 cột
         contentContainerStyle={styles.recipeList}
       />
-
     </View>
   );
 };
@@ -129,54 +124,56 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F4F6',
     padding: 16,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  backButton: {
-    fontSize: 24,
-    marginRight: 16,
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#129575',
-  },
   searchBarContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
   },
   searchBar: {
     flex: 7,
     padding: 8,
-    //backgroundColor: '#E3F6F5',
     borderRadius: 10,
     marginRight: 8,
+    marginTop: 8,
   },
-  filterButton: {
-    padding: 8,
-    backgroundColor: '#00b894',
-    borderRadius: 10,
+  searchButton: {
+    padding: 12,
+    backgroundColor: '#AEECE4',
+    borderRadius: 20,
   },
-  filterButtonText: {
-    color: 'white',
+  searchButtonContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  recentSearchContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 8,
   },
+  searchResultTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
   recipeList: {
-    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   recipeCard: {
-    flex: 1,
     backgroundColor: 'white',
-    padding: 8,
     borderRadius: 10,
-    margin: 8,
+    marginBottom: 16,
+    padding: 10,
+    width: '48%', // Để có khoảng cách giữa các cột
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 2,
   },
   recipeImage: {
     width: '100%',
@@ -185,20 +182,62 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   recipeInfo: {
-    alignItems: 'center',
+    marginBottom: 8,
   },
   recipeTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 4,
+    color: '#129575',
+    textShadowColor: 'rgba(0, 0, 0, 0.4)',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
   },
   recipeChef: {
-    color: 'gray',
-    marginBottom: 4,
+    fontSize: 12,
+    color: '#129575',
+    textShadowColor: 'rgba(0, 0, 0, 0.4)',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
+  },
+  recipeRatingContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    borderRadius: 12,
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   recipeRating: {
-    color: '#FFD700',
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#000',
+    marginLeft: 4,
+  },
+  recentSearchList: {
+    marginBottom: 16,
+  },
+  recentSearchItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 2,
+  },
+  recentSearchIcon: {
+    marginRight: 8,
+  },
+  recentSearchText: {
+    fontSize: 16,
+    color: '#333',
   },
 });
 

@@ -1,6 +1,5 @@
 import { db } from "@/firebaseConfig";
 import { ref, onValue, off, set, push, remove } from "firebase/database";
-import { Recipe } from "./recipeServices";
 
 export interface SearchSuggestion {
     id: string;
@@ -42,35 +41,9 @@ export const saveSearchQuery = async (userID: string, query: string): Promise<vo
     await set(newSearchRef, {
         query,
     });
-    if (recentSearches.length >= RECENT_SEARCHES_LIMIT) {
-        const oldestSearch = recentSearches[0];
+    if (recentSearches.length > RECENT_SEARCHES_LIMIT) {
+        const oldestSearch = recentSearches[recentSearches.length - 1];
         const oldestSearchRef = ref(db, `${userID}/recentSearches/${oldestSearch.id}`);
         await remove(oldestSearchRef);
     }
-}
-
-export const searchRecipes = async (query: string): Promise<string[]> => {
-    const recipesRef = ref(db, 'recipes');
-    const recipes: string[] = [];
-
-    await new Promise<void>((resolve) => {
-        onValue(recipesRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                Object.keys(data).forEach((recipeId) => {
-                    const recipeData: Recipe = data[recipeId];
-                    if (recipeData.title.toLowerCase().includes(query.toLowerCase()) ||
-                        recipeData.description.toLowerCase().includes(query.toLowerCase()) || 
-                        recipeData.instructions.join(' ').toLowerCase().includes(query.toLowerCase()) ||
-                        recipeData.ingredients.some(ingredient => ingredient.description.toLowerCase().includes(query.toLowerCase()))){
-                        recipes.push(recipeId);
-                    }
-                });
-            }
-            resolve();
-        });
-    });
-
-    off(recipesRef, 'value');
-    return recipes;
 }
