@@ -44,6 +44,7 @@ export default function LoginScreen() {
                     style={SignBoxStyles.input}
                     outerStyle={SignBoxStyles.inputContainer}
                     placeholder="example@example.com"
+                    placeholderTextColor="#9EA0A4"
                     value={email}
                     onChangeText={setEmail}
                 />
@@ -53,6 +54,7 @@ export default function LoginScreen() {
                     value={password}
                     onChangeText={setPassword}
                     style={SignBoxStyles.container}
+                    placeholderTextColor={"#9EA0A4"}
                 />
                 <View style={CheckboxStyles.container}>
                     <Checkbox/>

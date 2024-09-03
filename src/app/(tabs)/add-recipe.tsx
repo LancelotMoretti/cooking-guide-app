@@ -248,7 +248,7 @@ export default function AddRecipe() {
                 <TextInput
                     style={styles.textBox}
                     placeholder="Hours"
-                    value={hourRecipe.toString()}
+                    value={hourRecipe.toString() + ' hours'}
                     onChangeText={(value) => handleNumberInput(value, setHourRecipe)}
                     keyboardType="numeric"
                     placeholderTextColor="#9EA0A4"
@@ -256,7 +256,7 @@ export default function AddRecipe() {
                 <TextInput
                     style={styles.textBox}
                     placeholder="Minutes"
-                    value={minuteRecipe.toString()}
+                    value={minuteRecipe.toString() + ' minutes'}
                     onChangeText={(value) => handleNumberInput(value, setMinuteRecipe)}
                     keyboardType="numeric"
                     placeholderTextColor="#9EA0A4"
@@ -376,7 +376,7 @@ const styles = StyleSheet.create({
     textBox: {
         borderColor: '#9EA0A4',
         borderWidth: 1,
-        borderRadius: 5,
+        borderRadius: 20,
         padding: 10,
         fontSize: 16,
         color: '#000',

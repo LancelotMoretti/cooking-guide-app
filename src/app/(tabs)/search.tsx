@@ -57,6 +57,10 @@ const SearchScreen = () => {
     handleSearchModal();
   };
 
+  const handleShowAllRecipes = () => {
+    setRecipes(allRecipes);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.searchBarContainer}>
@@ -105,7 +109,13 @@ const SearchScreen = () => {
         />
       )}
 
-      <Text style={styles.searchResultTitle}>Search Result</Text>
+      <View style={styles.searchResultHeader}>
+        <Text style={styles.searchResultTitle}>Search Result</Text>
+        <TouchableOpacity onPress={handleShowAllRecipes}>
+          <Text style={styles.showAllText}>Show All</Text>
+        </TouchableOpacity>
+      </View>
+
       <FlatList
         data={recipes}
         keyExtractor={(item) => item.recipeID}
@@ -158,6 +168,7 @@ const styles = StyleSheet.create({
     padding: 12,
     backgroundColor: '#AEECE4',
     borderRadius: 20,
+    marginBottom: 12,
   },
   searchButtonContainer: {
     justifyContent: 'center',
@@ -174,10 +185,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
   },
+  searchResultHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
   searchResultTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 16,
+  },
+  showAllText: {
+    fontSize: 16,
+    color: '#129575',
   },
   recipeList: {
     justifyContent: 'space-between',

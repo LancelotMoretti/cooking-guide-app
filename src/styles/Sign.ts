@@ -21,7 +21,7 @@ export const SignBoxStyles = StyleSheet.create({
         flex: 1,
         height: 40,
         fontSize: 16,
-        color: '#000'
+        color: '#000',
     },
     icon: {
         marginLeft: 10
