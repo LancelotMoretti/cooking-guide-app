@@ -67,11 +67,11 @@ export default function AddRecipe() {
                 description: description,
                 date: new Date(),
                 //duration: { hours: hourRecipe, minutes: minuteRecipe },
-                duration: { hours: timeRecipe.hour, minutes: timeRecipe.minute },
+                duration: { hour: timeRecipe.hour, minute: timeRecipe.minute },
                 ingredients: ingredients,
                 steps: instructions,
                 video: video,
-                tags: [],
+                tags: ["tag1", "tag2"],
                 rating: 0,
                 meal: meal,
                 comments: [],
@@ -379,9 +379,8 @@ export default function AddRecipe() {
             <ButtonAdd title="+ Add Ingredient" onPress={handleAddIngredient} />
             
             <Text style={styles.title}>Instructions</Text>
-            <View>
             <View style={styles.ingredientsList}>
-              {instructions.map((instruction, index) => (
+                {instructions.map((instruction, index) => (
                     <View key={index} style={styles.instruction}>
                         <TextBoxInstruction
                             placeholder={`Instruction ${index + 1}                                  `}
@@ -395,11 +394,8 @@ export default function AddRecipe() {
                             style={ButtonTrashStyles.container} 
                             source={require('../../assets/images/Trash.png')} 
                             onPress={() => handleDeleteInstruction(index)} />
-
-
                     </View>
                 ))}
-            </View>
             </View>
         
             <ButtonAdd title="+ Add Instruction" onPress={handleAddInstruction} />

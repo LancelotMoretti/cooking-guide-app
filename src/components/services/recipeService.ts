@@ -133,7 +133,7 @@ export const searchRecipes = async (query: string): Promise<Recipe[]> => {
                         recipeMealType = 'dinner';
                     }
                     
-                    const time = recipeData.duration?.hours * 60 + recipeData.duration?.minutes || 0;
+                    const time = recipeData.duration?.hour * 60 + recipeData.duration?.minute || 0;
                     const isQuick = time <= 30;
                     const isMedium = time > 30 && time <= 60;
                     const isLong = time > 60;

@@ -8,12 +8,12 @@ export interface Recipe {
     userID: string;
     title: string;
     description: string;
-    duration: { hours: number, minutes: number };
+    duration: { hour: number, minute: number };
     ingredients: { amount: string, name: string }[];
     steps: string[];
     video: any;
     date: Date;
-    tags:[];
+    tags:any[];
     rating: Float;
     comments: UserComment[],
     meal: { breakfast: boolean, lunch: boolean, dinner: boolean };

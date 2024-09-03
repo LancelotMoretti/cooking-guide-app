@@ -6,6 +6,7 @@ import { ButtonAddVideoStyles } from '@/styles/AddRecipe';
 import { ButtonPublishStyles } from '@/styles/AddRecipe';
 import { ButtonTrashStyles } from '@/styles/AddRecipe';
 import { ButtonSearchStyles } from '@/styles/Search';
+import { ButtonEditStyles } from '@/styles/RecipeDetail';
 
 export class SignButton extends BaseButton {
     render() {
@@ -62,6 +63,17 @@ export class ButtonMeal extends BaseButton {
 }
 
 export class ButtonSearch extends BaseButton {
+    render() {
+        return super.render();
+    }
+}
+
+
+export class ButtonEditRecipe extends BaseButton {
+    static defaultProps = {
+        containerStyle: ButtonEditStyles.container,
+        style: ButtonEditStyles.text,
+    };
     render() {
         return super.render();
     }

@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { Recipe } from '@/components/models/Recipe';
 import { getRecipes } from '@/components/services/recipeService';
-// <<<<<<< HEAD
 import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
-// =======
-import { ImageBackground } from 'react-native';
-// >>>>>>> 4ec14c42539416209f9b6405714e830d60055157
 
 // Define the type for filtered recipes
-type FilteredRecipes = { [key: string]: { id: string; title: string; image: string; time: { hours: number; minutes: number }; rating: number }[] };
+type FilteredRecipes = { [key: string]: { id: string; title: string; image: string; time: { hour: number; minute: number }; rating: number }[] };
 
 // Function to filter recipes by meal type
 function filterRecipesByMeal(recipes: Recipe[]): FilteredRecipes {
@@ -24,11 +20,11 @@ function filterRecipesByMeal(recipes: Recipe[]): FilteredRecipes {
         const recipeData = {
             id: recipe.recipeID,
             title: recipe.title,
-            image: recipe.video, // Replace with actual image logic if available
+            image: recipe.video || '../../assets/images/logo.png', // Replace with actual image logic if available
             time: recipe.duration,
             rating: recipe.rating,
         };
-    
+
         if (recipe.meal?.breakfast) {
             categorizedRecipes.Breakfast.push(recipeData);
         }
@@ -45,100 +41,109 @@ function filterRecipesByMeal(recipes: Recipe[]): FilteredRecipes {
 
 const Home = () => {
     const navigation = useNavigation();
-  const [selectedCategory, setSelectedCategory] = useState('Breakfast');
-  const [filteredRecipes, setFilteredRecipes] = useState<FilteredRecipes>({
-      Breakfast: [],
-      Lunch: [],
-      Dinner: []
-  });
+    const [selectedCategory, setSelectedCategory] = useState('Breakfast');
+    const [filteredRecipes, setFilteredRecipes] = useState<FilteredRecipes>({
+        Breakfast: [],
+        Lunch: [],
+        Dinner: []
+    });
 
-  // Fetch recipes and categorize them on component mount
-  useEffect(() => {
-      getRecipes().then((recipes) => {
-          const categorizedRecipes = filterRecipesByMeal(recipes);
-          setFilteredRecipes(categorizedRecipes);
-      });
-  }, []);
+    // Fetch recipes and categorize them on component mount
+    useEffect(() => {
+        getRecipes().then((recipes) => {
+            const categorizedRecipes = filterRecipesByMeal(recipes);
+            setFilteredRecipes(categorizedRecipes);
+        });
+    }, []);
 
-  // Handler for category selection
-  const handleCategoryPress = (category: string) => {
-    setSelectedCategory(category);
-    //navigateToStack(navigation, 'RecipeList', );
-  };
+    // Handler for category selection
+    const handleCategoryPress = (category: string) => {
+        setSelectedCategory(category);
+    };
 
-  return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-          <Text style={styles.greeting}>Hi!</Text>
-          <Text style={styles.subGreeting}>What are you cooking today?</Text>
-      </View>
+    // Handler for recipe press
+    const handleRecipePress = (recipeId: string) => {
+        navigateToStack(navigation, 'RecipeDetail', recipeId);
+    };
 
-      {/* Category Buttons */}
-      <View style={styles.categoryContainer}>
-          {['Breakfast', 'Lunch', 'Dinner'].map((category) => (
-                <TouchableOpacity
-                    key={category}
-                    onPress={() => handleCategoryPress(category)}
-                    style={[
-                        styles.categoryButton,
-                        selectedCategory === category && styles.categoryButtonSelected,
-                    ]}
-                >   
-                <Text
-                    style={[
-                        styles.categoryButtonText,
-                        selectedCategory === category && styles.categoryButtonTextSelected,
-                    ]}
-                >
-                {category}
-                </Text>
-              </TouchableOpacity>
-          ))}
-      </View>
+    return (
+        <ScrollView style={styles.container}>
+            <View style={styles.header}>
+                <Text style={styles.greeting}>Hi!</Text>
+                <Text style={styles.subGreeting}>What are you cooking today?</Text>
+            </View>
 
-      {/* Render Recipes directly */}
-      {filteredRecipes[selectedCategory].map((item) => (
-          <View key={item.id} style={styles.recipeCard}>
-              <ImageBackground source={{ uri: item.image || '../../assets/images/logo.png'}} style={styles.recipeImage} imageStyle={{ borderRadius: 10 }}/>
-              <Text style={styles.recipeTitle}>{item.title}</Text>
-              <Text>{item.time?.hours}h {item.time?.minutes}m</Text>
-              <Text>{item.rating} ⭐</Text>
-          </View>
-      ))}
+            {/* Category Buttons */}
+            <View style={styles.categoryContainer}>
+                {['Breakfast', 'Lunch', 'Dinner'].map((category) => (
+                    <TouchableOpacity
+                        key={category}
+                        onPress={() => handleCategoryPress(category)}
+                        style={[
+                            styles.categoryButton,
+                            selectedCategory === category && styles.categoryButtonSelected,
+                        ]}
+                    >
+                        <Text
+                            style={[
+                                styles.categoryButtonText,
+                                selectedCategory === category && styles.categoryButtonTextSelected,
+                            ]}
+                        >
+                            {category}
+                        </Text>
+                    </TouchableOpacity>
+                ))}
+            </View>
 
-      {/* Additional Sections like Trending and Saved */}
-      <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Trending Recipe</Text>
-          <View style={styles.trendingRecipe}>
-              <Image style={styles.recipeImage} source={{ uri: 'placeholder_image.png' }} />
-              <View style={styles.recipeInfo}>
-                  <Text style={styles.recipeTitle}>Food</Text>
-                  <Text style={styles.recipeDescription}>Description</Text>
-                  <View style={styles.recipeMeta}>
-                      <Text style={styles.recipeTime}>Time</Text>
-                      <Text style={styles.recipeRating}>Rating</Text>
-                  </View>
-              </View>
-          </View>
-      </View>
+            {/* Render Recipes directly */}
+            {filteredRecipes[selectedCategory].map((item) => (
+                <TouchableOpacity key={item.id} style={styles.recipeCard} onPress={() => navigateToStack(navigation, 'recipe-detail', item.id)()}>
+                    <View style={styles.recipeMeal}>
+                        <ImageBackground source={{ uri: item.image }} style={styles.recipeImage} imageStyle={{ borderRadius: 10 }} />
+                        <View>
+                            <Text style={styles.recipeTitle}>{item.title}</Text>
+                            <Text>{item.time?.hour}h {item.time?.minute}m</Text>
+                            <Text>{item.rating} ⭐</Text>
+                        </View>
+                    </View>
 
-      <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Saved</Text>
-          <View style={styles.yourRecipes}>
-              <View style={styles.yourRecipeCard}>
-                  <Image style={styles.yourRecipeImage} source={{ uri: 'placeholder_image.png' }} />
-                  <Text style={styles.yourRecipeTitle}>Title</Text>
-                  <Text style={styles.yourRecipeTime}>Time</Text>
-              </View>
-              <View style={styles.yourRecipeCard}>
-                  <Image style={styles.yourRecipeImage} source={{ uri: 'placeholder_image.png' }} />
-                  <Text style={styles.yourRecipeTitle}>Title</Text>
-                  <Text style={styles.yourRecipeTime}>Time</Text>
-              </View>
-          </View>
-      </View>
-    </ScrollView>
-  );
+                </TouchableOpacity>
+            ))}
+    
+            {/* Additional Sections like Trending and Saved */}
+            <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Trending Recipe</Text>
+                <View style={styles.trendingRecipe}>
+                    <Image style={styles.recipeImage} source={{ uri: 'placeholder_image.png' }} />
+                    <View style={styles.recipeInfo}>
+                        <Text style={styles.recipeTitle}>Food</Text>
+                        <Text style={styles.recipeDescription}>Description</Text>
+                        <View style={styles.recipeMeta}>
+                            <Text style={styles.recipeTime}>Time</Text>
+                            <Text style={styles.recipeRating}>Rating</Text>
+                        </View>
+                    </View>
+                </View>
+            </View>
+
+            <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Saved</Text>
+                <View style={styles.yourRecipes}>
+                    <View style={styles.yourRecipeCard}>
+                        <Image style={styles.yourRecipeImage} source={{ uri: 'placeholder_image.png' }} />
+                        <Text style={styles.yourRecipeTitle}>Title</Text>
+                        <Text style={styles.yourRecipeTime}>Time</Text>
+                    </View>
+                    <View style={styles.yourRecipeCard}>
+                        <Image style={styles.yourRecipeImage} source={{ uri: 'placeholder_image.png' }} />
+                        <Text style={styles.yourRecipeTitle}>Title</Text>
+                        <Text style={styles.yourRecipeTime}>Time</Text>
+                    </View>
+                </View>
+            </View>
+        </ScrollView>
+    );
 };
 
 export default Home;
@@ -194,6 +199,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 16,
         borderRadius: 10,
+    },
+    recipeMeal:{
+        flexDirection: 'row',
+        
     },
     recipeImage: {
         width: 100,
