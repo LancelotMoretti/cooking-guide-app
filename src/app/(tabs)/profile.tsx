@@ -9,15 +9,15 @@ import { getRecipes } from '@/components/services/recipeService';
 import { Recipe } from '@/components/models/Recipe';
 import { useEffect } from 'react';
 import { auth } from '@/firebaseConfig';
+import { ref, onValue } from 'firebase/database';
+import { db } from '@/firebaseConfig';
+import { RecipeFavoriteController } from '@/components/controllers/RecipeFavoriteController';
 
 
 export default function ProfileScreen() {
     const navigator = useNavigation();
     const profile = readProfileInformation();
     const bio = 'Bio here';
-    const numberOfRecipe = 0;
-    const numberOfFollowers = 0;
-    const numberOfFollowing = 0;
 
     const formatNumber = (num: number) => {
         if (num > 999 && num < 1000000) {
@@ -32,19 +32,53 @@ export default function ProfileScreen() {
     const [selectedTab, setSelectedTab] = useState('Recipe');
 
     const [recipes, setRecipes] = useState<Recipe[]>([]);
-    
+    const [favorites, setFavorites] = useState<Recipe[]>([]);
+
+
     useEffect(() => {
         const fetchRecipes = async () => {
-            const fetchedRecipes = await getRecipes();
-            setRecipes(fetchedRecipes);
+            try {
+                // Lấy tất cả các công thức
+                const fetchedRecipes = await getRecipes();
+                setRecipes(fetchedRecipes);
+
+                // Lấy các công thức yêu thích ban đầu
+                const recipeFavorites = await RecipeFavoriteController.getFavorites(profile?.userID || '');
+                const favoriteRecipes = fetchedRecipes.filter(recipe => 
+                    recipeFavorites.some(fav => fav === recipe.recipeID)
+                );
+                setFavorites(favoriteRecipes);
+            } catch (error) {
+                console.error("Error fetching recipes or favorites:", error);
+            }
         };
+
+        // Lắng nghe sự thay đổi của dữ liệu favorites trên Firebase
+        const favoriteRef = ref(db, `users/${profile?.userID}/favorites`);
+        const unsubscribe = onValue(favoriteRef, async (snapshot) => {
+            const recipeFavorites = snapshot.exists() ? Object.keys(snapshot.val()) : [];
+            const favoriteRecipes = recipes.filter(recipe => 
+                recipeFavorites.includes(recipe.recipeID)
+            );
+            setFavorites(favoriteRecipes);
+        });
+
         fetchRecipes();
-    }, []);
+
+        // Cleanup listener khi component bị unmount
+        return () => unsubscribe();
+    }, [profile?.userID, recipes]);
+
+
 
     const currentUser = auth.currentUser;
     let userRecipes = recipes;
+    let numberOfRecipe = 0;
+    let numberOfFollowers = 0;
+    let numberOfFollowing = 0;
     if (currentUser) {
         userRecipes = recipes.filter(recipe => recipe.userID === currentUser.uid);
+        numberOfRecipe = userRecipes.length;
     }
     
     const displayRecipeList = () => {
@@ -55,12 +89,38 @@ export default function ProfileScreen() {
                 renderItem={({ item }) => (
                     <TouchableOpacity 
                     style={styles.recipe}
+                    onPress={navigateToStack(navigator, "recipe-detail", item.recipeID)}
                     >
                         <Image source={{ uri: item.video }} style={styles.recipeImage} />
                         <View style={styles.recipeInfo}>
                             <Text style={styles.recipeTitle}>{item.title}</Text>
                             <View style={styles.recipeMeta}>
                                 <Text style={styles.recipeTime}>{item.duration.hour}h {item.duration.minute}m</Text>
+                                <Text style={styles.recipeRating}>⭐ {item.rating}</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                )}
+                style={styles.recipeList}
+            />
+        );
+    }
+
+    const displayFavoriteList = () => {
+        return (
+            <FlatList
+                data={favorites}
+                keyExtractor={(item) => item.recipeID}
+                renderItem={({ item }) => (
+                    <TouchableOpacity 
+                    style={styles.recipe}
+                    onPress={navigateToStack(navigator, "recipe-detail", item.recipeID)}
+                    >
+                        <Image source={{ uri: item.video }} style={styles.recipeImage} />
+                        <View style={styles.recipeInfo}>
+                            <Text style={styles.recipeTitle}>{item.title}</Text>
+                            <View style={styles.recipeMeta}>
+                                <Text style={styles.recipeTime}>{item.duration?.hour}h {item.duration?.minute}m</Text>
                                 <Text style={styles.recipeRating}>⭐ {item.rating}</Text>
                             </View>
                         </View>
@@ -120,6 +180,7 @@ export default function ProfileScreen() {
                 </TouchableOpacity>
             </View>
             {selectedTab === 'Recipe' && displayRecipeList()}
+            {selectedTab === 'Favorites' && profile?.userID && displayFavoriteList()}
         </ScrollView>
     );
 };
@@ -127,8 +188,9 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
     container: {
         padding: 20,
+        paddingTop: 40,
+        paddingBottom: 60,
         backgroundColor: '#fff',
-        marginTop: 20,
     },
     header: {
         alignItems: 'center',

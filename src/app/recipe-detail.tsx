@@ -9,14 +9,16 @@ import { UserProfileLink } from '@/components/models/UserProfileLink';
 import { readUserIDAndUsername } from '@/components/services/profileService';
 import { ButtonEditRecipe } from '@/components/UI/button/Button';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
+import { RecipeFavoriteController, checkFavorite } from '@/components/controllers/RecipeFavoriteController';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function RecipeDetail() {
     const { userID, username } = readUserIDAndUsername() || { userID: '', username: '' };
     const navigation = useNavigation();
     const route = useRoute();
     const recipeID = (route.params as { header: string })?.header;
-    //console.log(userID);
-    //console.log(recipeID);
+    // console.log(userID);
+    // console.log(recipeID);
     
     const [recipe, setRecipe] = useState<Recipe | null>(null);
     const [loading, setLoading] = useState(true);
@@ -24,6 +26,13 @@ export default function RecipeDetail() {
     const [comments, setComments] = useState<UserComment[]>([]);
     const [editingCommentID, setEditingCommentID] = useState<string | null>(null);
     const [editComment, setEditComment] = useState<UserComment | null>(null);
+    const [isFavorite, setIsFavorite] = useState<boolean>(false);
+
+    useEffect(() => {
+        checkFavorite(userID || '', recipeID || '', (result) => {
+            setIsFavorite(result);
+        });
+    }, [userID, recipeID]);
 
     getComments(recipeID || '').then((comments) => {
         setComments(comments);
@@ -47,6 +56,15 @@ export default function RecipeDetail() {
             fetchRecipe();
         }
     }, [recipeID]);
+
+    const handleToggleFavorite = async () => {
+        try {
+            await RecipeFavoriteController.toggleFavorite(userID || '', recipeID || '');
+            setIsFavorite(!isFavorite);
+        } catch (error) {
+            console.error("Error toggling favorite:", error);
+        }
+    };
 
     const handleAddComment = (content?: string) => {
         if (content === undefined) {
@@ -83,7 +101,7 @@ export default function RecipeDetail() {
         handleRemoveComment(comment);
         handleAddComment(comment.content);
         setEditingCommentID(null);
-    }
+    };
 
     if (loading) {
         return <Text>Loading...</Text>;
@@ -104,10 +122,11 @@ export default function RecipeDetail() {
             <ScrollView style={styles.container}>
                 
                 {userID == recipe.userID && (
-                <ButtonEditRecipe
-                    title="Edit" 
-                    onPress={() => navigateToStack(navigation, 'edit-recipe', recipeID)()}
-                />)}
+                    <ButtonEditRecipe
+                        title="Edit" 
+                        onPress={() => navigateToStack(navigation, 'edit-recipe', recipeID)()}
+                    />
+                )}
                 
                 <View style={styles.image}>
                     <ImageBackground
@@ -118,10 +137,17 @@ export default function RecipeDetail() {
                 </View>
                 <View style={styles.titleContainer}>
                     <TextInput style={styles.title} value={recipe.title} />
-
-                      
                 </View>
-            
+
+                {/* Nút yêu thích */}
+                {userID && <TouchableOpacity onPress={handleToggleFavorite} style={styles.favoriteButton}>
+                        <Ionicons 
+                            name={isFavorite ? "heart" : "heart-outline"} 
+                            size={30} 
+                            color={isFavorite ? "red" : "gray"} 
+                        />
+                    </TouchableOpacity>
+                }
 
                 <Text style={styles.sectionTitle}>Details</Text>
                 <Text style={styles.descriptionText}>{recipe.description}</Text>
@@ -172,17 +198,18 @@ export default function RecipeDetail() {
                     <Text>No comments yet.</Text>
                 )}
 
-                <View style={styles.addCommentContainer}>
-                    <TextInput
-                        style={styles.commentInput}
-                        placeholder="Add a comment..."
-                        value={commentContent}
-                        onChangeText={setCommentContent}
-                    />
-                    <TouchableOpacity onPress={() => handleAddComment()} style={styles.addCommentButton}>
-                        <Text style={styles.addCommentButtonText}>Add</Text>
-                    </TouchableOpacity>
-                </View>
+                {userID && <View style={styles.addCommentContainer}>
+                        <TextInput
+                            style={styles.commentInput}
+                            placeholder="Add a comment..."
+                            value={commentContent}
+                            onChangeText={setCommentContent}
+                        />
+                        <TouchableOpacity onPress={() => handleAddComment()} style={styles.addCommentButton}>
+                            <Text style={styles.addCommentButtonText}>Add</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
 
                 {editingCommentID && (
                     <View style={styles.editCommentContainer}>
@@ -221,6 +248,10 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         backgroundColor: '#129575',
         padding: 10,
+    },
+    favoriteButton: {
+        alignSelf: 'flex-end',
+        marginBottom: 20,
     },
     sectionTitle: {
         fontSize: 20,

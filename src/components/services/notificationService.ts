@@ -1,7 +1,6 @@
 import { db } from "@/firebaseConfig";
 import { set, ref, update, remove, push, onValue, off } from "firebase/database";
 import { useEffect, useState } from "react";
-import { NotificationItemProps } from "@/components/UI/notification/NotificationItem";
 import { Notification } from "@/components/models/Notification";
 
 export const useNotifications = (userID: string): Notification[] => {
