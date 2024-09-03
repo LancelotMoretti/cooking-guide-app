@@ -65,3 +65,13 @@ export const loginAndGoToHome = async (
         alert(error);
     }
 };
+
+export const logout = async (navigation: any) => {
+    try {
+        await auth.signOut();
+        directToStack(navigation, "log-in");
+    }
+    catch (error) {
+        alert(error);
+    }
+};

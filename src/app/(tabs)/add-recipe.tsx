@@ -23,7 +23,12 @@ export default function AddRecipe() {
     const [video, setVideo] = useState<any | null>(null);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+// <<<<<<< HEAD
     const [timeRecipe, setTimeRecipe] = useState<{hour: number, minute: number}>({ hour: 0, minute: 0 });
+// =======
+//     const [hourRecipe, setHourRecipe] = useState(0);
+//     const [minuteRecipe, setMinuteRecipe] = useState(0);
+// >>>>>>> 4ec14c42539416209f9b6405714e830d60055157
     const [meal, setMeal] = useState({ breakfast: false, lunch: false, dinner: false });
     const [ingredients, setIngredients] = useState<{ name: string, amount: string}[]>([]);
 
@@ -37,7 +42,13 @@ export default function AddRecipe() {
     };
 
     const validateFields = (): boolean => {
+// <<<<<<< HEAD
         if (title == '' || description == '' || (!timeRecipe.hour && !timeRecipe.minute) || ingredients.length === 0 || instructions.length === 0 || !meal) {
+// =======
+//         if (title == '' || description == '' || ingredients.length === 0 || 
+//             instructions.length === 0 || !meal || hourRecipe === 0 && minuteRecipe === 0
+//         ) {
+// >>>>>>> 4ec14c42539416209f9b6405714e830d60055157
             Alert.alert('Missing Information', 'Please fill in all the fields before publishing.');
             return false;
         }
@@ -55,7 +66,8 @@ export default function AddRecipe() {
                 title: title,
                 description: description,
                 date: new Date(),
-                duration: timeRecipe,
+                //duration: { hours: hourRecipe, minutes: minuteRecipe },
+                duration: { hours: timeRecipe.hour, minutes: timeRecipe.minute },
                 ingredients: ingredients,
                 steps: instructions,
                 video: video,
@@ -141,6 +153,7 @@ export default function AddRecipe() {
         setInstructions(newInstructions);
     };
 
+// <<<<<<< HEAD
     const handleHourChange = (text: string) => {
         const parsed = parseInt(text, 10);
         if (!isNaN(parsed)) {
@@ -154,6 +167,12 @@ export default function AddRecipe() {
         if (!isNaN(parsed)) { setTimeRecipe(prevState => ({ ...prevState, minute: parsed })); } 
         else if (text === '') { setTimeRecipe(prevState => ({ ...prevState, minute: 0 })); } };
 
+// =======
+//     const handleNumberInput = (value: string, setter: any) => {
+//         const numericValue = value.replace(/[^0-9]/g, ''); // Loại bỏ tất cả các ký tự không phải số
+//         setter(numericValue);
+//     };
+// >>>>>>> 4ec14c42539416209f9b6405714e830d60055157
 
     return (
         <KeyboardAvoidingView
@@ -250,6 +269,7 @@ export default function AddRecipe() {
             />
 
             <Text style={styles.title}>Time Recipe</Text>
+
             <View style={styles.ingredientRow}>
                 <Text>Hours: </Text>
                 <TextBoxTime
@@ -269,6 +289,25 @@ export default function AddRecipe() {
                         keyboardType="numeric" // Đảm bảo bàn phím chỉ hiển thị số
                         placeholderTextColor="#9EA0A4"
                     />
+{/* =======
+            <View style={styles.button}>
+                <TextInput
+                    style={styles.textBox}
+                    placeholder="Hours"
+                    value={hourRecipe.toString() + ' hours'}
+                    onChangeText={(value) => handleNumberInput(value, setHourRecipe)}
+                    keyboardType="numeric"
+                    placeholderTextColor="#9EA0A4"
+                />
+                <TextInput
+                    style={styles.textBox}
+                    placeholder="Minutes"
+                    value={minuteRecipe.toString() + ' minutes'}
+                    onChangeText={(value) => handleNumberInput(value, setMinuteRecipe)}
+                    keyboardType="numeric"
+                    placeholderTextColor="#9EA0A4"
+                />
+>>>>>>> 4ec14c42539416209f9b6405714e830d60055157 */}
             </View>
 
             <Text style={styles.title}>Meal</Text>
@@ -381,6 +420,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 10,
     },
+    textBox: {
+        borderColor: '#9EA0A4',
+        borderWidth: 1,
+        borderRadius: 20,
+        padding: 10,
+        fontSize: 16,
+        color: '#000',
+        width: '45%',
+        backgroundColor: '#a5e7dc',
+    },
     modalBackground: {
         flex: 1,
         justifyContent: 'flex-end',
@@ -394,7 +443,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     modalTitle: {
-    
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
@@ -463,5 +511,5 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginBottom: 5,
     },
-    
+
 });

@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Recipe } from '@/components/models/Recipe';
 import { getRecipes } from '@/components/services/recipeService';
+// <<<<<<< HEAD
 import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
+// =======
+import { ImageBackground } from 'react-native';
+// >>>>>>> 4ec14c42539416209f9b6405714e830d60055157
 
 // Define the type for filtered recipes
 type FilteredRecipes = { [key: string]: { id: string; title: string; image: string; time: { hours: number; minutes: number }; rating: number }[] };
@@ -72,22 +76,22 @@ const Home = () => {
       {/* Category Buttons */}
       <View style={styles.categoryContainer}>
           {['Breakfast', 'Lunch', 'Dinner'].map((category) => (
-              <TouchableOpacity
-                  key={category}
-                  onPress={() => handleCategoryPress(category)}
-                  style={[
-                      styles.categoryButton,
-                      selectedCategory === category && styles.categoryButtonSelected,
-                  ]}
-              >
-                  <Text
-                      style={[
-                          styles.categoryButtonText,
-                          selectedCategory === category && styles.categoryButtonTextSelected,
-                      ]}
-                  >
-                      {category}
-                  </Text>
+                <TouchableOpacity
+                    key={category}
+                    onPress={() => handleCategoryPress(category)}
+                    style={[
+                        styles.categoryButton,
+                        selectedCategory === category && styles.categoryButtonSelected,
+                    ]}
+                >   
+                <Text
+                    style={[
+                        styles.categoryButtonText,
+                        selectedCategory === category && styles.categoryButtonTextSelected,
+                    ]}
+                >
+                {category}
+                </Text>
               </TouchableOpacity>
           ))}
       </View>
@@ -95,6 +99,7 @@ const Home = () => {
       {/* Render Recipes directly */}
       {filteredRecipes[selectedCategory].map((item) => (
           <View key={item.id} style={styles.recipeCard}>
+              <ImageBackground source={{ uri: item.image || '../../assets/images/logo.png'}} style={styles.recipeImage} imageStyle={{ borderRadius: 10 }}/>
               <Text style={styles.recipeTitle}>{item.title}</Text>
               <Text>{item.time?.hours}h {item.time?.minutes}m</Text>
               <Text>{item.rating} ⭐</Text>

@@ -1,7 +1,6 @@
 import { off, set, ref, onValue, update, remove, push } from "firebase/database";
 import { auth, db } from "@/firebaseConfig";
 import { Recipe } from "@/components/models/Recipe";
-import { Switch } from "react-native";
 
 export const getRecipes = async (): Promise<Recipe[]> => {
     const recipesRef = ref(db, 'recipes');

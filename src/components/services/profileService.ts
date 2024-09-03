@@ -45,3 +45,18 @@ export function readProfileInformation() {
 
     return profile;
 }
+
+export function readUserID() {
+    const [userID, setUserID] = useState<string | null>(null);
+
+    useEffect(() => {
+        const user = auth.currentUser;
+
+        if (user) {
+            setUserID(user.uid);
+        }
+
+    }, []);
+
+    return userID;
+}

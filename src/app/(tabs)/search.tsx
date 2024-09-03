@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, Switch, FlatList, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
+import { View, Text, Switch, FlatList, TouchableOpacity, StyleSheet, Keyboard, Button } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { TextBox } from '@/components/UI/textBox/TextBox';
+import { ImageBackground } from 'react-native';
 import { ButtonIonicons } from '@/components/UI/button/ButtonIonicons';
 import { SearchSuggestion, saveSearchQuery, getRecentSearches }  from '@/components/services/searchService';
 import { getRecipes, searchRecipes } from '@/components/services/recipeService';
 import { Recipe} from '../../components/models/Recipe';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { useNavigation } from 'expo-router';
-
+import { readUserID } from '@/components/services/profileService';
 
 let allRecipes: Recipe[] = [];
 getRecipes().then((recipes) => {
@@ -16,15 +17,19 @@ getRecipes().then((recipes) => {
 });
 
 const SearchScreen = () => {
+  const userID: string | null = readUserID(); // Fetch
+
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
   const [recipes, setRecipes] = useState<Recipe[]>(allRecipes);
   const [recentSearches, setRecentSearches] = useState<SearchSuggestion[]>([]);
   const [showRecentSearch, setShowRecentSearch] = useState(true);
 
-  getRecentSearches('1').then((searches) => {
-    setRecentSearches(searches);
-  });
+  if (userID !== null) {
+    getRecentSearches(userID || '').then((searches) => {
+      setRecentSearches(searches);
+    });
+  }
 
   const handleSearchModal = () => {
     const query = searchQuery || '';
@@ -32,7 +37,8 @@ const SearchScreen = () => {
     searchRecipes(query).then((recipes) => {
       setRecipes(recipes);
     });
-    saveSearchQuery('1', query);
+    if (userID !== null)
+      saveSearchQuery(userID || '', query);
   };
 
   const handleKeyPress = (e: any) => {
@@ -49,6 +55,10 @@ const SearchScreen = () => {
   const handleRecentSearchItemPress = (query: string) => {
     setSearchQuery(query);
     handleSearchModal();
+  };
+
+  const handleShowAllRecipes = () => {
+    setRecipes(allRecipes);
   };
 
   return (
@@ -99,7 +109,13 @@ const SearchScreen = () => {
         />
       )}
 
-      <Text style={styles.searchResultTitle}>Search Result</Text>
+      <View style={styles.searchResultHeader}>
+        <Text style={styles.searchResultTitle}>Search Result</Text>
+        <TouchableOpacity onPress={handleShowAllRecipes}>
+          <Text style={styles.showAllText}>Show All</Text>
+        </TouchableOpacity>
+      </View>
+
       <FlatList
         data={recipes}
         keyExtractor={(item) => item.recipeID}
@@ -108,6 +124,11 @@ const SearchScreen = () => {
             style={styles.recipeCard}
             onPress={() => navigateToStack(navigation, 'recipe-detail', item.recipeID)()}
           >
+            <ImageBackground
+              source={{ uri: item.video || '../../assets/images/logo.png'}}
+              style={styles.recipeImage}
+              imageStyle={{ borderRadius: 10 }}
+            />
             <View style={styles.recipeInfo}>
               <Text style={styles.recipeTitle}>{item.title || 'Unknown Title'}</Text>
               <Text style={styles.recipeChef}>By {item.userID || 'Unknown User'}</Text>
@@ -147,6 +168,7 @@ const styles = StyleSheet.create({
     padding: 12,
     backgroundColor: '#AEECE4',
     borderRadius: 20,
+    marginBottom: 12,
   },
   searchButtonContainer: {
     justifyContent: 'center',
@@ -163,10 +185,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
   },
+  searchResultHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
   searchResultTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 16,
+  },
+  showAllText: {
+    fontSize: 16,
+    color: '#129575',
   },
   recipeList: {
     justifyContent: 'space-between',

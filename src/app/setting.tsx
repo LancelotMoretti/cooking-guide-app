@@ -5,15 +5,18 @@ import { useState } from 'react';
 import { ButtonPublish } from '@/components/UI/button/Button';
 import { ButtonImageText } from '@/components/UI/button/ButtonImageText';
 import { ButtonImageTextStyles } from '@/styles/Setting';
+import { logout } from '@/components/services/authService';
 
 export default function Setting() {
     const navigationSetting = useNavigation();
     const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
     const handleLogout = () => {
+        logout(navigationSetting); // Gọi hàm logout nếu cần thực hiện đăng xuất từ hệ thống
         setShowLogoutDialog(false);
         navigateToStack(navigationSetting, "log-in")();
     };
+
     return (
         <ScrollView>
             <ButtonImageText
@@ -35,7 +38,7 @@ export default function Setting() {
                 title="Foundation"
             />
             <ButtonImageText
-                onPress={navigateToStack(navigationSetting, "log-in")}
+                onPress={() => setShowLogoutDialog(true)} // Thêm sự kiện onPress để mở hộp thoại xác nhận đăng xuất
                 outerStyleContainer={ButtonImageTextStyles.outercontainer}
                 interStyleContainer={ButtonImageTextStyles.intercontainer}
                 IoncStyle={ButtonImageTextStyles.ionc}
@@ -43,13 +46,14 @@ export default function Setting() {
                 source={require('../assets/images/log-out.png')} 
                 title="Log out"
             />
+
             <Modal
                 animationType="slide"
                 transparent={true}
                 visible={showLogoutDialog}
                 onRequestClose={() => setShowLogoutDialog(false)}
             >
-            <View style={styles.modalBackground}>
+                <View style={styles.modalBackground}>
                     <View style={styles.modalContainer}>
                         <Text style={styles.modalTitle}>End Session</Text>
                         <Text>Are you sure you want to log out?</Text>

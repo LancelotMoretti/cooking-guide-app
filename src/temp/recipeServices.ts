@@ -8,7 +8,7 @@ export interface Recipe {
     userID: string;
     title: string;
     description: string;
-    duration: {hour: number, minute: number};
+    duration: { hours: number, minutes: number };
     ingredients: { amount: string, name: string }[];
     steps: string[];
     video: any;
