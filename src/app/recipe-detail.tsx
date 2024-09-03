@@ -190,7 +190,7 @@ export default function RecipeDetail() {
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 30,
-        marginBottom: 50,
+        paddingBottom: 50,
     },
     image: {
         marginBottom: 20,

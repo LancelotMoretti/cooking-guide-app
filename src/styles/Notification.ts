@@ -64,13 +64,12 @@ export const NotificationScreenStyles = StyleSheet.create({
         backgroundColor: '#fff',
         paddingHorizontal: 16,
         paddingTop: 20,
-        marginBottom: 20,
+        paddingBottom: 20,
     },
     filterContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 20,
-        marginTop: 20,
+        paddingTop: 20,
     },
     filterButton: {
         flex: 1,
