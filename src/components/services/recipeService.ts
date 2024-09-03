@@ -29,12 +29,13 @@ export const getRecipes = async (): Promise<Recipe[]> => {
 export const getRecipe = async (recipeID: string): Promise<Recipe> => {
     const recipeRef = ref(db, `recipes/${recipeID}`);
     let recipe: Recipe | null = null;
-
+    console.log(recipeID);
     await new Promise<void>((resolve, reject) => {
         onValue(recipeRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 recipe = Recipe.fromPlainObject(data);
+                console.log(recipe);
                 resolve();
             } else {
                 reject(new Error('Recipe not found'));

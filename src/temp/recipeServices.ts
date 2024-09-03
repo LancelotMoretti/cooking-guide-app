@@ -1,17 +1,21 @@
 import { useState, useEffect } from "react";
 import { auth, db } from "@/firebaseConfig";
 import { get, ref, update, remove, push, onValue, off } from "firebase/database";
-
+import { Float } from 'react-native/Libraries/Types/CodegenTypes';
+import { UserComment } from '@/components/models/UserComment';
 export interface Recipe {
     recipeID: string;
     userID: string;
     title: string;
     description: string;
-    timeDuration: string;
-    ingredients: { amount: string, description: string }[];
-    instructions: string[];
+    duration: string;
+    ingredients: { amount: string, name: string }[];
+    steps: string[];
     video: any;
-    time: Date;
+    date: Date;
+    tags:[];
+    rating: Float;
+    comments: UserComment[],
     meal: { breakfast: boolean, lunch: boolean, dinner: boolean };
     status: string
 }
@@ -30,12 +34,15 @@ export function readRecipesListFromDatabase() {
                     userID: data[key].userID,
                     title: data[key].title,
                     description: data[key].description,
-                    timeDuration: data[key].timeDuration,
+                    duration: data[key].timeDuration,
                     ingredients: data[key].ingredients,
-                    instructions: data[key].instructions,
+                    steps: data[key].instructions,
                     video: data[key].video,
                     meal: data[key].meal,
-                    time: new Date(data[key].time),
+                    tags: data[key].tags,
+                    rating: data[key].rating,
+                    comments: data[key].comments,
+                    date: new Date(data[key].time),
                     status: data[key].status
                 }));
                 setRecipes(recipesArray);
@@ -71,12 +78,15 @@ export function readRecipeFromDatabase(recipeId: string) {
                     userID: data.userID,
                     title: data.title,
                     description: data.description,
-                    timeDuration: data.timeDuration,
+                    duration: data.timeDuration,
                     ingredients: data.ingredients,
-                    instructions: data.instructions,
+                    steps: data.instructions,
                     video: data.video,
                     meal: data.meal,
-                    time: new Date(data.time),
+                    tags: data.tags,
+                    rating: data.rating,
+                    comments: data.comments,
+                    date: new Date(data.time),
                     status: data.status
 
                 };

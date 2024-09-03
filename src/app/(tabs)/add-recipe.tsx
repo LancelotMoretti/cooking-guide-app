@@ -12,7 +12,8 @@ import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { remove } from 'firebase/database';
 import { saveNewRecipe, saveUpdatedRecipe } from '@/temp/recipeServices';
 import { createRecipe } from '@/components/services/recipeService';
-import { Recipe } from '@/components/models/Recipe';
+//import { Recipe } from '@/components/models/Recipe';
+import {Recipe } from '@/temp/recipeServices';
 import { ButtonTrashStyles,  ButtonAddVideoStyles, ButtonChooseStyles } from '@/styles/AddRecipe';
 
 
@@ -47,7 +48,7 @@ export default function AddRecipe() {
     const handlePublish = () => {
         if (validateFields()) {
 
-        createRecipe(
+        saveNewRecipe(
             {
                 recipeID: '0',
                 userID: '0'.toString(),
@@ -63,9 +64,9 @@ export default function AddRecipe() {
                 meal: meal,
                 comments: [],
                 status: "Pending",
-                toPlainObject: () => ({}),
-                getRecipeID: () => '0',
-                getUserID: () => '0'
+                // toPlainObject: () => ({}),
+                // getRecipeID: () => '0',
+                // getUserID: () => '0'
             }
         );
         setModalVisible(false);

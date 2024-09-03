@@ -1,127 +1,121 @@
-import { ScrollView, View, Text, TextInput, StyleSheet, Image, Modal, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
-import { useState } from 'react';
-import { RecipeDetailHeader } from '@/styles/Header';
-import { useNavigation } from 'expo-router';
-import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
-import { remove } from 'firebase/database';
-import { saveNewRecipe, saveUpdatedRecipe } from '@/temp/recipeServices';
-import { Recipe, readRecipeFromDatabase } from '@/temp/recipeServices';
-import { TextBoxIngredient } from '@/components/UI/textBox/TextBox';
-
+import React, { useState, useEffect } from 'react';
+import { ScrollView, View, Text, Image, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { getRecipe } from '@/components/services/recipeService';
+import { Recipe } from '@/components/models/Recipe';
+import { ImageBackground } from 'react-native';
 
 export default function RecipeDetail() {
     const navigation = useNavigation();
-    const recipe = readRecipeFromDatabase('-O2EVWGU1sE8jdrLgimQ');
+    const route = useRoute();
+    const recipeID = (route.params as { header: string })?.header;
+    console.log(recipeID);
     
-    return(
+    const [recipe, setRecipe] = useState<Recipe | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (recipeID) { // Only fetch data if recipeID is defined
+            const fetchRecipe = async () => {
+                try {
+                    setLoading(true);
+                    const fetchedRecipe = await getRecipe(recipeID);
+                    console.log(fetchedRecipe);
+                    setRecipe(fetchedRecipe);
+                } catch (error) {
+                    console.error("Error fetching recipe:", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchRecipe();
+       }
+    }, [recipeID]); // Add recipeID as a dependency
+
+    if (loading) {
+        return <Text>Loading...</Text>;
+    }
+
+    if (!recipe) {
+        return <Text>No recipe found.</Text>;
+    }
+
+    return (
         <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
-        >    
-        {recipe ? (
-        <ScrollView style={styles.container}>
-            <View style={styles.image}>
-                <Image source={require('../assets/images/addRecipe/Food.png')} style={{ width: '100%' }} />
-            </View>
-
-            <Text style={RecipeDetailHeader}>{recipe.title}</Text>
-
-
-            <Text style={styles.title}>Details</Text>
-            <Text>{recipe.description}</Text>
-            
-            <Text style={styles.title}>Ingredients</Text>
-            <View style={styles.ingredientsList}>{recipe.ingredients.map((ingredient, index) => (
-                <View key={index} style={styles.ingredientRow}>
-                    <Text style={styles.ingredientDescription}>{ingredient.description}</Text>
-                    <Text style={styles.ingredientAmount}>{ingredient.amount}</Text>
+            style={{ flex: 1 }}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+        >
+            <ScrollView style={styles.container}>
+                <View style={styles.image}>
+                <ImageBackground
+                            source={{ uri: recipe.video }}
+                            style={styles.backgroundVideo}
+                            imageStyle={{ borderRadius: 10, resizeMode: 'cover' }}
+                        />
                 </View>
-            ))}
 
-            </View>
-            <Text style={styles.title}>Instruction</Text>
-            <View style={styles.instructionsList}>{recipe.instructions.map((instruction, index) => (
-            <View>
-                
-                <View key={index} style={styles.instruction}>
-                    <Text style={styles.instructionStep}>Step {index+1}</Text>
-                    <Text>{instruction}</Text>
+                <Text style={styles.title}>{recipe.title}</Text>
+
+                <Text style={styles.sectionTitle}>Details</Text>
+                <Text>{recipe.description}</Text>
+
+                <Text style={styles.sectionTitle}>Ingredients</Text>
+                <View style={styles.ingredientsList}>
+                    {recipe.ingredients?.map((ingredient, index) => (
+                        <View key={index} style={styles.ingredientRow}>
+                            <Text style={styles.ingredientDescription}>{ingredient.name}</Text>
+                            <Text style={styles.ingredientAmount}>{ingredient.amount}</Text>
+                        </View>
+                    ))}
                 </View>
-            </View>
-            ))}
-            </View>
-        
 
-        </ScrollView>
-        ) : (
-            <Text>Loading...</Text>
-        )}
+                <Text style={styles.sectionTitle}>Instructions</Text>
+                <View style={styles.instructionsList}>
+                    {recipe.steps?.map((instruction, index) => (
+                        <View key={index} style={styles.instruction}>
+                            <Text style={styles.instructionStep}>Step {index + 1}</Text>
+                            <Text>{instruction}</Text>
+                        </View>
+                    ))}
+                </View>
+            </ScrollView>
         </KeyboardAvoidingView>
     );
-
-
 }
 
 const styles = StyleSheet.create({
     container: {
-        
         marginHorizontal: 30,
     },
-    button: {
-        flexDirection: 'row',
-        justifyContent:'space-between',
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-    modalBackground: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalContainer: {
-        backgroundColor: '#fff',
-        padding: 20,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        alignItems: "center",
-    },
-    modalTitle: {
-    
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        color: '#129575',
-    },
-
     image: {
         marginBottom: 20,
     },
     title: {
-        fontSize: 16,
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 20,
+        color: '#129575',
+    },
+    sectionTitle: {
+        fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10,
         color: '#129575',
     },
-    
-    
     ingredientsList: {
         marginBottom: 20,
     },
     ingredientRow: {
         flexDirection: 'row',
-        justifyContent:'space-between',
+        justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 5,
         paddingVertical: 8,
         paddingHorizontal: 16,
         backgroundColor: '#D9D9D9',
         borderRadius: 10,
-
-    },
-
-    ingredientTextContainer: {
-        flex: 1,
     },
     ingredientDescription: {
         fontSize: 16,
@@ -129,15 +123,13 @@ const styles = StyleSheet.create({
     ingredientAmount: {
         color: 'gray',
     },
-
     instructionsList: {
         marginBottom: 20,
     },
     instruction: {
-
-        alignSelf: 'center',
+        //alignSelf: 'center',
         marginBottom: 5,
-        backgroundColor: '#D9D9D9',
+        backgroundColor: '#9FEADF',
         borderRadius: 10,
         paddingVertical: 8,
         paddingHorizontal: 16,
@@ -147,6 +139,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 5,
     },
-    
-    
+    backgroundVideo: {
+        width: '100%',
+        height: 300, // Adjust height as per your needs
+      },
 });

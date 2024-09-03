@@ -101,7 +101,7 @@ const SearchScreen = () => {
         renderItem={({ item }) => (
           <TouchableOpacity 
             style={styles.recipeCard}
-            onPress={() => navigateToStack(navigation, 'recipe-detail')()}
+            onPress={() => navigateToStack(navigation, 'recipe-detail', item.recipeID)()}
           >
             <View style={styles.recipeInfo}>
               <Text style={styles.recipeTitle}>{item.title || 'Unknown Title'}</Text>

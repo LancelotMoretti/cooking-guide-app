@@ -20,12 +20,13 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onRea
   const recipe = readRecipeFromDatabase(notification.getRecipeID());
 
   const handlePress = () => {
-    navigateToStack(navigation, 'recipe-detail')();
-    if (!readState) {
+    //notification.getRecipeID()
+    navigateToStack(navigation, 'recipe-detail', notification.getRecipeID());
+  if (!readState) {
       setReadState(true);
       notification.markAsRead();
-      onReadChange();
-    }
+      onReadChange(); // Call your callback to notify about the state change
+  }
   };
 
   const handleDelete = () => {
