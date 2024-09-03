@@ -17,9 +17,6 @@ export const getComments = async (recipeID: string): Promise<UserComment[]> => {
                 });
                 resolve();
             }
-            else {
-                reject(new Error('No comments found'));
-            }
         });
     });
 
@@ -55,9 +52,6 @@ export const deleteComment = async (recipeID: string, userID: string, date: stri
                         resolve();
                     }
                 });
-            }
-            else {
-                reject(new Error('No comments found'));
             }
         });
     });
