@@ -1,13 +1,6 @@
 import { UserProfileLink } from './UserProfileLink';
 
-interface UserCommentProps {
-    user: UserProfileLink;
-    date: string;
-    content: string;
-    reply?: UserComment[];
-}
-
-export class UserComment implements UserCommentProps {
+export class UserComment {
     constructor(
         public user: UserProfileLink,
         public date: string,
@@ -27,7 +20,22 @@ export class UserComment implements UserCommentProps {
         this.content = newContent;
     }
 
-    replyToComment(replyContent: string) {
-        this.reply?.push(new UserComment(this.user, new Date().toISOString(), replyContent));
+    replyToComment(replyContent: string): void {
+        if (!this.reply) {
+            this.reply = [];
+        }
+        this.reply.push(new UserComment(this.user, new Date().toISOString(), replyContent));
+    }
+
+    toPlainObject(): any {
+        return {
+            user: {
+                accountID: this.user.accountID,
+                username: this.user.username
+            },
+            date: this.date,
+            content: this.content,
+            reply: this.reply ? this.reply.map(reply => reply.toPlainObject()) : []
+        };
     }
 }

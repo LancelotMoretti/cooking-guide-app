@@ -1,7 +1,7 @@
 import { auth, db } from "@/firebaseConfig";
-import { ref, onValue, off } from "firebase/database";
+import { ref, onValue, off, set } from "firebase/database";
 import { useState, useEffect } from "react";
-
+import { FirebaseService }  from './firebaseService'
 export interface Profile {
     userID: string;
     fullName: string;
@@ -46,17 +46,23 @@ export function readProfileInformation() {
     return profile;
 }
 
-export function readUserID() {
+export function readUserIDAndUsername() {
     const [userID, setUserID] = useState<string | null>(null);
+    const [username, setUsername] = useState<string | null>(null);
 
     useEffect(() => {
         const user = auth.currentUser;
 
         if (user) {
             setUserID(user.uid);
+            const fetchData = async () => {
+                const username = await FirebaseService.getUsername(user.uid);
+                setUsername(username);
+            };
+            fetchData();
         }
 
     }, []);
 
-    return userID;
+    return { userID, username };
 }

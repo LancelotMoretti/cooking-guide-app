@@ -9,7 +9,7 @@ import { getRecipes, searchRecipes } from '@/components/services/recipeService';
 import { Recipe} from '../../components/models/Recipe';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { useNavigation } from 'expo-router';
-import { readUserID } from '@/components/services/profileService';
+import { readUserIDAndUsername } from '@/components/services/profileService';
 
 let allRecipes: Recipe[] = [];
 getRecipes().then((recipes) => {
@@ -17,7 +17,7 @@ getRecipes().then((recipes) => {
 });
 
 const SearchScreen = () => {
-  const userID: string | null = readUserID(); // Fetch
+  const userID = readUserIDAndUsername()?.userID;
 
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F4F6',
     padding: 16,
     marginTop: 20,
+    marginBottom: 50,
   },
   searchBarContainer: {
     flexDirection: 'row',

@@ -1,6 +1,67 @@
 import { off, set, ref, onValue, update, remove, push } from "firebase/database";
 import { auth, db } from "@/firebaseConfig";
 import { Recipe } from "@/components/models/Recipe";
+import { UserComment } from "@/components/models/UserComment";
+
+export const getComments = async (recipeID: string): Promise<UserComment[]> => {
+    const commentsRef = ref(db, `recipes/${recipeID}/comments`);
+    const comments: UserComment[] = [];
+
+    await new Promise<void>((resolve, reject) => {
+        onValue(commentsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                Object.keys(data).forEach((commentID) => {
+                    const commentData = data[commentID];
+                    comments.push(commentData);
+                });
+                resolve();
+            }
+            else {
+                reject(new Error('No comments found'));
+            }
+        });
+    });
+
+    off(commentsRef, 'value');
+
+    return comments;
+}
+
+export const pushComment = async (recipeID: string, comment: UserComment): Promise<void> => {
+    const recipeRef = ref(db, `recipes/${recipeID}/comments`);
+    const newCommentRef = push(recipeRef);
+
+    const commentData = comment.toPlainObject();
+
+    await set(newCommentRef, commentData).catch(error => {
+        console.error('Error pushing comment:', error);
+    });
+}
+
+export const deleteComment = async (recipeID: string, userID: string, date: string): Promise<void> => {
+    const commentsRef = ref(db, `recipes/${recipeID}/comments`);
+    
+    await new Promise<void>((resolve, reject) => {
+        onValue(commentsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                Object.keys(data).forEach((commentID) => {
+                    const commentData = data[commentID];
+                    console.log(commentData);
+                    if (commentData.user.accountID === userID && commentData.date === date) {
+                        const commentRef = ref(db, `recipes/${recipeID}/comments/${commentID}`);
+                        remove(commentRef);
+                        resolve();
+                    }
+                });
+            }
+            else {
+                reject(new Error('No comments found'));
+            }
+        });
+    });
+}
 
 export const getRecipes = async (): Promise<Recipe[]> => {
     const recipesRef = ref(db, 'recipes');

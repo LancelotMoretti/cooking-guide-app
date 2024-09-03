@@ -4,10 +4,10 @@ import { NotificationScreenStyles } from '@/styles/Notification';
 import NotificationFilter from '@/components/UI/notification/NotificationFilter';
 import NotificationList from '@/components/UI/notification/NotificationList';
 import { useNotifications } from '../../components/services/notificationService';
-import { readUserID } from '@/components/services/profileService';
+import { readUserIDAndUsername } from '@/components/services/profileService';
 
 export default function Notification () {
-  const userID: string | null = readUserID();
+  const userID: string | null = readUserIDAndUsername()?.userID; // Fetch the user ID
   const list = useNotifications(userID || '') // Use the custom hook to fetch notifications
   const [filter, setFilter] = useState<'all' | 'read' | 'unread'>('all'); 
   
