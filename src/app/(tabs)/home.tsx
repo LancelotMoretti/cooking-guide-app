@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Recipe } from '@/components/models/Recipe';
 import { getRecipes } from '@/components/services/recipeService';
 
@@ -18,7 +18,7 @@ function filterRecipesByMeal(recipes: Recipe[]): FilteredRecipes {
         const recipeData = {
             id: recipe.recipeID,
             title: recipe.title,
-            image: 'placeholder_image.png', // Replace with actual image logic if available
+            image: recipe.video, // Replace with actual image logic if available
             time: recipe.duration,
             rating: recipe.rating
         };
@@ -88,18 +88,14 @@ const Home = () => {
           ))}
       </View>
 
-      {/* FlatList to display recipes based on selected category */}
-      <FlatList
-          data={filteredRecipes[selectedCategory]}
-          renderItem={({ item }) => (
-              <View style={styles.recipeCard}>
-                  <Text style={styles.recipeTitle}>{item.title}</Text>
-                  <Text>{item.time}</Text>
-                  <Text>{item.rating} ⭐</Text>
-              </View>
-          )}
-          keyExtractor={(item) => item.id}
-      />
+      {/* Render Recipes directly */}
+      {filteredRecipes[selectedCategory].map((item) => (
+          <View key={item.id} style={styles.recipeCard}>
+              <Text style={styles.recipeTitle}>{item.title}</Text>
+              <Text>{item.time}</Text>
+              <Text>{item.rating} ⭐</Text>
+          </View>
+      ))}
 
       {/* Additional Sections like Trending and Saved */}
       <View style={styles.section}>
