@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, ScrollView, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 
 const data = [
     { id: '22127121', name: 'Đào Việt Hoàng' },
@@ -18,8 +18,8 @@ const data = [
 
 export default function foundation() {
     return (
-    <ScrollView>
-        <View style={styles.container}>
+   
+      <View style={styles.container}>
       <FlatList
         data={data}
         renderItem={({ item }) => <Item id={item.id} name={item.name} />}
@@ -27,7 +27,7 @@ export default function foundation() {
         contentContainerStyle={styles.list}
       />
     </View>
-    </ScrollView>
+   
     )
 
 };
