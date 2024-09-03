@@ -20,16 +20,16 @@ function filterRecipesByMeal(recipes: Recipe[]): FilteredRecipes {
             title: recipe.title,
             image: recipe.video, // Replace with actual image logic if available
             time: recipe.duration,
-            rating: recipe.rating
+            rating: recipe.rating,
         };
-
-        if (recipe.meal.breakfast) {
+    
+        if (recipe.meal?.breakfast) {
             categorizedRecipes.Breakfast.push(recipeData);
         }
-        if (recipe.meal.lunch) {
+        if (recipe.meal?.lunch) {
             categorizedRecipes.Lunch.push(recipeData);
         }
-        if (recipe.meal.dinner) {
+        if (recipe.meal?.dinner) {
             categorizedRecipes.Dinner.push(recipeData);
         }
     });

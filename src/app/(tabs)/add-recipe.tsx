@@ -192,33 +192,33 @@ export default function AddRecipe() {
                     </View>
                 </View>
             </Modal>
-
+            <View style = {styles.backgroundVideo}>
             <ImageBackground
                 source={video ? { uri: video } : require('../../assets/images/addRecipe/Food.png')}
                 style={styles.videoContainer}
                 imageStyle={{ borderRadius: 10, resizeMode: 'cover' }}
             >
-                
-                <ButtonImage 
-                            style={styles.centerButtonContainer} 
-                            source={require('../../assets/images/addRecipe/video-bot.png')} 
+            </ImageBackground>    
+            <ButtonAdd 
+                            //style={styles.centerButtonContainer} 
+                            //containerStyle={styles.centerButtonContainer}
+                            title="Add Image"
                             onPress={handleAddVideo} 
-                        />
-                {/* {video && <Image source={{ uri: video }} style={styles.backgroundVideo} />} */}
-                {video && isVideo ? (<Video
+            />
+                {/* {video && isVideo ? (<Video
                         source={{ uri: video }} // Video URL
                         style={styles.backgroundVideo} // Video styling
                         controls={true} // Show media controls (play, pause, etc.)
                         resizeMode="cover" // Adjusts how the video is scaled
-                    />) : video && (
-                        <ImageBackground
+                    />) : video && ( */}
+                        {/* <ImageBackground
                             source={{ uri: video }}
                             style={styles.backgroundVideo}
-                            imageStyle={{ borderRadius: 10 }}
-                        />
-                    )}
-            </ImageBackground>
-
+                            imageStyle={{ borderRadius: 10, resizeMode: 'cover' }}
+                        /> */}
+                    
+            
+            </View>
 
             <Text style={styles.title}>Title</Text>
             <TextBox 
@@ -390,23 +390,27 @@ const styles = StyleSheet.create({
         color: '#129575',
         fontSize: 16,
     },
+    backgroundVideo: {
+        width: '100%',
+        height: 300, // Adjust height as per your needs
+      },
     videoContainer: {
-        flex: 1,
-        justifyContent: 'center',
+        //flex: 1,
+        //justifyContent: 'flex-end',
         alignItems: 'center',
         padding: 10,
         borderRadius: 10,
-        minWidth: '100%',
+        //minWidth: '100%',
         minHeight: 200,
-        position: 'relative', 
-        
+        //position: 'relative', 
+        marginBottom: 20,
     },
 
     centerButtonContainer: {
-        position: 'absolute',
-        top: '40%',
+        //position: 'absolute',
+        //top: '40%',
         //left: '40%',
-        transform: [{ translateX: -35 }, { translateY: -35 }],
+        //transform: [{ translateX: -35 }, { translateY: -35 }],
     },
 
     addVideoText: {
@@ -445,8 +449,5 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginBottom: 5,
     },
-    backgroundVideo: {
-        width: '100%',
-        height: 300, // Adjust height as per your needs
-      },
+    
 });
