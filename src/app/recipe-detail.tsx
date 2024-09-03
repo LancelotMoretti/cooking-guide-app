@@ -9,13 +9,18 @@ import { UserProfileLink } from '@/components/models/UserProfileLink';
 import { readUserIDAndUsername } from '@/components/services/profileService';
 import { User } from '@/components/models/User';
 import { set } from 'firebase/database';
+import { TextBox } from '@/components/UI/textBox/TextBox';
+import { ButtonEditRecipe } from '@/components/UI/button/Button';
+import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 
 export default function RecipeDetail() {
     const { userID, username } = readUserIDAndUsername() || { userID: '', username: '' };
     const navigation = useNavigation();
     const route = useRoute();
     const recipeID = (route.params as { header: string })?.header;
-
+    //console.log(userID);
+    //console.log(recipeID);
+    
     const [recipe, setRecipe] = useState<Recipe | null>(null);
     const [loading, setLoading] = useState(true);
     const [commentContent, setCommentContent] = useState('');
@@ -91,6 +96,8 @@ export default function RecipeDetail() {
         return <Text>No recipe found.</Text>;
     }
 
+    // console.log(recipe.userID);
+    // console.log(userID);
     return (
         <KeyboardAvoidingView
             style={{ flex: 1 }}
@@ -98,6 +105,13 @@ export default function RecipeDetail() {
             keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
         >
             <ScrollView style={styles.container}>
+                
+                {userID == recipe.userID && (
+                <ButtonEditRecipe
+                    title="Edit" 
+                    onPress={() => navigateToStack(navigation, 'edit-recipe', recipeID)()}
+                />)}
+                
                 <View style={styles.image}>
                     <ImageBackground
                         source={{ uri: recipe.video }}
@@ -105,11 +119,15 @@ export default function RecipeDetail() {
                         imageStyle={{ borderRadius: 10, resizeMode: 'cover' }}
                     />
                 </View>
+                <View style={styles.titleContainer}>
+                    <TextInput style={styles.title} value={recipe.title} />
 
-                <Text style={styles.title}>{recipe.title}</Text>
+                      
+                </View>
+            
 
                 <Text style={styles.sectionTitle}>Details</Text>
-                <Text>{recipe.description}</Text>
+                <Text style={styles.descriptionText}>{recipe.description}</Text>
 
                 <Text style={styles.sectionTitle}>Ingredients</Text>
                 <View style={styles.ingredientsList}>
@@ -193,19 +211,29 @@ const styles = StyleSheet.create({
         paddingBottom: 50,
     },
     image: {
-        marginBottom: 20,
+        marginBottom: 10,
+    },
+    titleContainer: {
+        borderRadius: 20,
     },
     title: {
-        fontSize: 24,
+        borderRadius: 20,
+        fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 20,
-        color: '#129575',
+        color: '#FFFFFF',
+        backgroundColor: '#129575',
+        padding: 10,
     },
     sectionTitle: {
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10,
         color: '#129575',
+    },
+    descriptionText: {
+        fontSize: 16,
+        marginBottom: 20,
     },
     ingredientsList: {
         marginBottom: 20,

@@ -14,3 +14,22 @@ export const TextBoxIngreStyles = StyleSheet.create({
         fontSize: 16,
     },
 });
+
+export const ButtonEditStyles = StyleSheet.create({
+    container: {
+    
+        backgroundColor: '#9FEADD',
+        borderRadius: 20,
+        padding: 10,
+        alignItems: 'center',
+        //alignSelf: 'center', // Center horizontally
+        //justifyContent: 'center',
+        width: '20%',
+        marginBottom: 20,
+    },
+    text: {
+        color: '#129575',
+        fontWeight: 'bold',
+        fontSize: 14,
+    },
+});

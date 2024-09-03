@@ -7,7 +7,7 @@ interface RecipeProps {
     title: string;
     description: string;
     date: Date;
-    duration: { hours: number, minutes: number };
+    duration: { hour: number, minute: number };
     ingredients: { name: string, amount: string }[];
     steps: string[];
     tags: string[];
@@ -29,7 +29,7 @@ export class Recipe implements RecipeProps {
         public title: string,
         public description: string,
         public date: Date,
-        public duration: { hours: number, minutes: number },
+        public duration: { hour: number, minute: number },
         public ingredients: { name: string, amount: string }[],
         public steps: string[],
         public tags: string[],
