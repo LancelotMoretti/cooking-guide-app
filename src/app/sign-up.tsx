@@ -8,7 +8,7 @@ import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { signUpAccount } from '@/temp/registerServices';
 import { useNavigation } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, View, Text, Dimensions, Modal } from 'react-native';
+import { ScrollView, View, Text, Dimensions, Modal, TouchableOpacity } from 'react-native';
 import { SignBoxStyles, SignButtonStyles } from '@/styles/Sign';
 
 export default function SignUpScreen() {
@@ -70,13 +70,64 @@ export default function SignUpScreen() {
                     alignItems: "center",
                     backgroundColor: "rgba(0, 0, 0, 0.5)"
                 }}>
-                    <View style={{
-                        backgroundColor: "#FFFFFF",
-                        padding: 20,
-                        borderRadius: 10
-                    }}>
-                        <Text>Passwords do not match</Text>
-                        <SignButton title="OK" onPress={() => setShowModal(false)} />
+                    <View
+                        style={{
+                            backgroundColor: '#FFFFFF',
+                            paddingVertical: 40,
+                            paddingHorizontal: 30,
+                            borderRadius: 30,
+                            width: '70%',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <Text style={{ 
+                            fontSize: 20, 
+                            fontWeight: 'bold', 
+                            color: '#4F3C3C', 
+                            marginBottom: 20,
+                        }}>
+                            Change Password Successful!
+                        </Text>
+
+                        <View style={{ 
+                            backgroundColor: '#AAF0D1', 
+                            borderRadius: 10, 
+                            padding: 15, 
+                            marginBottom: 20,
+                        }}>
+                            <Text style={{ 
+                                fontSize: 30, 
+                                color: '#AAF0D1',
+                            }}>✓</Text>
+                        </View>
+
+                        <Text style={{ 
+                            fontSize: 16, 
+                            color: '#4F3C3C', 
+                            marginBottom: 20,
+                        }}>
+                            Returning to log in screen...
+                        </Text>
+
+                        <TouchableOpacity
+                            onPress={navigateToStack(navigation, 'log-in')}
+                            style={{
+                                backgroundColor: '#AAF0D1',
+                                paddingVertical: 12,
+                                paddingHorizontal: 15,
+                                borderRadius: 30,
+                                width: '100%',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Text style={{ 
+                                color: '#4F3C3C',
+                                fontSize: 18,
+                                fontWeight: 'bold',
+                            }}>
+                                Go To Home
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </Modal>

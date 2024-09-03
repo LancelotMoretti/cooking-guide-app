@@ -4,8 +4,9 @@ import { LoginHeader } from '@/styles/Header';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { useNavigation } from 'expo-router';
 import { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
-import { SignBoxStyles } from '@/styles/Sign';
+import { View, Text, StyleSheet, ScrollView, Dimensions, Modal, TouchableOpacity } from 'react-native';
+import { SignBoxStyles, SignButtonStyles } from '@/styles/Sign';
+import { set } from 'firebase/database';
 
 export default function ForgotPassword() {
     const window = Dimensions.get("window");
@@ -16,6 +17,82 @@ export default function ForgotPassword() {
     const [code, setCode] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [openModal, setOpenModal] = useState(false);
+
+    function renderModal() {
+        return (
+            <Modal visible={openModal} animationType="slide" transparent={true}>
+                <View 
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+                    }}
+                >
+                    <View
+                        style={{
+                            backgroundColor: '#FFFFFF',
+                            paddingVertical: 40,
+                            paddingHorizontal: 30,
+                            borderRadius: 30,
+                            width: '70%',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <Text style={{ 
+                            fontSize: 20, 
+                            fontWeight: 'bold', 
+                            color: '#4F3C3C', 
+                            marginBottom: 20,
+                        }}>
+                            Change Password Successful!
+                        </Text>
+
+                        <View style={{ 
+                            backgroundColor: '#AAF0D1', 
+                            borderRadius: 10, 
+                            padding: 15, 
+                            marginBottom: 20,
+                        }}>
+                            <Text style={{ 
+                                fontSize: 30, 
+                                color: '#AAF0D1',
+                            }}>✓</Text>
+                        </View>
+
+                        <Text style={{ 
+                            fontSize: 16, 
+                            color: '#4F3C3C', 
+                            marginBottom: 20,
+                        }}>
+                            Returning to log in screen...
+                        </Text>
+
+                        <TouchableOpacity
+                            onPress={navigateToStack(navigation, 'log-in')}
+                            style={{
+                                backgroundColor: '#AAF0D1',
+                                paddingVertical: 12,
+                                paddingHorizontal: 15,
+                                borderRadius: 30,
+                                width: '100%',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Text style={{ 
+                                color: '#4F3C3C',
+                                fontSize: 18,
+                                fontWeight: 'bold',
+                            }}>
+                                Go To Home
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
 
     const handleEmailSubmit = () => {
         setStep(1);
@@ -26,7 +103,7 @@ export default function ForgotPassword() {
     }
 
     const handlePasswordSubmit = () => {
-        setStep(3);
+        setOpenModal(true);
     }
 
     const renderStep = () => {
@@ -59,6 +136,8 @@ export default function ForgotPassword() {
                         }}>
                             <Text style={SignBoxStyles.label}>Email</Text>
                             <SignTextBox
+                                style={SignBoxStyles.input}
+                                outerStyle={SignBoxStyles.inputContainer}
                                 placeholder="example@example.com"
                                 secureTextEntry={false}
                                 value={email}
@@ -71,7 +150,7 @@ export default function ForgotPassword() {
                             marginLeft: window.width / 2 - 100,
                             marginRight: window.width / 2 - 100
                         }}>
-                            <SignButton title="Continue" onPress={handleEmailSubmit} />
+                            <SignButton title="Continue" onPress={handleEmailSubmit} containerStyle={SignButtonStyles.container} style={SignButtonStyles.text}/>
                         </View>
                     </ScrollView>
                 );
@@ -103,6 +182,8 @@ export default function ForgotPassword() {
                         }}>
                             <Text style={SignBoxStyles.label}>Verification Code</Text>
                             <SignTextBox
+                                style={SignBoxStyles.input}
+                                outerStyle={SignBoxStyles.inputContainer}
                                 placeholder="123456"
                                 secureTextEntry={false}
                                 value={code}
@@ -124,7 +205,7 @@ export default function ForgotPassword() {
                             marginLeft: window.width / 2 - 100,
                             marginRight: window.width / 2 - 100
                         }}>
-                            <SignButton title="Continue" onPress={handleCodeSubmit} />
+                            <SignButton title="Continue" onPress={handleCodeSubmit} containerStyle={SignButtonStyles.container} style={SignButtonStyles.text}/>
                         </View>
                     </ScrollView>
                 );
@@ -159,12 +240,16 @@ export default function ForgotPassword() {
                                 placeholder="Enter your password"
                                 value={password}
                                 onChangeText={setPassword}
+                                style={SignBoxStyles.container}
+                                placeholderTextColor={"#9EA0A4"}
                             />
                             <Text style={SignBoxStyles.label}>Confirm Password</Text>
                             <SecureSignTextBox
                                 placeholder="Enter your password"
                                 value={confirmPassword}
                                 onChangeText={setConfirmPassword}
+                                style={SignBoxStyles.container}
+                                placeholderTextColor={"#9EA0A4"}
                             />
                         </View>
 
@@ -173,18 +258,9 @@ export default function ForgotPassword() {
                             marginLeft: window.width / 2 - 100,
                             marginRight: window.width / 2 - 100
                         }}>
-                            <SignButton title="Continue" onPress={handlePasswordSubmit} />
+                            <SignButton title="Continue" onPress={handlePasswordSubmit} containerStyle={SignButtonStyles.container} style={SignButtonStyles.text}/>
                         </View>
-                    </ScrollView>
-                );
-            case 3:
-                return (
-                    <ScrollView style={{
-                        flex: 1,
-                        backgroundColor: '#FFFFFF'
-                    }}>
-                        <Text style={LoginHeader}>Change Password Successful!</Text>
-                        <SignButton title="Go To Home" onPress={navigateToStack(navigation, "log-in")} />
+                        {renderModal()}
                     </ScrollView>
                 );
             default:
