@@ -42,14 +42,15 @@ export default function ProfileScreen() {
     }, []);
 
     const currentUser = auth.currentUser;
+    let userRecipes = recipes;
     if (currentUser) {
-        recipes.filter(recipe => recipe.userID === currentUser.uid);
+        userRecipes = recipes.filter(recipe => recipe.userID === currentUser.uid);
     }
     
     const displayRecipeList = () => {
         return (
             <FlatList
-                data={recipes}
+                data={userRecipes}
                 keyExtractor={(item) => item.recipeID}
                 renderItem={({ item }) => (
                     <TouchableOpacity 
