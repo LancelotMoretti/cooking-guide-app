@@ -4,7 +4,7 @@ import { Recipe } from '@/components/models/Recipe';
 import { getRecipes } from '@/components/services/recipeService';
 
 // Define the type for filtered recipes
-type FilteredRecipes = { [key: string]: { id: string; title: string; image: string; time: string; rating: number }[] };
+type FilteredRecipes = { [key: string]: { id: string; title: string; image: string; time: { hours: number; minutes: number }; rating: number }[] };
 
 // Function to filter recipes by meal type
 function filterRecipesByMeal(recipes: Recipe[]): FilteredRecipes {
@@ -92,7 +92,7 @@ const Home = () => {
       {filteredRecipes[selectedCategory].map((item) => (
           <View key={item.id} style={styles.recipeCard}>
               <Text style={styles.recipeTitle}>{item.title}</Text>
-              <Text>{item.time}</Text>
+              <Text>{item.time?.hours}h {item.time?.minutes}m</Text>
               <Text>{item.rating} ⭐</Text>
           </View>
       ))}

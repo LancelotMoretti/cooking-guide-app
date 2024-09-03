@@ -35,7 +35,7 @@ export default function Setting() {
                 title="Foundation"
             />
             <ButtonImageText
-                onPress={navigateToStack(navigationSetting, "log-out")}
+                onPress={navigateToStack(navigationSetting, "log-in")}
                 outerStyleContainer={ButtonImageTextStyles.outercontainer}
                 interStyleContainer={ButtonImageTextStyles.intercontainer}
                 IoncStyle={ButtonImageTextStyles.ionc}

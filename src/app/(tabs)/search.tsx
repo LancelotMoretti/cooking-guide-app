@@ -4,16 +4,21 @@ import { Ionicons } from '@expo/vector-icons';
 import { TextBox } from '@/components/UI/textBox/TextBox';
 import { ButtonIonicons } from '@/components/UI/button/ButtonIonicons';
 import { SearchSuggestion, saveSearchQuery, getRecentSearches }  from '@/components/services/searchService';
-import { searchRecipes } from '@/components/services/recipeService';
+import { getRecipes, searchRecipes } from '@/components/services/recipeService';
 import { Recipe} from '../../components/models/Recipe';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { useNavigation } from 'expo-router';
 
 
+let allRecipes: Recipe[] = [];
+getRecipes().then((recipes) => {
+  allRecipes = recipes;
+});
+
 const SearchScreen = () => {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [recipes, setRecipes] = useState<Recipe[]>(allRecipes);
   const [recentSearches, setRecentSearches] = useState<SearchSuggestion[]>([]);
   const [showRecentSearch, setShowRecentSearch] = useState(true);
 

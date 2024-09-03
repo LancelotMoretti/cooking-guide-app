@@ -21,7 +21,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onRea
 
   const handlePress = () => {
     //notification.getRecipeID()
-    navigateToStack(navigation, 'recipe-detail', notification.getRecipeID());
+    navigateToStack(navigation, 'recipe-detail', notification.getRecipeID())();
   if (!readState) {
       setReadState(true);
       notification.markAsRead();

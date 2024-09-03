@@ -1,6 +1,7 @@
 import { off, set, ref, onValue, update, remove, push } from "firebase/database";
 import { auth, db } from "@/firebaseConfig";
 import { Recipe } from "@/components/models/Recipe";
+import { Switch } from "react-native";
 
 export const getRecipes = async (): Promise<Recipe[]> => {
     const recipesRef = ref(db, 'recipes');
@@ -81,15 +82,86 @@ export const searchRecipes = async (query: string): Promise<Recipe[]> => {
     const recipesRef = ref(db, 'recipes');
     const recipes: Recipe[] = [];
 
+    // Chuẩn hóa và tách query thành các từ khóa
+    const normalizeText = (text: string) =>
+        text
+            .normalize('NFD') // Chuẩn hóa các ký tự Unicode
+            .replace(/[\u0300-\u036f]/g, '') // Loại bỏ dấu (nếu có)
+            .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '') // Loại bỏ dấu câu
+            .toLowerCase()
+            .trim(); // Xóa khoảng trắng đầu và cuối
+
+    const queryWords = normalizeText(query)
+        .split(/\s+/) // Tách thành mảng các từ khóa
+        .filter(Boolean); // Loại bỏ các phần tử rỗng
+    if (queryWords.length === 0 || queryWords[0] === '' || queryWords[0] === ' ') {
+        return recipes;
+    }      
+
     await new Promise<void>((resolve, reject) => {
+        if (query.toLowerCase() === 'random') {
+            onValue(recipesRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const allRecipes = Object.keys(data).map((recipeID) =>
+                        Recipe.fromPlainObject(data[recipeID])
+                    );
+                    // Chọn ngẫu nhiên 5 công thức
+                    while (recipes.length < 5 && allRecipes.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * allRecipes.length);
+                        recipes.push(allRecipes.splice(randomIndex, 1)[0]);
+                    }
+                    resolve();
+                } else {
+                    reject(new Error('No recipes found'));
+                }
+            });
+        }
+
         onValue(recipesRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 Object.keys(data).forEach((recipeID) => {
-                    const recipeData = data[recipeID];
-                    if ((recipeData.title?.toLowerCase().includes(query.toLowerCase())) ||
-                        (recipeData.description?.toLowerCase().includes(query.toLowerCase()))) {
+                    const recipeData:Recipe = data[recipeID];
+                    const recipeTitle = normalizeText(recipeData.title || '');
+                    const recipeDescription = normalizeText(recipeData.description || '');
+                    let recipeMealType = '';
+                    if (recipeData.meal?.breakfast) {
+                        recipeMealType = 'breakfast';
+                    }           
+                    else if (recipeData.meal?.lunch) {
+                        recipeMealType = 'lunch';
+                    }
+                    else if (recipeData.meal?.dinner) {
+                        recipeMealType = 'dinner';
+                    }
+                    
+                    const time = recipeData.duration?.hours * 60 + recipeData.duration?.minutes || 0;
+                    const isQuick = time <= 30;
+                    const isMedium = time > 30 && time <= 60;
+                    const isLong = time > 60;
+
+                    // Tạo một chuỗi chứa cả tiêu đề và mô tả
+                    const combinedText = `${recipeTitle} ${recipeDescription}`;
+                    
+                    // Kiểm tra nếu tất cả các từ khóa đều xuất hiện trong combinedText
+                    const isMatch = queryWords.every(word => 
+                        combinedText.includes(word) ||
+                        recipeData.tags?.some(tag => normalizeText(tag).includes(word)) ||
+                        (isQuick && word === 'quick') ||
+                        (isMedium && word === 'medium') ||
+                        (isLong && word === 'long')
+                    );
+                    
+                    if (isMatch) {
                         recipes.push(Recipe.fromPlainObject(recipeData));
+                    }
+
+                    for (let i = 0; i < queryWords.length; i++) {
+                        if (recipeMealType === queryWords[i]) {
+                            recipes.push(Recipe.fromPlainObject(recipeData));
+                            break;
+                        }
                     }
                 });
                 resolve();
@@ -102,4 +174,4 @@ export const searchRecipes = async (query: string): Promise<Recipe[]> => {
     off(recipesRef, 'value');
 
     return recipes;
-}
+};
