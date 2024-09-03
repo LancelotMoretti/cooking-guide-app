@@ -7,12 +7,13 @@ interface RecipeProps {
     title: string;
     description: string;
     date: Date;
-    duration: number;
+    duration: string;
     ingredients: { name: string, amount: string }[];
     steps: string[];
     tags: string[];
     rating: Float;
     status: 'Pending' | 'Approved' | 'Declined';
+    meal: { breakfast: boolean, lunch: boolean, dinner: boolean };
     comments: UserComment[];
     video?: any;
 
@@ -28,12 +29,13 @@ export class Recipe implements RecipeProps {
         public title: string,
         public description: string,
         public date: Date,
-        public duration: number,
+        public duration: string,
         public ingredients: { name: string, amount: string }[],
         public steps: string[],
         public tags: string[],
         public rating: Float,
         public status: 'Pending' | 'Approved' | 'Declined',
+        public meal: { breakfast: boolean, lunch: boolean, dinner: boolean },
         public comments: UserComment[],
         public video?: any
     ) {}
@@ -51,6 +53,7 @@ export class Recipe implements RecipeProps {
             plainObject.tags,
             plainObject.rating,
             plainObject.status,
+            plainObject.meal,
             plainObject.comments,
             plainObject.video
         );

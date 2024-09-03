@@ -1,5 +1,6 @@
 import { ScrollView, View, Text, TextInput, StyleSheet, Image, ImageBackground, Modal, TouchableOpacity, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import React, { useState } from 'react';
+import  Video from 'react-native-video';
 import * as ImagePicker from 'expo-image-picker';
 import { AddRecipeHeader } from '@/styles/Header';
 import { ButtonFirst, ButtonPublish, ButtonAdd, ButtonAddVideo} from '@/components/UI/button/Button';
@@ -10,6 +11,8 @@ import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { remove } from 'firebase/database';
 import { saveNewRecipe, saveUpdatedRecipe } from '@/temp/recipeServices';
+import { createRecipe } from '@/components/services/recipeService';
+import { Recipe } from '@/components/models/Recipe';
 import { ButtonTrashStyles,  ButtonAddVideoStyles, ButtonChooseStyles } from '@/styles/AddRecipe';
 
 
@@ -21,7 +24,7 @@ export default function AddRecipe() {
     const [description, setDescription] = useState('');
     const [timeRecipe, setTimeRecipe] = useState('');
     const [meal, setMeal] = useState({ breakfast: false, lunch: false, dinner: false });
-    const [ingredients, setIngredients] = useState([{ amount: '', description: '' }]);
+    const [ingredients, setIngredients] = useState<{ name: string, amount: string}[]>([]);
 
     const [instructions, setInstructions] = useState(['']);
 
@@ -44,19 +47,25 @@ export default function AddRecipe() {
     const handlePublish = () => {
         if (validateFields()) {
 
-        saveNewRecipe(
+        createRecipe(
             {
                 recipeID: '0',
                 userID: '0'.toString(),
                 title: title,
                 description: description,
-                timeDuration: timeRecipe,
+                date: new Date(),
+                duration: timeRecipe,
                 ingredients: ingredients,
-                instructions: instructions,
+                steps: instructions,
                 video: video,
-                time: new Date(),
+                tags: [],
+                rating: 0,
                 meal: meal,
-                status: "Pending"
+                comments: [],
+                status: "Pending",
+                toPlainObject: () => ({}),
+                getRecipeID: () => '0',
+                getUserID: () => '0'
             }
         );
         setModalVisible(false);
@@ -85,15 +94,16 @@ export default function AddRecipe() {
             aspect: [4, 3], // The aspct ratio the user can crop to
             quality: 1, // The quality of the selected media
         });
-
+        console.log(result);
         if (result.assets && result.assets.length > 0) {
             setVideo(result.assets[0].uri); // Update to handle selected media
         }
         
     };
+    const isVideo = video && (video.endsWith('.mov') || video.endsWith('.mp4')); // Extend this list as needed
     
     const handleAddIngredient = () => {
-        setIngredients([...ingredients, { amount: '', description: '' }]);
+        setIngredients([...ingredients, { name: '', amount: ''}]);
     };
     
     const handleAmountChange = (index: any, value: any) => {
@@ -104,7 +114,7 @@ export default function AddRecipe() {
     
     const handleDescriptionChange = (index: any, value: any) => {
         const newIngredients = [...ingredients];
-        newIngredients[index].description = value;
+        newIngredients[index].name = value;
         setIngredients(newIngredients);
     };
 
@@ -186,15 +196,27 @@ export default function AddRecipe() {
             <ImageBackground
                 source={video ? { uri: video } : require('../../assets/images/addRecipe/Food.png')}
                 style={styles.videoContainer}
-                imageStyle={{ borderRadius: 10 }}
+                imageStyle={{ borderRadius: 10, resizeMode: 'cover' }}
             >
                 
                 <ButtonImage 
-                            style={ButtonTrashStyles.container} 
+                            style={styles.centerButtonContainer} 
                             source={require('../../assets/images/addRecipe/video-bot.png')} 
                             onPress={handleAddVideo} 
                         />
-                {video && <Image source={{ uri: video }} style={styles.backgroundVideo} />}
+                {/* {video && <Image source={{ uri: video }} style={styles.backgroundVideo} />} */}
+                {video && isVideo ? (<Video
+                        source={{ uri: video }} // Video URL
+                        style={styles.backgroundVideo} // Video styling
+                        controls={true} // Show media controls (play, pause, etc.)
+                        resizeMode="cover" // Adjusts how the video is scaled
+                    />) : video && (
+                        <ImageBackground
+                            source={{ uri: video }}
+                            style={styles.backgroundVideo}
+                            imageStyle={{ borderRadius: 10 }}
+                        />
+                    )}
             </ImageBackground>
 
 
@@ -272,7 +294,7 @@ export default function AddRecipe() {
                         />
                         <TextBoxIngredient
                             placeholder={`Ingredient ${index + 1}                `}
-                            value={ingredient.description}
+                            value={ingredient.name}
                             onChangeText={(value: string) => handleDescriptionChange(index, value)}
                             placeholderTextColor="#9EA0A4"
                         />
@@ -369,14 +391,24 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     videoContainer: {
-        marginBottom: 20,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
+        borderRadius: 10,
+        minWidth: '100%',
+        minHeight: 200,
+        position: 'relative', 
+        
     },
 
-    addVideoButton: {
-        padding: 10,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        borderRadius: 5,
+    centerButtonContainer: {
+        position: 'absolute',
+        top: '40%',
+        //left: '40%',
+        transform: [{ translateX: -35 }, { translateY: -35 }],
     },
+
     addVideoText: {
         color: 'white',
         fontSize: 16,

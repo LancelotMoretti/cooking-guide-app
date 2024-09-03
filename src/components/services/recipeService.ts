@@ -1,5 +1,5 @@
 import { off, set, ref, onValue, update, remove, push } from "firebase/database";
-import { db } from "@/firebaseConfig";
+import { auth, db } from "@/firebaseConfig";
 import { Recipe } from "@/components/models/Recipe";
 
 export const getRecipes = async (): Promise<Recipe[]> => {
@@ -48,6 +48,10 @@ export const getRecipe = async (recipeID: string): Promise<Recipe> => {
 }
 
 export const createRecipe = (recipe: Recipe): void => {
+    const user = auth.currentUser;
+    if (!user) {
+        throw new Error('User not logged in');
+    }
     const newRecipeRef = push(ref(db, 'recipes'));
     set(newRecipeRef, {
         recipeID: newRecipeRef.key,
