@@ -23,7 +23,8 @@ export default function AddRecipe() {
     const [video, setVideo] = useState<any | null>(null);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [timeRecipe, setTimeRecipe] = useState('');
+    const [hourRecipe, setHourRecipe] = useState(0);
+    const [minuteRecipe, setMinuteRecipe] = useState(0);
     const [meal, setMeal] = useState({ breakfast: false, lunch: false, dinner: false });
     const [ingredients, setIngredients] = useState<{ name: string, amount: string}[]>([]);
 
@@ -37,7 +38,9 @@ export default function AddRecipe() {
     };
 
     const validateFields = (): boolean => {
-        if (title == '' || description == '' || timeRecipe == '' || ingredients.length === 0 || instructions.length === 0 || !meal) {
+        if (title == '' || description == '' || ingredients.length === 0 || 
+            instructions.length === 0 || !meal || hourRecipe === 0 && minuteRecipe === 0
+        ) {
             Alert.alert('Missing Information', 'Please fill in all the fields before publishing.');
             return false;
         }
@@ -55,7 +58,7 @@ export default function AddRecipe() {
                 title: title,
                 description: description,
                 date: new Date(),
-                duration: timeRecipe,
+                duration: { hours: hourRecipe, minutes: minuteRecipe },
                 ingredients: ingredients,
                 steps: instructions,
                 video: video,
@@ -141,7 +144,10 @@ export default function AddRecipe() {
         setInstructions(newInstructions);
     };
 
-    
+    const handleNumberInput = (value: string, setter: any) => {
+        const numericValue = value.replace(/[^0-9]/g, ''); // Loại bỏ tất cả các ký tự không phải số
+        setter(numericValue);
+    };
 
     return (
         <KeyboardAvoidingView
@@ -238,12 +244,24 @@ export default function AddRecipe() {
             />
 
             <Text style={styles.title}>Time Recipe</Text>
-            <TextBox 
-                placeholder="1hour, 30min,..."
-                value={timeRecipe}
-                onChangeText={setTimeRecipe}
-                placeholderTextColor="#9EA0A4"
-            />
+            <View style={styles.button}>
+                <TextInput
+                    style={styles.textBox}
+                    placeholder="Hours"
+                    value={hourRecipe.toString()}
+                    onChangeText={(value) => handleNumberInput(value, setHourRecipe)}
+                    keyboardType="numeric"
+                    placeholderTextColor="#9EA0A4"
+                />
+                <TextInput
+                    style={styles.textBox}
+                    placeholder="Minutes"
+                    value={minuteRecipe.toString()}
+                    onChangeText={(value) => handleNumberInput(value, setMinuteRecipe)}
+                    keyboardType="numeric"
+                    placeholderTextColor="#9EA0A4"
+                />
+            </View>
 
             <Text style={styles.title}>Meal</Text>
             <View style={styles.button}>
@@ -355,6 +373,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 10,
     },
+    textBox: {
+        borderColor: '#9EA0A4',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 10,
+        fontSize: 16,
+        color: '#000',
+        width: '45%',
+        backgroundColor: '#a5e7dc',
+    },
     modalBackground: {
         flex: 1,
         justifyContent: 'flex-end',
@@ -368,7 +396,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     modalTitle: {
-    
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
@@ -450,5 +477,5 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginBottom: 5,
     },
-    
+
 });
