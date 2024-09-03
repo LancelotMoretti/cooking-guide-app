@@ -14,6 +14,22 @@ export const TextBoxStyles = StyleSheet.create({
     },
 });
 
+export const TextBoxTimeStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        marginBottom: 10,
+        marginRight: 15,
+        backgroundColor: '#9FEADD',
+        borderRadius: 20,
+        paddingHorizontal: 10,
+    },
+    input: {
+        height: 40,
+        fontSize: 16,
+        padding: 10,
+      },
+});
+
 export const TextBoxAmtStyles = StyleSheet.create({
     container: {
         flex: 2,

@@ -20,7 +20,6 @@ export default function RecipeDetail() {
                 try {
                     setLoading(true);
                     const fetchedRecipe = await getRecipe(recipeID);
-                    console.log(fetchedRecipe);
                     setRecipe(fetchedRecipe);
                 } catch (error) {
                     console.error("Error fetching recipe:", error);
@@ -80,6 +79,8 @@ export default function RecipeDetail() {
                         </View>
                     ))}
                 </View>
+                <Text style={styles.sectionTitle}>Comments</Text>
+                
             </ScrollView>
         </KeyboardAvoidingView>
     );

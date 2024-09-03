@@ -1,14 +1,21 @@
 import { BaseTextBox } from './BaseTextBox';
 import { StyleSheet } from 'react-native';
-import { TextBoxStyles } from '@/styles/AddRecipe';
-import { TextBoxAmtStyles } from '@/styles/AddRecipe';
-import { TextBoxIngreStyles } from '@/styles/AddRecipe';
-import { TextBoxInstrStyles } from '@/styles/AddRecipe';
+import { TextBoxStyles, TextBoxTimeStyles,  TextBoxAmtStyles, TextBoxIngreStyles, TextBoxInstrStyles } from '@/styles/AddRecipe';
 
 export class TextBox extends BaseTextBox {
     static defaultProps = {
         style: TextBoxStyles.input,
         outerStyle: TextBoxStyles.container,
+    };
+    render() {
+        return super.render();
+    }
+}
+
+export class TextBoxTime extends BaseTextBox {
+    static defaultProps = {
+        style: TextBoxTimeStyles.input,
+        outerStyle: TextBoxTimeStyles.container
     };
     render() {
         return super.render();

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Recipe } from '@/components/models/Recipe';
 import { getRecipes } from '@/components/services/recipeService';
+import { useNavigation } from 'expo-router';
+import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 
 // Define the type for filtered recipes
 type FilteredRecipes = { [key: string]: { id: string; title: string; image: string; time: { hours: number; minutes: number }; rating: number }[] };
@@ -38,6 +40,7 @@ function filterRecipesByMeal(recipes: Recipe[]): FilteredRecipes {
 }
 
 const Home = () => {
+    const navigation = useNavigation();
   const [selectedCategory, setSelectedCategory] = useState('Breakfast');
   const [filteredRecipes, setFilteredRecipes] = useState<FilteredRecipes>({
       Breakfast: [],
@@ -56,6 +59,7 @@ const Home = () => {
   // Handler for category selection
   const handleCategoryPress = (category: string) => {
     setSelectedCategory(category);
+    //navigateToStack(navigation, 'RecipeList', );
   };
 
   return (

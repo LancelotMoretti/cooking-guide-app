@@ -6,7 +6,7 @@ import { AddRecipeHeader } from '@/styles/Header';
 import { ButtonFirst, ButtonPublish, ButtonAdd, ButtonAddVideo} from '@/components/UI/button/Button';
 import { ButtonImage } from '@/components/UI/button/ButtonImg';
 import { ButtonChoose } from '@/components/UI/button/ButtonChoose';
-import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction } from '@/components/UI/textBox/TextBox';
+import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction, TextBoxTime } from '@/components/UI/textBox/TextBox';
 import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { remove } from 'firebase/database';
@@ -23,7 +23,7 @@ export default function AddRecipe() {
     const [video, setVideo] = useState<any | null>(null);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [timeRecipe, setTimeRecipe] = useState('');
+    const [timeRecipe, setTimeRecipe] = useState<{hour: number, minute: number}>({ hour: 0, minute: 0 });
     const [meal, setMeal] = useState({ breakfast: false, lunch: false, dinner: false });
     const [ingredients, setIngredients] = useState<{ name: string, amount: string}[]>([]);
 
@@ -37,7 +37,7 @@ export default function AddRecipe() {
     };
 
     const validateFields = (): boolean => {
-        if (title == '' || description == '' || timeRecipe == '' || ingredients.length === 0 || instructions.length === 0 || !meal) {
+        if (title == '' || description == '' || (!timeRecipe.hour && !timeRecipe.minute) || ingredients.length === 0 || instructions.length === 0 || !meal) {
             Alert.alert('Missing Information', 'Please fill in all the fields before publishing.');
             return false;
         }
@@ -141,7 +141,19 @@ export default function AddRecipe() {
         setInstructions(newInstructions);
     };
 
-    
+    const handleHourChange = (text: string) => {
+        const parsed = parseInt(text, 10);
+        if (!isNaN(parsed)) {
+          setTimeRecipe(prevState => ({ ...prevState, hour: parsed }));
+        }
+
+        else if (text === '') { setTimeRecipe(prevState => ({ ...prevState, hour: 0 })); } };
+
+    const handleMinuteChange = (text: string) => { 
+        const parsed = parseInt(text, 10); 
+        if (!isNaN(parsed)) { setTimeRecipe(prevState => ({ ...prevState, minute: parsed })); } 
+        else if (text === '') { setTimeRecipe(prevState => ({ ...prevState, minute: 0 })); } };
+
 
     return (
         <KeyboardAvoidingView
@@ -238,12 +250,26 @@ export default function AddRecipe() {
             />
 
             <Text style={styles.title}>Time Recipe</Text>
-            <TextBox 
-                placeholder="1hour, 30min,..."
-                value={timeRecipe}
-                onChangeText={setTimeRecipe}
-                placeholderTextColor="#9EA0A4"
-            />
+            <View style={styles.ingredientRow}>
+                <Text>Hours: </Text>
+                <TextBoxTime
+                    //style={styles.textBox}
+                    placeholder="Hour"
+                    value={timeRecipe.hour.toString()} // Đảm bảo rằng giá trị luôn là chuỗi
+                    onChangeText={handleHourChange}
+                    keyboardType="numeric" // Đảm bảo bàn phím chỉ hiển thị số
+                    placeholderTextColor="#9EA0A4"
+                />
+                <Text>Minutes: </Text>
+                <TextBoxTime
+                        //style={styles.textBox}
+                        placeholder="Miniute"
+                        value={timeRecipe.minute.toString()} // Đảm bảo rằng giá trị luôn là chuỗi
+                        onChangeText={handleMinuteChange}
+                        keyboardType="numeric" // Đảm bảo bàn phím chỉ hiển thị số
+                        placeholderTextColor="#9EA0A4"
+                    />
+            </View>
 
             <Text style={styles.title}>Meal</Text>
             <View style={styles.button}>
@@ -387,10 +413,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 5,
     },
-    modalButtonText: {
-        color: '#129575',
-        fontSize: 16,
-    },
+
     backgroundVideo: {
         width: '100%',
         height: 300, // Adjust height as per your needs
@@ -414,20 +437,10 @@ const styles = StyleSheet.create({
         //transform: [{ translateX: -35 }, { translateY: -35 }],
     },
 
-    addVideoText: {
-        color: 'white',
-        fontSize: 16,
-    },
-
     title: {
         fontSize: 14,
         fontWeight: 'bold',
         marginBottom: 10,
-    },
-    
-    trashIcon: {
-        width: 24,
-        height: 24,
     },
     
     ingredientsList: {
