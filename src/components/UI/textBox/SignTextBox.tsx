@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextInput, View, TouchableOpacity, StyleSheet, TextInputProps } from 'react-native';
+import { TextInput, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { BaseTextBox, BaseTextBoxProps } from './BaseTextBox';
 import { SignBoxStyles } from '@/styles/Sign';
@@ -8,9 +8,7 @@ export class SignTextBox extends BaseTextBox {
     render() {
         return (
             <View style={SignBoxStyles.container}>
-                <View style={SignBoxStyles.inputContainer}>
-                    {super.render()}
-                </View>
+                {super.render()}
             </View>
         );
     }

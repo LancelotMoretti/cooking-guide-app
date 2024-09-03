@@ -42,8 +42,8 @@ export default function LoginScreen() {
                 <Text style={SignBoxStyles.label}>Email</Text>
                 <SignTextBox
                     style={SignBoxStyles.input}
+                    outerStyle={SignBoxStyles.inputContainer}
                     placeholder="example@example.com"
-                    secureTextEntry={false}
                     value={email}
                     onChangeText={setEmail}
                 />

@@ -15,7 +15,6 @@ export class BaseTextBox extends React.Component<BaseTextBoxProps> {
             <TextInput
             style={style}
             {...otherProps}
-            
             />
         </View>
         );

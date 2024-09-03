@@ -1,6 +1,6 @@
 import { ScrollView, View, Text, TextInput, StyleSheet, Image, ImageBackground, Modal, TouchableOpacity, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import React, { useState } from 'react';
-import  Video from 'react-native-video';
+import Video from 'react-native-video';
 import * as ImagePicker from 'expo-image-picker';
 import { AddRecipeHeader } from '@/styles/Header';
 import { ButtonFirst, ButtonPublish, ButtonAdd, ButtonAddVideo} from '@/components/UI/button/Button';
@@ -345,7 +345,7 @@ export default function AddRecipe() {
 
 const styles = StyleSheet.create({
     container: {
-        
+        marginTop: 20,
         marginHorizontal: 30,
     },
     button: {

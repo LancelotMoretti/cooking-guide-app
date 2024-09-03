@@ -31,11 +31,11 @@ export default function RootLayout() {
         name="(tabs)"
         options={{ header: () => null }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="notification"
         options={{ title: 'Notification'}}
         getId={() => 'notification'}
-      />
+      /> */}
       <Stack.Screen
         name="setting"
         options={{ title: 'Setting'}}
