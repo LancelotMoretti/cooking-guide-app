@@ -1,10 +1,14 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import { readProfileInformation } from '@/components/services/profileService';
 import { useNavigation } from 'expo-router';
 import { ButtonIonicons } from '@/components/UI/button/ButtonIonicons';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { useState } from 'react';
+import { getRecipes } from '@/components/services/recipeService';
+import { Recipe } from '@/components/models/Recipe';
+import { useEffect } from 'react';
+import { auth } from '@/firebaseConfig';
 
 
 export default function ProfileScreen() {
@@ -26,6 +30,45 @@ export default function ProfileScreen() {
     }
 
     const [selectedTab, setSelectedTab] = useState('Recipe');
+
+    const [recipes, setRecipes] = useState<Recipe[]>([]);
+    
+    useEffect(() => {
+        const fetchRecipes = async () => {
+            const fetchedRecipes = await getRecipes();
+            setRecipes(fetchedRecipes);
+        };
+        fetchRecipes();
+    }, []);
+
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+        recipes.filter(recipe => recipe.userID === currentUser.uid);
+    }
+    
+    const displayRecipeList = () => {
+        return (
+            <FlatList
+                data={recipes}
+                keyExtractor={(item) => item.recipeID}
+                renderItem={({ item }) => (
+                    <TouchableOpacity 
+                    style={styles.recipe}
+                    >
+                        <Image source={{ uri: item.video }} style={styles.recipeImage} />
+                        <View style={styles.recipeInfo}>
+                            <Text style={styles.recipeTitle}>{item.title}</Text>
+                            <View style={styles.recipeMeta}>
+                                <Text style={styles.recipeTime}>{item.duration.hour}h {item.duration.minute}m</Text>
+                                <Text style={styles.recipeRating}>⭐ {item.rating}</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                )}
+                style={styles.recipeList}
+            />
+        );
+    }
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -60,17 +103,22 @@ export default function ProfileScreen() {
             <View style={styles.tabs}>
                 <TouchableOpacity
                 style={selectedTab === 'Recipe' ? styles.tabActive : styles.tab}
-                onPress={() => setSelectedTab('Recipe')}
+                onPress={() => {
+                    setSelectedTab('Recipe')
+                }}
                 >
-                    <Text style={selectedTab === 'Recipe' ? styles.tabTextActive : styles.tabText}>Recipe</Text>
+                    <Text style={selectedTab === 'Recipe' ? styles.tabTextActive : styles.tabText}>Recipes</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                 style={selectedTab === 'Favorites' ? styles.tabActive : styles.tab}
-                onPress={() => setSelectedTab('Favorites')}
+                onPress={() => {
+                    setSelectedTab('Favorites')
+                }}
                 >
                     <Text style={selectedTab === 'Favorites' ? styles.tabTextActive : styles.tabText}>Favorites</Text>
                 </TouchableOpacity>
             </View>
+            {selectedTab === 'Recipe' && displayRecipeList()}
         </ScrollView>
     );
 };
@@ -183,4 +231,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: 'grey',
     },
+    recipeList: {
+        marginTop: 20,
+      },
 });
