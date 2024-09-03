@@ -7,9 +7,6 @@ import { ImageBackground } from 'react-native';
 import { UserComment } from '@/components/models/UserComment';
 import { UserProfileLink } from '@/components/models/UserProfileLink';
 import { readUserIDAndUsername } from '@/components/services/profileService';
-import { User } from '@/components/models/User';
-import { set } from 'firebase/database';
-import { TextBox } from '@/components/UI/textBox/TextBox';
 import { ButtonEditRecipe } from '@/components/UI/button/Button';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 

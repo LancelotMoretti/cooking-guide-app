@@ -13,14 +13,14 @@ import { getRecipe } from '@/components/services/recipeService';
 import { saveUpdatedRecipe } from '@/temp/recipeServices';
 import { Recipe } from '@/temp/recipeServices';
 import { useRoute } from '@react-navigation/native';
-import { readUserID } from '@/components/services/profileService';
+import { readUserIDAndUsername } from '@/components/services/profileService';
 import { ButtonChoose } from '@/components/UI/button/ButtonChoose';
 
 export default function AddRecipe() {
     const navigation = useNavigation();
     const route = useRoute();
     const recipeID = (route.params as { header: string })?.header;
-    const userID: string | null = readUserID(); // Fetch
+    const { userID, username } = readUserIDAndUsername() || { userID: '', username: '' };
 
     const [video, setVideo] = useState<any | null>(null);
     const [title, setTitle] = useState('');
