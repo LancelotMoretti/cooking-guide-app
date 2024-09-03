@@ -8,7 +8,7 @@ export const useNotifications = (userID: string): Notification[] => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
 
     useEffect(() => {
-        const notificationsRef = ref(db, `${userID}/notifications`);
+        const notificationsRef = ref(db, `users/${userID}/notifications`);
 
         const handleData = (snapshot: any) => {
             const data = snapshot.val();
@@ -41,14 +41,14 @@ export const useNotifications = (userID: string): Notification[] => {
 }
 
 export const markNotificationAsRead = (userID: string, notificationID: string): void => {
-    const notificationRef = ref(db, `${userID}/notifications/${notificationID}`);
+    const notificationRef = ref(db, `users/${userID}/notifications/${notificationID}`);
     update(notificationRef, {
         read: true
     });
 }
 
 export const deleteNotification = (userID: string, notificationID: string): void => {
-    const notificationRef = ref(db, `${userID}/notifications/${notificationID}`);
+    const notificationRef = ref(db, `users/${userID}/notifications/${notificationID}`);
     remove(notificationRef);
 }
 
@@ -58,7 +58,7 @@ export const addNotification = (
     link: string,
     recipeID: string
 ): string => {
-    const newNotificationRef = push(ref(db, `${userID}/notifications`));
+    const newNotificationRef = push(ref(db, `users/${userID}/notifications`));
     const notificationID = newNotificationRef.key as string;
     set(newNotificationRef, {
         notificationID,
@@ -73,7 +73,7 @@ export const addNotification = (
 }
 
 export const checkIfUserNotification = (userID: string, notificationID: string) => {
-    const notificationRef = ref(db, `${userID}/notifications/${notificationID}`);
+    const notificationRef = ref(db, `users/${userID}/notifications/${notificationID}`);
 
     let exists = false;
 

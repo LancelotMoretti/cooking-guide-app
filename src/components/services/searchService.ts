@@ -9,7 +9,7 @@ export interface SearchSuggestion {
 const RECENT_SEARCHES_LIMIT = 7;
 
 export const getRecentSearches = async (userID: string): Promise<SearchSuggestion[]> => {
-    const searchesRef = ref(db, `${userID}/recentSearches`);
+    const searchesRef = ref(db, `users/${userID}/recentSearches`);
     const recentSearches: SearchSuggestion[] = [];
 
     await new Promise<void>((resolve) => {
@@ -37,13 +37,13 @@ export const saveSearchQuery = async (userID: string, query: string): Promise<vo
     if (recentSearches.some(search => search.query === query)) {
         return;
     }
-    const newSearchRef = push(ref(db, `${userID}/recentSearches`));
+    const newSearchRef = push(ref(db, `users/${userID}/recentSearches`));
     await set(newSearchRef, {
         query,
     });
     if (recentSearches.length > RECENT_SEARCHES_LIMIT) {
         const oldestSearch = recentSearches[recentSearches.length - 1];
-        const oldestSearchRef = ref(db, `${userID}/recentSearches/${oldestSearch.id}`);
+        const oldestSearchRef = ref(db, `users/${userID}/recentSearches/${oldestSearch.id}`);
         await remove(oldestSearchRef);
     }
 }
