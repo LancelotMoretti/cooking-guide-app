@@ -1,5 +1,5 @@
 import { auth, db } from "@/firebaseConfig";
-import { ref, onValue, off, set } from "firebase/database";
+import { ref, onValue, off, set, update } from "firebase/database";
 import { useState, useEffect } from "react";
 import { FirebaseService }  from './firebaseService'
 export interface Profile {
@@ -8,6 +8,24 @@ export interface Profile {
     email: string;
     phoneNumber: string;
     dateOfBirth: string;
+    avatarURL?: string;
+}
+
+export function updateAvatarProfile(userID: string, avatarURL: string): void {
+    if (!userID || !avatarURL) {
+        console.error("Invalid userID or avatarURL");
+        return;
+    }
+
+    const profileRef = ref(db, `users/${userID}`);
+    
+    update(profileRef, { avatarURL: avatarURL })
+        .then(() => {
+            console.log("Avatar URL updated successfully:", avatarURL);
+        })
+        .catch((error) => {
+            console.error("Error updating avatar URL:", error);
+        });
 }
 
 export function readProfileInformation() {
@@ -27,7 +45,8 @@ export function readProfileInformation() {
                         fullName: data.fullName,
                         email: data.email,
                         phoneNumber: data.phoneNumber,
-                        dateOfBirth: data.dateOfBirth
+                        dateOfBirth: data.dateOfBirth,
+                        avatarURL: data.avatarURL
                     });
                 } else {
                     setProfile(null);

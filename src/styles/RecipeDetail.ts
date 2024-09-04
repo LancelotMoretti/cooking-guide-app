@@ -26,6 +26,7 @@ export const ButtonEditStyles = StyleSheet.create({
         //justifyContent: 'center',
         width: '20%',
         marginBottom: 20,
+        marginTop: 10,
     },
     text: {
         color: '#129575',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, FlatList } from 'react-native';
-import { readProfileInformation } from '@/components/services/profileService';
+import { readProfileInformation, updateAvatarProfile } from '@/components/services/profileService';
 import { useNavigation } from 'expo-router';
 import { ButtonIonicons } from '@/components/UI/button/ButtonIonicons';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
@@ -12,7 +12,8 @@ import { auth } from '@/firebaseConfig';
 import { ref, onValue } from 'firebase/database';
 import { db } from '@/firebaseConfig';
 import { RecipeFavoriteController } from '@/components/controllers/RecipeFavoriteController';
-
+import * as ImagePicker from 'expo-image-picker'
+import { ImageBackground } from 'react-native';
 
 export default function ProfileScreen() {
     const navigator = useNavigation();
@@ -130,6 +131,23 @@ export default function ProfileScreen() {
             />
         );
     }
+    const [image, setImage] = useState<any | null>(null);
+    const handleAddImage = async () => {
+        // Xử lý thêm video ở đây
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All, // Allows both image and video selection
+            allowsEditing: true, // Allows the user to edit the media (crop, etc.)
+            aspect: [4, 3], // The aspct ratio the user can crop to
+            quality: 1, // The quality of the selected media
+        });
+        console.log(result);
+        if (result.assets && result.assets.length > 0) {
+            setImage(result.assets[0].uri); // Update to handle selected media
+        }
+
+        updateAvatarProfile(profile?.userID || '', profile?.avatarURL || '')
+        
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -139,10 +157,24 @@ export default function ProfileScreen() {
             />
 
             <View style={styles.header}>
-                <Image 
+                {/* <Image 
                 source={{ uri: 'https://via.placeholder.com/150' }} 
                 style={styles.profileImage} 
-                />
+                /> */}
+            <TouchableOpacity onPress={handleAddImage}>
+                <ImageBackground
+                source={image ? { uri: image } : require('../../assets/images/avatar.jpg')}
+                style={styles.profileImage}
+                imageStyle={{ borderRadius: 50, resizeMode: 'cover' }}
+            >
+            </ImageBackground>  
+            </TouchableOpacity>  
+            {/* <ButtonAdd 
+                            //style={styles.centerButtonContainer} 
+                            //containerStyle={styles.centerButtonContainer}
+                            title="Add Image"
+                            onPress={handleAddVideo} 
+            /> */}
                 <Text style={styles.name}>{profile?.fullName}</Text>
                 <Text style={styles.description}>{bio}</Text>
                 <View style={styles.stats}>
@@ -198,7 +230,6 @@ const styles = StyleSheet.create({
     profileImage: {
         width: 100,
         height: 100,
-        borderRadius: 50,
     },
     name: {
         fontSize: 24,
