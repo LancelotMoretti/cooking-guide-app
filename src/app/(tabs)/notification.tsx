@@ -13,8 +13,10 @@ export default function Notification () {
   
   return (
     <View style={NotificationScreenStyles.container}>
-      <NotificationFilter filter={filter} setFilter={setFilter} />
-      <NotificationList list={list} filter={filter} userID={userID || ''} />
+      <View style={{marginTop: 20}}>
+        <NotificationFilter filter={filter} setFilter={setFilter} />
+        <NotificationList list={list} filter={filter} userID={userID || ''} />
+      </View>
     </View>
   );
 };

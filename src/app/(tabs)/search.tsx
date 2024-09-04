@@ -23,7 +23,7 @@ const SearchScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [recipes, setRecipes] = useState<Recipe[]>(allRecipes);
   const [recentSearches, setRecentSearches] = useState<SearchSuggestion[]>([]);
-  const [showRecentSearch, setShowRecentSearch] = useState(true);
+  const [showRecentSearch, setShowRecentSearch] = useState(false);
 
   if (userID !== null) {
     getRecentSearches(userID || '').then((searches) => {
