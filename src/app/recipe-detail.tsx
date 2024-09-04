@@ -9,8 +9,9 @@ import { UserProfileLink } from '@/components/models/UserProfileLink';
 import { readUserIDAndUsername } from '@/components/services/profileService';
 import { ButtonEditRecipe } from '@/components/UI/button/Button';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
-import { RecipeFavoriteController, checkFavorite } from '@/components/controllers/RecipeFavoriteController';
+import { RecipeFavoriteController } from '@/components/controllers/RecipeFavoriteController';
 import { Ionicons } from '@expo/vector-icons';
+import { useIsFavorite } from '@/components/controllers/RecipeFavoriteController';
 
 export default function RecipeDetail() {
     const { userID, username } = readUserIDAndUsername() || { userID: '', username: '' };
@@ -26,13 +27,8 @@ export default function RecipeDetail() {
     const [comments, setComments] = useState<UserComment[]>([]);
     const [editingCommentID, setEditingCommentID] = useState<string | null>(null);
     const [editComment, setEditComment] = useState<UserComment | null>(null);
-    const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
-    useEffect(() => {
-        checkFavorite(userID || '', recipeID || '', (result) => {
-            setIsFavorite(result);
-        });
-    }, [userID, recipeID]);
+    const isFavorite = useIsFavorite(userID || '', recipeID || '');
 
     getComments(recipeID || '').then((comments) => {
         setComments(comments);
@@ -60,7 +56,6 @@ export default function RecipeDetail() {
     const handleToggleFavorite = async () => {
         try {
             await RecipeFavoriteController.toggleFavorite(userID || '', recipeID || '');
-            setIsFavorite(!isFavorite);
         } catch (error) {
             console.error("Error toggling favorite:", error);
         }
