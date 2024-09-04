@@ -83,7 +83,7 @@ export default function ProfileScreen() {
     
     const displayRecipeList = () => {
         return (
-            <FlatList
+            <FlatList nestedScrollEnabled
                 data={userRecipes}
                 keyExtractor={(item) => item.recipeID}
                 renderItem={({ item }) => (
@@ -108,7 +108,7 @@ export default function ProfileScreen() {
 
     const displayFavoriteList = () => {
         return (
-            <FlatList
+            <FlatList nestedScrollEnabled
                 data={favorites}
                 keyExtractor={(item) => item.recipeID}
                 renderItem={({ item }) => (
@@ -132,7 +132,7 @@ export default function ProfileScreen() {
     }
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView style={styles.container}>
             <ButtonIonicons 
                 iconName="settings-outline" 
                 onPress={navigateToStack(navigator, "setting")}
@@ -181,6 +181,7 @@ export default function ProfileScreen() {
             </View>
             {selectedTab === 'Recipe' && displayRecipeList()}
             {selectedTab === 'Favorites' && profile?.userID && displayFavoriteList()}
+            <View style={{marginBottom: 100}}></View>
         </ScrollView>
     );
 };

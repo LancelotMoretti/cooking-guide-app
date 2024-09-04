@@ -142,6 +142,7 @@ const Home = () => {
                     </View>
                 </View>
             </View>
+            <View style={{marginBottom: 100}}></View>
         </ScrollView>
     );
 };
@@ -157,6 +158,7 @@ const styles = StyleSheet.create({
         paddingBottom: 60,
     },
     header: {
+        marginTop: 20,
         marginBottom: 16,
     },
     greeting: {
