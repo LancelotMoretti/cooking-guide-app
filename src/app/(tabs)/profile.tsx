@@ -14,6 +14,7 @@ import { db } from '@/firebaseConfig';
 import { RecipeFavoriteController } from '@/components/controllers/RecipeFavoriteController';
 import * as ImagePicker from 'expo-image-picker'
 import { ImageBackground } from 'react-native';
+import { Profile } from '@/temp/accountServices';
 
 export default function ProfileScreen() {
     const navigator = useNavigation();
@@ -84,7 +85,7 @@ export default function ProfileScreen() {
     
     const displayRecipeList = () => {
         return (
-            <FlatList nestedScrollEnabled
+            <FlatList
                 data={userRecipes}
                 keyExtractor={(item) => item.recipeID}
                 renderItem={({ item }) => (
@@ -109,7 +110,7 @@ export default function ProfileScreen() {
 
     const displayFavoriteList = () => {
         return (
-            <FlatList nestedScrollEnabled
+            <FlatList
                 data={favorites}
                 keyExtractor={(item) => item.recipeID}
                 renderItem={({ item }) => (
@@ -143,14 +144,14 @@ export default function ProfileScreen() {
         console.log(result);
         if (result.assets && result.assets.length > 0) {
             setImage(result.assets[0].uri); // Update to handle selected media
+            updateAvatarProfile(profile?.userID || '', result.assets[0].uri)
         }
 
-        updateAvatarProfile(profile?.userID || '', profile?.avatarURL || '')
         
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
             <ButtonIonicons 
                 iconName="settings-outline" 
                 onPress={navigateToStack(navigator, "setting")}
@@ -213,7 +214,6 @@ export default function ProfileScreen() {
             </View>
             {selectedTab === 'Recipe' && displayRecipeList()}
             {selectedTab === 'Favorites' && profile?.userID && displayFavoriteList()}
-            <View style={{marginBottom: 100}}></View>
         </ScrollView>
     );
 };
