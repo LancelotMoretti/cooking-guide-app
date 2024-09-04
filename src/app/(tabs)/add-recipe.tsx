@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Video from 'react-native-video';
 import * as ImagePicker from 'expo-image-picker';
 import { AddRecipeHeader } from '@/styles/Header';
-import { ButtonFirst, ButtonPublish, ButtonAdd, ButtonAddVideo} from '@/components/UI/button/Button';
+import { ButtonFirst, ButtonPublish, ButtonAdd, ButtonAddInstruction} from '@/components/UI/button/Button';
 import { ButtonImage } from '@/components/UI/button/ButtonImg';
 import { ButtonChoose } from '@/components/UI/button/ButtonChoose';
 import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction, TextBoxTime } from '@/components/UI/textBox/TextBox';
@@ -113,7 +113,6 @@ export default function AddRecipe() {
         }
         
     };
-    const isVideo = video && (video.endsWith('.mov') || video.endsWith('.mp4')); // Extend this list as needed
     
     const handleAddIngredient = () => {
         setIngredients([...ingredients, { name: '', amount: ''}]);
@@ -359,7 +358,7 @@ export default function AddRecipe() {
                             //onIconPress={() => {}}
                         />
                         <TextBoxIngredient
-                            placeholder={`Ingredient ${index + 1}                `}
+                            placeholder={`Ingredient ${index + 1} `}
                             value={ingredient.name}
                             onChangeText={(value: string) => handleDescriptionChange(index, value)}
                             placeholderTextColor="#9EA0A4"
@@ -398,7 +397,7 @@ export default function AddRecipe() {
                 ))}
             </View>
         
-            <ButtonAdd title="+ Add Instruction" onPress={handleAddInstruction} />
+            <ButtonAddInstruction title="+ Add Instruction" onPress={handleAddInstruction} />
 
         </ScrollView>
         </KeyboardAvoidingView>
@@ -409,7 +408,7 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 20,
         marginHorizontal: 30,
-        paddingBottom: 100,
+        // paddingBottom: 100,
     },
     button: {
         flexDirection: 'row',

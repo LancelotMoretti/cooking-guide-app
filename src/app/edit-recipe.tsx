@@ -7,7 +7,8 @@ import { ButtonImage } from '@/components/UI/button/ButtonImg';
 import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction, TextBoxTime } from '@/components/UI/textBox/TextBox';
 import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
-import { remove, set } from 'firebase/database';
+import { remove, set, ref } from 'firebase/database';// Replace '@/path/to/firebaseConfig' with the actual path to your firebaseConfig file
+import { db as database } from '@/firebaseConfig';
 import { ButtonChooseStyles, ButtonTrashStyles } from '@/styles/AddRecipe';
 import { getRecipe } from '@/components/services/recipeService';
 import { saveUpdatedRecipe } from '@/temp/recipeServices';
@@ -101,8 +102,10 @@ export default function AddRecipe() {
         setDeleteModalVisible(true);
     };
 
+    
     const handleConfirmDelete = () => {
         setDeleteModalVisible(false);
+        remove(ref(database, recipeID));
         console.log('Recipe deleted');
     };
 
@@ -331,7 +334,7 @@ export default function AddRecipe() {
                             outerStyle={ButtonTrashStyles.button}
                             style={ButtonTrashStyles.container} 
                             source={require('../assets/images/Trash.png')} 
-                            onPress={() => handleDeleteInstruction(index)} />
+                            onPress={() => handleremoveIngredient(index)} />
                         
                     </View>
                 ))}

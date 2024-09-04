@@ -147,6 +147,23 @@ export const ButtonAddStyles = StyleSheet.create({
     }
 });
 
+export const ButtonAddInstructionStyles = StyleSheet.create({
+    container: {
+        backgroundColor: '#129575',
+        padding: 10,
+        borderRadius: 20,
+        alignItems: 'center',
+        alignSelf: 'center', // Center horizontally
+        width: '60%',
+        marginBottom: 100,
+    },
+    text: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+        fontSize: 16,
+    }
+});
+
 export const ButtonTrashStyles = StyleSheet.create({
     container: {
         flex: 1,
