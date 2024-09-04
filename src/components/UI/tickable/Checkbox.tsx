@@ -4,40 +4,22 @@ import { CheckboxStyles } from '@/styles/Checkbox';
 import { Ionicons } from '@expo/vector-icons';
 
 interface CheckboxProps {
-    initialChecked?: boolean;
-    onPress?: (checked: boolean) => void;
+    content: string;
 }
 
-interface CheckboxState {
-    checked: boolean;
-}
+export const Checkbox: React.FC<CheckboxProps> = ({ content }) => {
+    const [checked, setChecked] = useState(false);
 
-export class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
-    constructor(props: CheckboxProps) {
-        super(props);
-        this.state = {
-        checked: props.initialChecked || false,
-        };
-    }
-
-    handlePress = () => {
-        this.setState(
-        (prevState) => ({ checked: !prevState.checked }),
-        () => {
-            if (this.props.onPress) {
-            this.props.onPress(this.state.checked);
-            }
-        }
-        );
+    const handlePress = () => {
+        setChecked(!checked);
     };
 
-    render() {
-        const { checked } = this.state;
-
-        return (
-            <Pressable onPress={this.handlePress} style={CheckboxStyles.checkbox}>
-                {checked && <Ionicons name="checkmark" size={24} color="white" />}
-            </Pressable>
-        );
-    }
+    return (
+        <View style={CheckboxStyles.container}>
+        <Pressable onPress={handlePress} style={CheckboxStyles.checkbox}>
+            {checked && <View style={CheckboxStyles.checked} />}
+        </Pressable>
+        <Text onPress={handlePress} style={CheckboxStyles.label}>{content}</Text>
+        </View>
+    );
 }

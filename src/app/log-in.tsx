@@ -57,8 +57,8 @@ export default function LoginScreen() {
                     placeholderTextColor={"#9EA0A4"}
                 />
                 <View style={CheckboxStyles.container}>
-                    <Checkbox/>
-                    <Text>Remember me</Text>
+                    <Checkbox content='Remember me'/>
+                    <Text></Text>
                 </View>
             </View>
             
