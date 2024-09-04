@@ -1,11 +1,7 @@
 import { BaseButton } from './BaseButton';
-import { Image, StyleSheet } from 'react-native';
-import { ButtonStyles } from '@/styles/AddRecipe';
-import {ButtonAddStyles} from '@/styles/AddRecipe';
-import { ButtonAddVideoStyles } from '@/styles/AddRecipe';
-import { ButtonPublishStyles } from '@/styles/AddRecipe';
-import { ButtonTrashStyles } from '@/styles/AddRecipe';
-import { ButtonSearchStyles } from '@/styles/Search';
+
+
+import { ButtonStyles, ButtonAddStyles, ButtonAddVideoStyles, ButtonAddInstructionStyles, ButtonPublishStyles} from '@/styles/AddRecipe';
 import { ButtonEditStyles } from '@/styles/RecipeDetail';
 
 export class SignButton extends BaseButton {
@@ -28,6 +24,18 @@ export class ButtonAdd extends BaseButton {
     static defaultProps = {
         containerStyle: ButtonAddStyles.container,
         style: ButtonAddStyles.text,
+    };
+
+    render() {
+        // Optional: You can modify or add logic specific to ButtonAdd here
+        return super.render(); // Uses the render method from BaseButton
+    }
+}
+
+export class ButtonAddInstruction extends BaseButton {
+    static defaultProps = {
+        containerStyle: ButtonAddInstructionStyles.container,
+        style: ButtonAddInstructionStyles.text,
     };
 
     render() {
