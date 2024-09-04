@@ -14,7 +14,6 @@ import { db } from '@/firebaseConfig';
 import { RecipeFavoriteController } from '@/components/controllers/RecipeFavoriteController';
 import * as ImagePicker from 'expo-image-picker'
 import { ImageBackground } from 'react-native';
-import { Profile } from '@/temp/accountServices';
 
 export default function ProfileScreen() {
     const navigator = useNavigation();
