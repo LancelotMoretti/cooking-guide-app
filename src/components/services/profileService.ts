@@ -12,21 +12,13 @@ export interface Profile {
 }
 
 export function updateAvatarProfile(userID: string, avatarURL: string): void {
-    if (!userID || !avatarURL) {
-        console.error("Invalid userID or avatarURL");
-        return;
-    }
-
     const profileRef = ref(db, `users/${userID}`);
+    console.log(avatarURL)
     
-    update(profileRef, { avatarURL: avatarURL })
-        .then(() => {
-            console.log("Avatar URL updated successfully:", avatarURL);
-        })
-        .catch((error) => {
-            console.error("Error updating avatar URL:", error);
-        });
-}
+    update(profileRef, {
+        avatarURL: avatarURL,
+    })
+} 
 
 export function readProfileInformation() {
     const [profile, setProfile] = useState<Profile | null>(null);
