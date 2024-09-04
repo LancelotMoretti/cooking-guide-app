@@ -9,7 +9,7 @@ import { getRecipes } from '@/components/services/recipeService';
 import { Recipe } from '@/components/models/Recipe';
 import { useEffect } from 'react';
 import { auth } from '@/firebaseConfig';
-import { ref, onValue } from 'firebase/database';
+import { ref, onValue, set } from 'firebase/database';
 import { db } from '@/firebaseConfig';
 import { RecipeFavoriteController } from '@/components/controllers/RecipeFavoriteController';
 import * as ImagePicker from 'expo-image-picker'
@@ -35,7 +35,7 @@ export default function ProfileScreen() {
 
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [favorites, setFavorites] = useState<Recipe[]>([]);
-
+    const [image, setImage] = useState<any | null>(null);
 
     useEffect(() => {
         const fetchRecipes = async () => {
@@ -43,7 +43,6 @@ export default function ProfileScreen() {
                 // Lấy tất cả các công thức
                 const fetchedRecipes = await getRecipes();
                 setRecipes(fetchedRecipes);
-
                 // Lấy các công thức yêu thích ban đầu
                 const recipeFavorites = await RecipeFavoriteController.getFavorites(profile?.userID || '');
                 const favoriteRecipes = fetchedRecipes.filter(recipe => 
@@ -68,7 +67,11 @@ export default function ProfileScreen() {
         fetchRecipes();
 
         // Cleanup listener khi component bị unmount
-        return () => unsubscribe();
+        const Image = () => {
+
+            setImage(profile?.avatarURL);
+        }
+        
     }, [profile?.userID, recipes]);
 
 
@@ -85,13 +88,12 @@ export default function ProfileScreen() {
     
     const displayRecipeList = () => {
         return (
-            <FlatList
-                data={userRecipes}
-                keyExtractor={(item) => item.recipeID}
-                renderItem={({ item }) => (
+            <View style={styles.recipeList}>
+                {userRecipes.map((item) => (
                     <TouchableOpacity 
-                    style={styles.recipe}
-                    onPress={navigateToStack(navigator, "recipe-detail", item.recipeID)}
+                        key={item.recipeID}
+                        style={styles.recipe}
+                        onPress={navigateToStack(navigator, "recipe-detail", item.recipeID)}
                     >
                         <Image source={{ uri: item.video }} style={styles.recipeImage} />
                         <View style={styles.recipeInfo}>
@@ -102,21 +104,19 @@ export default function ProfileScreen() {
                             </View>
                         </View>
                     </TouchableOpacity>
-                )}
-                style={styles.recipeList}
-            />
+                ))}
+            </View>
         );
     }
 
     const displayFavoriteList = () => {
         return (
-            <FlatList
-                data={favorites}
-                keyExtractor={(item) => item.recipeID}
-                renderItem={({ item }) => (
+            <View style={styles.recipeList}>
+                {favorites.map((item) => (
                     <TouchableOpacity 
-                    style={styles.recipe}
-                    onPress={navigateToStack(navigator, "recipe-detail", item.recipeID)}
+                        key={item.recipeID}
+                        style={styles.recipe}
+                        onPress={navigateToStack(navigator, "recipe-detail", item.recipeID)}
                     >
                         <Image source={{ uri: item.video }} style={styles.recipeImage} />
                         <View style={styles.recipeInfo}>
@@ -127,12 +127,12 @@ export default function ProfileScreen() {
                             </View>
                         </View>
                     </TouchableOpacity>
-                )}
-                style={styles.recipeList}
-            />
+                ))}
+            </View>
         );
     }
-    const [image, setImage] = useState<any | null>(null);
+    
+    
     const handleAddImage = async () => {
         // Xử lý thêm video ở đây
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -144,11 +144,12 @@ export default function ProfileScreen() {
         console.log(result);
         if (result.assets && result.assets.length > 0) {
             setImage(result.assets[0].uri); // Update to handle selected media
-            updateAvatarProfile(profile?.userID || '', result.assets[0].uri)
+            updateAvatarProfile(profile?.userID || '', image)
         }
 
         
     };
+    
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
