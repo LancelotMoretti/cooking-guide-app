@@ -334,7 +334,7 @@ export default function AddRecipe() {
                             outerStyle={ButtonTrashStyles.button}
                             style={ButtonTrashStyles.container} 
                             source={require('../assets/images/Trash.png')} 
-                            onPress={() => handleDeleteInstruction(index)} />
+                            onPress={() => handleremoveIngredient(index)} />
                         
                     </View>
                 ))}
