@@ -64,7 +64,7 @@ export const NotificationScreenStyles = StyleSheet.create({
         backgroundColor: '#fff',
         paddingHorizontal: 16,
         paddingTop: 20,
-        paddingBottom: 20,
+        paddingBottom: 100,
     },
     filterContainer: {
         flexDirection: 'row',
@@ -87,7 +87,7 @@ export const NotificationScreenStyles = StyleSheet.create({
     buttonText: {
         textAlign: 'center',
         fontWeight: 700,
-        fontSize: 18,
+        fontSize: 17,
         color: '#129575',
     },
     buttonTextActive: {
