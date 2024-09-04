@@ -3,6 +3,7 @@ import { auth, db } from "@/firebaseConfig";
 import { get, ref, update, remove, push, onValue, off } from "firebase/database";
 import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 import { UserComment } from '@/components/models/UserComment';
+import { Alert } from 'react-native';
 export interface Recipe {
     recipeID: string;
     userID: string;
@@ -115,8 +116,10 @@ export function saveUpdatedRecipe(recipe: Recipe): void {
 export function saveNewRecipe(recipe: Recipe): void {
     const user = auth.currentUser;
     if (!user) {
-        throw new Error('User not logged in');
+        Alert.alert('Error', 'User not logged in');
+        return;
     }
+
     const newRecipeRef = push(ref(db, 'recipes'));
     recipe.recipeID = newRecipeRef.key as string
     recipe.userID = user.uid;

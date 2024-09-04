@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { Recipe } from '@/components/models/Recipe';
 import { getRecipes } from '@/components/services/recipeService';
+import { RecipeFavoriteController } from '@/components/controllers/RecipeFavoriteController';
+import { readUserIDAndUsername } from '@/components/services/profileService';
 import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 
@@ -47,13 +49,21 @@ const Home = () => {
         Lunch: [],
         Dinner: []
     });
-
+    const { userID, username } = readUserIDAndUsername() || { userID: null, username: '' };
+    const defaultUserID = userID || '';
+    const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([]);
     // Fetch recipes and categorize them on component mount
     useEffect(() => {
-        getRecipes().then((recipes) => {
+        getRecipes().then(async (recipes) => {
             const categorizedRecipes = filterRecipesByMeal(recipes);
             setFilteredRecipes(categorizedRecipes);
+            const favoriteRecipeIds = await RecipeFavoriteController.getFavorites(defaultUserID);
+            
+            const favoriteRecipes = recipes.filter(recipe => favoriteRecipeIds.includes(recipe.recipeID));
+            setFavoriteRecipes(favoriteRecipes);
         });
+        
+        
     }, []);
 
     // Handler for category selection
@@ -111,36 +121,21 @@ const Home = () => {
                 </TouchableOpacity>
             ))}
     
-            {/* Additional Sections like Trending and Saved */}
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Trending Recipe</Text>
-                <View style={styles.trendingRecipe}>
-                    <Image style={styles.recipeImage} source={{ uri: 'placeholder_image.png' }} />
-                    <View style={styles.recipeInfo}>
-                        <Text style={styles.recipeTitle}>Food</Text>
-                        <Text style={styles.recipeDescription}>Description</Text>
-                        <View style={styles.recipeMeta}>
-                            <Text style={styles.recipeTime}>Time</Text>
-                            <Text style={styles.recipeRating}>Rating</Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Saved</Text>
-                <View style={styles.yourRecipes}>
-                    <View style={styles.yourRecipeCard}>
-                        <Image style={styles.yourRecipeImage} source={{ uri: 'placeholder_image.png' }} />
-                        <Text style={styles.yourRecipeTitle}>Title</Text>
-                        <Text style={styles.yourRecipeTime}>Time</Text>
-                    </View>
-                    <View style={styles.yourRecipeCard}>
-                        <Image style={styles.yourRecipeImage} source={{ uri: 'placeholder_image.png' }} />
-                        <Text style={styles.yourRecipeTitle}>Title</Text>
-                        <Text style={styles.yourRecipeTime}>Time</Text>
-                    </View>
-                </View>
+                <Text style={styles.sectionTitle}>Favorite Recipes</Text>
+                {favoriteRecipes.map((recipe) => (
+                    <TouchableOpacity key={recipe.recipeID} style={styles.recipeCard} onPress={() => navigateToStack(navigation, 'recipe-detail', recipe.recipeID)()}>
+                        <View style={styles.recipeMeal}>
+                            <ImageBackground source={{ uri: recipe.video }} style={styles.recipeImage} imageStyle={{ borderRadius: 10 }} />
+                            <View>
+                                <Text style={styles.recipeTitle}>{recipe.title}</Text>
+                                <Text>{recipe.duration?.hour}h {recipe.duration?.minute}m</Text>
+                                <Text>{recipe.rating} ⭐</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                ))}
             </View>
         </ScrollView>
     );

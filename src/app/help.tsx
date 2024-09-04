@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from 'react-native';
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -54,45 +54,33 @@ export default function Help() {
     );
 
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.headerText}>Help Center</Text>
-            </View>
-            <View style={styles.tabContainer}>
-                <TouchableOpacity
-                    style={[styles.tab, selectedTab === 'General' && styles.activeTab]}
-                    onPress={() => setSelectedTab('General')}
-                >
-                    <Text style={[styles.tabText, selectedTab === 'General' && styles.activeTabText]}>FAQ</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.tab, selectedTab === 'Contact Us' && styles.activeTab]}
-                    onPress={() => setSelectedTab('Contact Us')}
-                >
-                    <Text style={[styles.tabText, selectedTab === 'Contact Us' && styles.activeTabText]}>Contact Us</Text>
-                </TouchableOpacity>
-            </View>
-
-            {selectedTab === 'General' && (
-                <View>
-                    <FlatList
-                        data={generalData}
-                        renderItem={renderGeneralItem}
-                        keyExtractor={item => item.id}
-                    />
-                </View>
-            )}
-
-            {selectedTab === 'Contact Us' && (
-                <View>
-                    <FlatList
-                        data={contactData}
-                        renderItem={renderContactItem}
-                        keyExtractor={item => item.id}
-                    />
-                </View>
-            )}
-        </ScrollView>
+        <FlatList
+            style={styles.container}
+            data={selectedTab === 'General' ? generalData : contactData}
+            renderItem={selectedTab === 'General' ? renderGeneralItem : renderContactItem}
+            keyExtractor={item => item.id}
+            ListHeaderComponent={
+                <>
+                    <View style={styles.header}>
+                        <Text style={styles.headerText}>Help Center</Text>
+                    </View>
+                    <View style={styles.tabContainer}>
+                        <TouchableOpacity
+                            style={[styles.tab, selectedTab === 'General' && styles.activeTab]}
+                            onPress={() => setSelectedTab('General')}
+                        >
+                            <Text style={[styles.tabText, selectedTab === 'General' && styles.activeTabText]}>FAQ</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.tab, selectedTab === 'Contact Us' && styles.activeTab]}
+                            onPress={() => setSelectedTab('Contact Us')}
+                        >
+                            <Text style={[styles.tabText, selectedTab === 'Contact Us' && styles.activeTabText]}>Contact Us</Text>
+                        </TouchableOpacity>
+                    </View>
+                </>
+            }
+        />
     );
 }
 
