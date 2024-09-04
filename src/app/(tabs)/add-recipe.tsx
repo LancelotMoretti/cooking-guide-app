@@ -10,10 +10,10 @@ import { TextBox, TextBoxAmt, TextBoxIngredient, TextBoxInstruction, TextBoxTime
 import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { remove } from 'firebase/database';
-import { saveNewRecipe, saveUpdatedRecipe } from '@/temp/recipeServices';
+import { saveNewRecipe, saveUpdatedRecipe } from '@/components/services/recipeServices';
 import { createRecipe } from '@/components/services/recipeService';
 //import { Recipe } from '@/components/models/Recipe';
-import {Recipe } from '@/temp/recipeServices';
+import {Recipe } from '@/components/services/recipeServices';
 import { ButtonTrashStyles,  ButtonAddVideoStyles, ButtonChooseStyles } from '@/styles/AddRecipe';
 
 

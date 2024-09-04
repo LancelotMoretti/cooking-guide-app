@@ -7,7 +7,7 @@ import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { ClickableText } from '@/components/UI/clickable/ClickableText';
 import { ClickableLogo } from '@/components/UI/clickable/ClickableLogo';
 import { Checkbox } from '@/components/UI/tickable/Checkbox';
-import { loginAndGoToHome } from '@/temp/loginServices';
+import { loginAndGoToHome } from '@/components/services/authService';
 import { useNavigation } from 'expo-router';
 import { useToggle } from '@/hooks/useToggle';
 import { SignBoxStyles, SignButtonStyles } from '@/styles/Sign';

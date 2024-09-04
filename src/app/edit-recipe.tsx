@@ -11,11 +11,10 @@ import { remove, set, ref } from 'firebase/database';// Replace '@/path/to/fireb
 import { db as database } from '@/firebaseConfig';
 import { ButtonChooseStyles, ButtonTrashStyles } from '@/styles/AddRecipe';
 import { getRecipe } from '@/components/services/recipeService';
-import { saveUpdatedRecipe } from '@/temp/recipeServices';
-import { Recipe } from '@/temp/recipeServices';
 import { useRoute } from '@react-navigation/native';
 import { readUserIDAndUsername } from '@/components/services/profileService';
 import { ButtonChoose } from '@/components/UI/button/ButtonChoose';
+import { saveUpdatedRecipe } from '@/components/services/recipeServices';
 
 export default function AddRecipe() {
     const navigation = useNavigation();

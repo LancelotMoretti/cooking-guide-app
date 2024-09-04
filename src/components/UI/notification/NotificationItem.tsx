@@ -4,7 +4,7 @@ import { useElapsedTime } from '@/hooks/useElapsedTime';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
 import { NotificationBoxStyles } from '@/styles/Notification';
 import { useNavigation } from 'expo-router';
-import { readRecipeFromDatabase } from '@/temp/recipeServices';
+import { readRecipeFromDatabase } from '@/components/services/recipeServices';
 import { Notification } from '../../models/Notification'; // Make sure this path is correct
 
 export interface NotificationItemProps {

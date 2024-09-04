@@ -5,7 +5,7 @@ import { SignButton } from '@/components/UI/button/Button';
 import { SecureSignTextBox, SignTextBox } from '@/components/UI/textBox/SignTextBox';
 import { SignUpHeader } from '@/styles/Header';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
-import { signUpAccount } from '@/temp/registerServices';
+import { signUpAccount } from '@/components/services/authService';
 import { useNavigation } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, View, Text, Dimensions, Modal, TouchableOpacity } from 'react-native';
