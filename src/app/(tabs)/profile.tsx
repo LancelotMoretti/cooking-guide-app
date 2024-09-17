@@ -36,12 +36,14 @@ export default function ProfileScreen() {
     const [favorites, setFavorites] = useState<Recipe[]>([]);
     const [image, setImage] = useState<any | null>(null);
 
+    //console.log(profile?.userID);
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
                 // Lấy tất cả các công thức
                 const fetchedRecipes = await getRecipes();
                 setRecipes(fetchedRecipes);
+    
                 // Lấy các công thức yêu thích ban đầu
                 const recipeFavorites = await RecipeFavoriteController.getFavorites(profile?.userID || '');
                 const favoriteRecipes = fetchedRecipes.filter(recipe => 
@@ -52,26 +54,34 @@ export default function ProfileScreen() {
                 console.error("Error fetching recipes or favorites:", error);
             }
         };
-
+    
         // Lắng nghe sự thay đổi của dữ liệu favorites trên Firebase
         const favoriteRef = ref(db, `users/${profile?.userID}/favorites`);
-        const unsubscribe = onValue(favoriteRef, async (snapshot) => {
+        const unsubscribeFavorites = onValue(favoriteRef, async (snapshot) => {
             const recipeFavorites = snapshot.exists() ? Object.keys(snapshot.val()) : [];
             const favoriteRecipes = recipes.filter(recipe => 
                 recipeFavorites.includes(recipe.recipeID)
             );
             setFavorites(favoriteRecipes);
         });
-
+    
+        // Lắng nghe sự thay đổi của avatarURL từ Firebase
+        const avatarRef = ref(db, `users/${profile?.userID}/avatarURL`);
+        const unsubscribeAvatar = onValue(avatarRef, (snapshot) => {
+            if (snapshot.exists()) {
+                setImage(snapshot.val());
+            }
+        });
+    
         fetchRecipes();
-
-        // Cleanup listener khi component bị unmount
-        const Image = () => {
-
-            setImage(profile?.avatarURL);
-        }
-        
+    
+        // Cleanup listeners khi component bị unmount
+        return () => {
+            unsubscribeFavorites();
+            unsubscribeAvatar();
+        };
     }, [profile?.userID, recipes]);
+    
 
 
 
@@ -163,12 +173,12 @@ export default function ProfileScreen() {
                 style={styles.profileImage} 
                 /> */}
             <TouchableOpacity onPress={handleAddImage}>
-                <ImageBackground
+                <Image
                 source={image ? { uri: image } : require('../../assets/images/avatar.jpg')}
                 style={styles.profileImage}
-                imageStyle={{ borderRadius: 50, resizeMode: 'cover' }}
+                //imageStyle={{ borderRadius: 50, resizeMode: 'cover' }}
             >
-            </ImageBackground>  
+            </Image>  
             </TouchableOpacity>  
             {/* <ButtonAdd 
                             //style={styles.centerButtonContainer} 
@@ -231,6 +241,8 @@ const styles = StyleSheet.create({
     profileImage: {
         width: 100,
         height: 100,
+        borderRadius: 50,
+        resizeMode: 'cover',
     },
     name: {
         fontSize: 24,

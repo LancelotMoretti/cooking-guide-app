@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBcisB1jLBYO1oz14lR33g_CGZdhOeEBiU</string>
+	<string>AIzaSyB1oWdT70fNjvysoERj_VX3HxlZQ29TQTU</string>
 	<key>GCM_SENDER_ID</key>
-	<string>934633635982</string>
+	<string>527688853329</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.app.Cooking</string>
+	<string>com.GuideCook.LemmeCook</string>
 	<key>PROJECT_ID</key>
-	<string>cookingapp-e9b0d</string>
+	<string>lemmecookapp</string>
 	<key>STORAGE_BUCKET</key>
-	<string>cookingapp-e9b0d.appspot.com</string>
+	<string>lemmecookapp.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:934633635982:ios:766cc7c1f8456ddcb089df</string>
+	<string>1:527688853329:ios:b6cb990a99840a39399570</string>
+	<key>DATABASE_URL</key>
+	<string>https://lemmecookapp-default-rtdb.asia-southeast1.firebasedatabase.app</string>
 </dict>
 </plist>

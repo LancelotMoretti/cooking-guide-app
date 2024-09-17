@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.lancelotmoretti.lemmecook"
+      "package": "com.app.Cooking"
     },
     "web": {
       "bundler": "metro",

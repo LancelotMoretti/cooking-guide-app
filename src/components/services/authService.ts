@@ -41,6 +41,7 @@ export const signUpAccount = async (
         }
     }
     catch (error) {
+        console.error("Error creating user:", error);
         return error;
     }
 };

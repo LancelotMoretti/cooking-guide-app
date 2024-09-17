@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "176721447738",
-    "project_id": "lemmecook-91255",
-    "storage_bucket": "lemmecook-91255.appspot.com"
+    "project_number": "934633635982",
+    "project_id": "cookingapp-e9b0d",
+    "storage_bucket": "cookingapp-e9b0d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:176721447738:android:6b4f73aa03b1204bdf1e03",
+        "mobilesdk_app_id": "1:934633635982:android:42322040d609169ab089df",
         "android_client_info": {
-          "package_name": "com.lancelotmoretti.lemmecook"
+          "package_name": "com.app.Cooking"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAGLq7Lk9hTMS3AwjALJQ3cyA0NPIDO_Hk"
+          "current_key": "AIzaSyCFmS-O2a4uFKmzD2P0SterYC4vgspvMI0"
         }
       ],
       "services": {

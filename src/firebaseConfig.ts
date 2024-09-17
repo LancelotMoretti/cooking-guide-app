@@ -1,29 +1,30 @@
 // Import the functions you need from the SDKs you need
 import { FirebaseApp, FirebaseOptions, initializeApp } from "firebase/app";
-import { Auth, initializeAuth, getReactNativePersistence, getAuth } from "firebase/auth";
+import { Auth, getReactNativePersistence, getAuth } from "firebase/auth";
 // import { getAnalytics } from "firebase/analytics";
 import { Database, getDatabase } from "firebase/database";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import { Auth, getAuth } from "firebase/auth";
+// Import the functions you need from the SDKs you need
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig: FirebaseOptions = {
-  apiKey: "AIzaSyB5ysY51scMo74_CjSdKwTWqlIB85WVkEw",
-  authDomain: "lemmecook-91255.firebaseapp.com",
-  databaseURL: "https://lemmecook-91255-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "lemmecook-91255",
-  storageBucket: "lemmecook-91255.appspot.com",
-  messagingSenderId: "176721447738",
-  appId: "1:176721447738:web:8ac108421a92d28bdf1e03",
-  measurementId: "G-C6LBVHNM1T"
+const firebaseConfig = {
+  apiKey: "AIzaSyBeWvAXM8fE6nY5qdfqK4x8fQ9tGanNGBE",
+  authDomain: "cookingapp-e9b0d.firebaseapp.com",
+  databaseURL: "https://cookingapp-e9b0d-default-rtdb.firebaseio.com",
+  projectId: "cookingapp-e9b0d",
+  storageBucket: "cookingapp-e9b0d.appspot.com",
+  messagingSenderId: "934633635982",
+  appId: "1:934633635982:web:870f40b5da0be63bb089df",
+  measurementId: "G-T9NLZB15SS"
 };
 
 // Initialize Firebase
 const app: FirebaseApp = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 export const db: Database = getDatabase(app);
+//export const auth: Auth = getAuth(app);
 export const auth: Auth = getAuth(app);
-// export const auth: Auth = getAuth(app);
+

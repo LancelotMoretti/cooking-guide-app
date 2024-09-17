@@ -6,6 +6,10 @@ import { RecipeFavoriteController } from '@/components/controllers/RecipeFavorit
 import { readUserIDAndUsername } from '@/components/services/profileService';
 import { useNavigation } from 'expo-router';
 import { navigateToStack } from '@/components/routingAndMiddleware/Navigation';
+import { Ionicons } from '@expo/vector-icons';
+import { ref, onValue, get } from 'firebase/database';
+import { db } from '@/firebaseConfig';
+
 
 // Define the type for filtered recipes
 type FilteredRecipes = { [key: string]: { id: string; title: string; image: string; time: { hour: number; minute: number }; rating: number }[] };
@@ -50,21 +54,47 @@ const Home = () => {
         Dinner: []
     });
     const { userID, username } = readUserIDAndUsername() || { userID: null, username: '' };
+    //console.log(userID);
     const defaultUserID = userID || '';
+    const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([]);
     // Fetch recipes and categorize them on component mount
     useEffect(() => {
-        getRecipes().then(async (recipes) => {
-            const categorizedRecipes = filterRecipesByMeal(recipes);
-            setFilteredRecipes(categorizedRecipes);
-            const favoriteRecipeIds = await RecipeFavoriteController.getFavorites(defaultUserID);
-            
-            const favoriteRecipes = recipes.filter(recipe => favoriteRecipeIds.includes(recipe.recipeID));
-            setFavoriteRecipes(favoriteRecipes);
+        const fetchRecipes = async () => {
+            try {
+                const fetchedRecipes = await getRecipes();
+                setRecipes(fetchedRecipes); // Đảm bảo recipes được set trước
+    
+                const categorizedRecipes = filterRecipesByMeal(fetchedRecipes);
+                setFilteredRecipes(categorizedRecipes);
+    
+                const favoriteRecipeIds = await RecipeFavoriteController.getFavorites(userID || '');
+                const favoriteRecipes = fetchedRecipes.filter(recipe => 
+                    favoriteRecipeIds.some(fav => fav === recipe.recipeID)
+                );
+                setFavoriteRecipes(favoriteRecipes); // Set favoriteRecipes sau khi set recipes
+            }
+            catch (error) {
+                console.log(error);
+            }
+        };
+    
+        fetchRecipes();  // Gọi fetchRecipes và đảm bảo fetch xong trước khi gọi Firebase
+    
+        // Theo dõi Firebase favorites sau khi recipes đã được fetch
+        const favoriteRef = ref(db, `users/${userID}/favorites`);
+        const unsubscribe = onValue(favoriteRef, async (snapshot) => {
+            const recipeFavorites = snapshot.exists() ? Object.keys(snapshot.val()) : [];
+            const favoriteRecipesFromFirebase = recipes.filter(recipe => 
+                recipeFavorites.includes(recipe.recipeID)
+            );
+            setFavoriteRecipes(favoriteRecipesFromFirebase);  // Cập nhật danh sách favorite dựa trên Firebase
         });
-        
-        
-    }, []);
+    
+        return () => unsubscribe();  // Hủy đăng ký khi component bị unmount
+    
+    }, [userID, recipes]);  // Thêm recipes làm dependency để đảm bảo Firebase đọc sau khi recipes có dữ liệu
+    
 
     // Handler for category selection
     const handleCategoryPress = (category: string) => {
@@ -84,6 +114,7 @@ const Home = () => {
             </View>
 
             {/* Category Buttons */}
+            
             <View style={styles.categoryContainer}>
                 {['Breakfast', 'Lunch', 'Dinner'].map((category) => (
                     <TouchableOpacity
@@ -105,37 +136,53 @@ const Home = () => {
                     </TouchableOpacity>
                 ))}
             </View>
-
+            
             {/* Render Recipes directly */}
-            {filteredRecipes[selectedCategory].map((item) => (
-                <TouchableOpacity key={item.id} style={styles.recipeCard} onPress={() => navigateToStack(navigation, 'recipe-detail', item.id)()}>
-                    <View style={styles.recipeMeal}>
-                        <ImageBackground source={{ uri: item.image }} style={styles.recipeImage} imageStyle={{ borderRadius: 10 }} />
-                        <View>
-                            <Text style={styles.recipeTitle}>{item.title}</Text>
-                            <Text>{item.time?.hour}h {item.time?.minute}m</Text>
-                            <Text>{item.rating} ⭐</Text>
-                        </View>
-                    </View>
-
-                </TouchableOpacity>
-            ))}
-    
-
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Favorite Recipes</Text>
-                {favoriteRecipes.map((recipe) => (
-                    <TouchableOpacity key={recipe.recipeID} style={styles.recipeCard} onPress={() => navigateToStack(navigation, 'recipe-detail', recipe.recipeID)()}>
+            <ScrollView style={{ height: 300 }} contentContainerStyle={{ flexGrow: 1 }}  // Đảm bảo nội dung cuộn được
+                showsVerticalScrollIndicator={false}>
+                {filteredRecipes[selectedCategory].map((item) => (
+                    <TouchableOpacity key={item.id} style={styles.recipeCard} onPress={() => navigateToStack(navigation, 'recipe-detail', item.id)()}>
                         <View style={styles.recipeMeal}>
-                            <ImageBackground source={{ uri: recipe.video }} style={styles.recipeImage} imageStyle={{ borderRadius: 10 }} />
+                            <ImageBackground source={{ uri: item.image }} style={styles.recipeImage} imageStyle={{ borderRadius: 10 }} />
                             <View>
-                                <Text style={styles.recipeTitle}>{recipe.title}</Text>
-                                <Text>{recipe.duration?.hour}h {recipe.duration?.minute}m</Text>
-                                <Text>{recipe.rating} ⭐</Text>
+                                <Text style={styles.recipeTitle}>{item.title}</Text>
+                                <Text>{item.time?.hour}h {item.time?.minute}m</Text>
+                                <Text>{item.rating} ⭐</Text>
                             </View>
                         </View>
+
                     </TouchableOpacity>
                 ))}
+            </ScrollView>
+    
+
+            <View style={styles.cardSection}>
+                <Text style={styles.sectionTitle}>Favorite Recipes</Text>
+                <ScrollView style={{ flexDirection: 'row'}}  horizontal showsHorizontalScrollIndicator={false}>
+                {favoriteRecipes.map((recipe) => (
+                    <View style={styles.card}>
+                    <TouchableOpacity key={recipe.recipeID} style={styles.recipeCard} onPress={() => navigateToStack(navigation, 'recipe-detail', recipe.recipeID)()}>
+                            <ImageBackground source={{ uri: recipe.video }} style={styles.image} imageStyle={{ borderRadius: 10 }} />
+                            <View style={styles.cardInfo}>
+                                <Text style={styles.recipeTitle}>{recipe.title}</Text>
+                                <View style={styles.footer}>
+                                    
+                                    <View style={styles.timeContainer}>
+                                        <Ionicons name="time" size={16} color="green" />
+                                        <Text>{recipe.duration?.hour}h {recipe.duration?.minute}m</Text>
+                                    </View>
+                                    <View style={styles.ratingContainer}>
+                                        <Ionicons name="star" size={16} color="green" />
+                                        <Text style={styles.rating}>{recipe.rating}</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        
+                    </TouchableOpacity>
+                    </View>
+                ))}
+                </ScrollView>
+                
             </View>
             <View style={{marginBottom: 100}}></View>
         </ScrollView>
@@ -147,7 +194,7 @@ export default Home;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F3F4F6',
+        backgroundColor: '#EEF7FF',
         padding: 16,
         paddingTop: 20,
         paddingBottom: 60,
@@ -183,21 +230,8 @@ const styles = StyleSheet.create({
     categoryButtonTextSelected: {
         color: '#FFF',
     },
-    section: {
-        marginBottom: 16,
-    },
-    sectionTitle: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 8,
-        color: '#129575',
-    },
-    trendingRecipe: {
-        flexDirection: 'row',
-        backgroundColor: 'white',
-        padding: 16,
-        borderRadius: 10,
-    },
+     
+
     recipeMeal:{
         flexDirection: 'row',
         
@@ -261,4 +295,73 @@ const styles = StyleSheet.create({
     yourRecipeTime: {
         color: 'gray',
     },
+
+    cardSection: {
+        marginTop: 20,
+        backgroundColor: '#129575',
+        height: 400,
+        borderRadius: 20,
+    },
+
+    section: {
+        marginHorizontal: 16,
+        borderRadius: 20,
+        height: 250,
+        backgroundColor: '#129575',
+        marginBottom: 16,
+    },
+    sectionTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 8,
+        color: '#FFFFFF',
+        padding: 16,
+    },   
+
+    card: {
+        borderRadius: 10,
+        marginHorizontal: 16,
+        //height: 230,
+        width: 200,
+        overflow: 'hidden',
+        
+        position: 'relative',
+        flexDirection: 'row',
+      },
+      image: {
+        width: 150,
+        height: 100,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+      },
+      cardInfo: {
+        padding: 10,
+        justifyContent: 'space-between',
+      },
+      title: {
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
+      footer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 8,
+      },
+      ratingContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      rating: {
+        marginLeft: 4,
+        color: 'green',
+      },
+      timeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      time: {
+        marginLeft: 4,
+        color: 'green',
+      },
+
 });
